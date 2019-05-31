@@ -1,0 +1,15 @@
+# Build/Maven #
+###############
+**/target/
+# Eclipse #
+###########
+.project
+.classpath
+.settings
+**/bin/
+.metadata/
+# IntelliJ #
+############
+.idea/
+*.iml
+
