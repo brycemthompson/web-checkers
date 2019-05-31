@@ -25,6 +25,11 @@ a web micro-framework.
 3. Open in your browser `http://localhost:4567/`
 4. Start a game and begin playing.
 
+## Known bugs and disclaimers
+(It may be the case that your implementation is not perfect.)
+
+Document any known bug or nuisance.
+If any shortcomings, make clear what these are and where they are located.
 
 ## How to test it
 
