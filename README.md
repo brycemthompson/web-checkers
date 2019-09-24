@@ -9,7 +9,7 @@ a web micro-framework.
 - Bryce Thompson
 - Daniel Kitchen
 - Clayton Pruitt!
-- Isaias Villalobos
+- Isaias Villalobos!
 
 
 ## Prerequisites
