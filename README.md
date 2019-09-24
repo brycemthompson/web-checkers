@@ -6,10 +6,10 @@ a web micro-framework.
 
 ## Team
 
-- MEMBER1
-- MEMBER2
-- MEMBER3
-- MEMBER4
+- Bryce Thompson
+- Daniel Kitchen
+- Clayton Pruitt
+- Isaias Villalobos
 
 
 ## Prerequisites
