@@ -8,7 +8,7 @@ a web micro-framework.
 
 - Bryce Thompson
 - Daniel Kitchen
-- Clayton Pruitt
+- Clayton Pruitt!
 - Isaias Villalobos
 
 
