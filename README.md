@@ -5,7 +5,7 @@ a web micro-framework.
 
 
 ## Team
-
+        
 - Bryce Thompson
 - Daniel Kitchen
 - Clayton Pruitt!
