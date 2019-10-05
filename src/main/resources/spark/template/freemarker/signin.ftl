@@ -20,11 +20,16 @@
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
 
-    <!-- TODO: future content on the Home:
-            to start games,
-            spectating active games,
-            or replay archived games
-    -->
+    <div class="Form">
+
+        <label for="user"><b>Username</b><label>
+        <input type="password" placeholder="Enter Username" name = "user" required>
+
+        <label for="pwd"><b>Password</b><label>
+        <input type="password" placeholder="Enter Password" name = "pwd" required>
+
+        <button type="submit">Login</button>
+    </div>
 
   </div>
 
