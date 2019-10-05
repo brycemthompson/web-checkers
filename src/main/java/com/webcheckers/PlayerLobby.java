@@ -30,4 +30,9 @@ public class PlayerLobby
     {
         players.add(player);
     }
+
+    /**
+     * @return players
+     */
+    public ArrayList<Player> getPlayers() { return players; }
 }
