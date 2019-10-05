@@ -8,15 +8,15 @@ import spark.TemplateEngine;
 
 import java.util.Objects;
 
+/**
+ * The PostSignInRoute Class Handling Current Player Input
+ *
+ * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @author <a href='mailto:jrv@se.rit.edu'>Jim Vallino</a>
+ * @contributor Clayton Pruitt : chp4145@rit.edue
+ * @contributor Isaias Villalobos
+ */
 public class PostHomeRoute implements Route {
-    /**
-     * The PostSignInRoute Class Handling Current Player Input
-     *
-     * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
-     * @author <a href='mailto:jrv@se.rit.edu'>Jim Vallino</a>
-     * @contributor Clayton Pruitt : chp4145@rit.edue
-     * @contributor Isaias Villalobos
-     */
 
     //
     // Attributes
