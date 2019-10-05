@@ -21,11 +21,7 @@ import com.webcheckers.util.Message;
  */
 public class GetHomeRoute implements Route {
 
-  public static final String TITLE = "home.ftl";
-
-  // Values used in the view-model map for rendering the home view.
-  static final String TITLE_ATTR = "title";
-
+  // idk what these are
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
