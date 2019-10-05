@@ -17,6 +17,8 @@ import com.webcheckers.util.Message;
  * The UI Controller to GET the Sign In page.
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @contributor Bryce Thompson
+ * @contributor Clayton Pruitt
  */
 public class GetSignInRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
