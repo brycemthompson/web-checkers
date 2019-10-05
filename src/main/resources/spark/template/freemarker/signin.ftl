@@ -20,16 +20,7 @@
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
 
-    <div class="Form">
-
-        <label for="user"><b>Username</b><label>
-        <input type="password" placeholder="Enter Username" name = "user" required>
-
-        <label for="pwd"><b>Password</b><label>
-        <input type="password" placeholder="Enter Password" name = "pwd" required>
-
-        <button type="submit">Login</button>
-    </div>
+    <#include "signInComponent.ftl" />
 
   </div>
 
