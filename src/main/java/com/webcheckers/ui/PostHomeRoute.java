@@ -1,11 +1,10 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.PlayerLobby;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.TemplateEngine;
+import spark.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -45,7 +44,9 @@ public class PostHomeRoute implements Route {
 
     @Override
     public String handle(Request request, Response response){
-        // TODO
+        final Map<String, Object> vm = new HashMap<>();
+        vm.put(GetHomeRoute.TITLE_ATTR, GetHomeRoute.TITLE);
+
         return null;
     }
 }
