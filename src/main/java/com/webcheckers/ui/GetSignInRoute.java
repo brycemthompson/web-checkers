@@ -14,12 +14,14 @@ import spark.TemplateEngine;
 import com.webcheckers.util.Message;
 
 /**
- * The UI Controller to GET the Home page.
+ * The UI Controller to GET the Sign In page.
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @contributor Bryce Thompson
+ * @contributor Clayton Pruitt
  */
 public class GetSignInRoute implements Route {
-  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
+  private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
 
   private static final Message WELCOME_MSG = Message.info("Sign In to Play!");
 
@@ -38,7 +40,7 @@ public class GetSignInRoute implements Route {
   }
 
   /**
-   * Render the WebCheckers Home page.
+   * Render the WebCheckers Sign In page.
    *
    * @param request
    *   the HTTP request
@@ -46,7 +48,7 @@ public class GetSignInRoute implements Route {
    *   the HTTP response
    *
    * @return
-   *   the rendered HTML for the Home page
+   *   the rendered HTML for the Sign In page
    */
   @Override
   public Object handle(Request request, Response response) {
