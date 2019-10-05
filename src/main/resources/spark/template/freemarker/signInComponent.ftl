@@ -1,8 +1,8 @@
 <div class="Form">
         <form>
-          First name:<br>
-          <input type="text" name="firstname"><br>
-          Last name:<br>
-          <input type="text" name="lastname">
+          Username:<br>
+          <input type="text" name="username"><br>
+          <input type ="submit" value="Submit">
+
         </form>
 </div>
