@@ -11,14 +11,15 @@ import java.util.ArrayList;
 public class PlayerLobby
 {
     //Player Lobby Fields
-    ArrayList<Player> players = new ArrayList<>();
+    ArrayList<Player> players;
 
     /**
      * PlayerLobby constructor, initialized on application start
+     * initializes a new ArrayList<Player>
      */
     public PlayerLobby()
     {
-
+        players = new ArrayList<>();
     }
 
     /**

@@ -101,6 +101,9 @@ public final class Application {
     // inject web server into application
     final Application app = new Application(webServer);
 
+    // initialize a lobby on application startup
+    PlayerLobby lobby = new PlayerLobby();
+
     // start the application up
     app.initialize();
   }
