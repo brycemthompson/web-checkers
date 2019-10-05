@@ -17,7 +17,7 @@ public class PostHomeRoute implements Route {
     }
 
     @Override
-    public String handle(Request requeset, Response response){
+    public String handle(Request request, Response response){
         // TODO
         return null;
     }
