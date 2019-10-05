@@ -57,7 +57,7 @@ public class WebServer {
     /**
      * The URL pattern to request the Sign-In page.
      */
-    public static final String SIGNIN_URL = "/";
+    public static final String SIGNIN_URL = "/signin";
 
   //
   // Attributes
