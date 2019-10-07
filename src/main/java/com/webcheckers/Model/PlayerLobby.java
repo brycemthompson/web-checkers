@@ -1,4 +1,4 @@
-package com.webcheckers;
+package com.webcheckers.Model;
 
 import com.webcheckers.Model.Player;
 
@@ -12,6 +12,9 @@ public class PlayerLobby
 {
     //Player Lobby Fields
     ArrayList<Player> players;
+
+    // key for player lobby in the Session HashMap
+    public static final String PLAYERLOBBY_KEY = "playerLobby";
 
     /**
      * PlayerLobby constructor, initialized on application start
@@ -30,6 +33,12 @@ public class PlayerLobby
     {
         players.add(player);
     }
+
+    /**
+     * addPlayer function overload to add a player by name.
+     * @param playerName: the name of the new Player to initialize and put in the lobby
+     */
+    public void addPlayer(String playerName){ players.add(new Player(playerName)); }
 
     /**
      * @return players

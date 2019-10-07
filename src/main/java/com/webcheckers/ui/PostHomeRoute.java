@@ -1,6 +1,6 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.PlayerLobby;
+import com.webcheckers.Model.PlayerLobby;
 import spark.Request;
 import spark.Response;
 import spark.Route;

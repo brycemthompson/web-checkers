@@ -1,15 +1,10 @@
 package com.webcheckers.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Logger;
 
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.TemplateEngine;
+import com.webcheckers.Model.PlayerLobby;
+import spark.*;
 
 import com.webcheckers.util.Message;
 
@@ -21,6 +16,7 @@ import com.webcheckers.util.Message;
  * @contributor Clayton Pruitt
  */
 public class GetSignInRoute implements Route {
+
   private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
 
   private static final Message WELCOME_MSG = Message.info("Sign In to Play!");
@@ -52,15 +48,23 @@ public class GetSignInRoute implements Route {
    */
   @Override
   public Object handle(Request request, Response response) {
+
     LOG.finer("GetSignInRoute is invoked.");
+
+    // retrieve the player lobby object
+    final Session session = request.session();
+    final PlayerLobby playerLobby = session.attribute(PlayerLobby.PLAYERLOBBY_KEY);
+
     //
-    Map<String, Object> vm = new HashMap<>();
+    final Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
     // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
 
+
     // render the View
     return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
+
   }
 }
