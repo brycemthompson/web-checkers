@@ -6,6 +6,7 @@ package com.webcheckers.Model;
  */
 public class Player
 {
+
     // Player Fields
     private String userName;
 
@@ -16,6 +17,13 @@ public class Player
     public Player(String userName)
     {
         this.userName = userName;
+    }
+
+    /**
+     * @return username
+     */
+    public String getUserName() {
+        return userName;
     }
 
 }

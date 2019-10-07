@@ -18,8 +18,12 @@ import com.webcheckers.util.Message;
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  * @contributor Bryce Thompson : bxt6698@rit.edu
+ * @contributor Clayton Pruitt: chp4145@ritledu
  */
 public class GetHomeRoute implements Route {
+
+  // Values used in the view-model map for rendering the home view.
+  static final String SIGNED_IN_PLAYER_ATTR = "username";
 
   // idk what these are
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());

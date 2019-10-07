@@ -6,6 +6,8 @@ import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -24,6 +26,7 @@ public class PostHomeRoute implements Route {
 
     private final PlayerLobby playerLobby;
     private final TemplateEngine templateEngine;
+    private final String signedInPlayer;
 
     //
     // Constructor
@@ -36,6 +39,8 @@ public class PostHomeRoute implements Route {
         //
         this.playerLobby = playerLobby;
         this.templateEngine = templateEngine;
+        // TODO the following line is terrible but we're working with it for now
+        this.signedInPlayer = playerLobby.getPlayers().get(0).getUserName();
     }
 
     //
@@ -47,6 +52,10 @@ public class PostHomeRoute implements Route {
      */
     @Override
     public String handle(Request request, Response response){
+        // start building our View-Model
+        final Map<String, Object> viewmodel = new HashMap<>();
+        viewmodel.put(GetHomeRoute.SIGNED_IN_PLAYER_ATTR, signedInPlayer);
+
         return null;
     }
 }
