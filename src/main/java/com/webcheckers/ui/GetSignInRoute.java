@@ -51,17 +51,22 @@ public class GetSignInRoute implements Route {
 
     LOG.finer("GetSignInRoute is invoked.");
 
-    // retrieve the player lobby object
+    // retrieve the HTTP session
     final Session session = request.session();
-    final PlayerLobby playerLobby = session.attribute(PlayerLobby.PLAYERLOBBY_KEY);
 
-    //Create HashMap to properly store key,value pairs
+    // start building the view model
     final Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
-
-    // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
 
+    // retrieve the player lobby we initialized in the GetHomeRoute
+    final PlayerLobby playerLobby = session.attribute(PlayerLobby.PLAYERLOBBY_KEY);
+
+    if (playerLobby != null){
+      String username = request.queryParams("username");
+      playerLobby.addPlayer(username);
+      LOG.finer("Added " + username + " to lobby.");
+    }
 
     // render the View
     return templateEngine.render(new ModelAndView(vm , "signin.ftl"));

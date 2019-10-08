@@ -5,11 +5,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.TemplateEngine;
+import com.webcheckers.Model.PlayerLobby;
+import spark.*;
 
 import com.webcheckers.util.Message;
 
@@ -58,12 +55,20 @@ public class GetHomeRoute implements Route {
   @Override
   public Object handle(Request request, Response response) {
     LOG.finer("GetHomeRoute is invoked.");
-    //
+
+    // retrieve the HTTP session
+    final Session session = request.session();
+
+    // start building the view model
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
-
-    // display a user message in the Home page
     vm.put("message", WELCOME_MSG);
+
+    // if this a brand new session, create a new lobby
+    if (session.attribute(PlayerLobby.PLAYERLOBBY_KEY) == null){
+      final PlayerLobby playerLobby = new PlayerLobby();
+      session.attribute(PlayerLobby.PLAYERLOBBY_KEY, playerLobby);
+    }
 
     // render the View
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));

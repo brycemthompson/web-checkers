@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * The PostSignInRoute Class Handling Username Input
@@ -19,6 +20,9 @@ import java.util.Map;
  * @constributor Daniel Kitchen
  */
 public class PostSignInRoute implements Route {
+
+    private static final Logger LOG = Logger.getLogger(PostSignInRoute.class.getName());
+
     // Constants
     // Values used in the view-model map for rendering the game view after a guess.
     static final String USERNAME_PARAM = "username";
@@ -71,16 +75,19 @@ public class PostSignInRoute implements Route {
         return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
          */
 
+        LOG.finer("GetSignInRoute is invoked.");
+
         // get username
         final String username = request.queryParams(USERNAME_PARAM);
         storeUsername(username, request.session());
+        System.out.println(username);
 
         // display message on Sign In page
         final Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Welcome!");
+        vm.put("title", "Welcfome!");
         vm.put("message", WELCOME_MSG);
 
         // render the view
-        return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
+        return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     }
 }
