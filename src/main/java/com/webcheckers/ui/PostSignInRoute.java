@@ -26,6 +26,7 @@ public class PostSignInRoute implements Route {
     // Constants
     // Values used in the view-model map for rendering the game view after a guess.
     static final String USERNAME_PARAM = "username";
+    static final String PLAYERSIGNEDIN_PARAM = "currentUser";
     private static final Message WELCOME_MSG = Message.info("Sign In to Play!");
     private final TemplateEngine templateEngine;
 
@@ -77,14 +78,17 @@ public class PostSignInRoute implements Route {
 
         LOG.finer("GetSignInRoute is invoked.");
 
+        // initialize view-model
+        final Map<String, Object> vm = new HashMap<>();
+
         // get username
         final String username = request.queryParams(USERNAME_PARAM);
-        storeUsername(username, request.session());
-        System.out.println(username);
-
+        //storeUsername(username, request.session());
+        vm.put(PLAYERSIGNEDIN_PARAM, true);
+        vm.put(USERNAME_PARAM, username);
+        System.out.println("Signed in.");
         // display message on Sign In page
-        final Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Welcfome!");
+        vm.put("title", "Welcome!");
         vm.put("message", WELCOME_MSG);
 
         // render the view
