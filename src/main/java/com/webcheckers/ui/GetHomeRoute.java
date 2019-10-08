@@ -70,7 +70,6 @@ public class GetHomeRoute implements Route {
       final PlayerLobby playerLobby = new PlayerLobby();
       session.attribute(PlayerLobby.PLAYERLOBBY_KEY, playerLobby);
       vm.put(PLAYERSIGNEDIN_PARAM, Boolean.FALSE);
-      System.out.println("Created lobby.");
     }
 
     // render the View
