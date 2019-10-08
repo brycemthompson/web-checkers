@@ -55,7 +55,7 @@ public class GetSignInRoute implements Route {
     final Session session = request.session();
     final PlayerLobby playerLobby = session.attribute(PlayerLobby.PLAYERLOBBY_KEY);
 
-    //
+    //Create HashMap to properly store key,value pairs
     final Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
