@@ -3,27 +3,28 @@ package com.webcheckers.Model;
 /**
  * The Player Model of a newly logged in User
  * @author Bryce Thompson : bxt6698@rit.edu
+ * @contributor Clayton Pruitt : chp4145@rit.edu
  */
 public class Player
 {
 
     // Player Fields
-    private String userName;
+    private String name;
 
     /**
      * Player Constructor
-     * @param userName : Username of a newly logged player
+     * @param name : Username of a newly logged player
      */
-    public Player(String userName)
+    public Player(String name)
     {
-        this.userName = userName;
+        this.name = name;
     }
 
     /**
-     * @return username
+     * @return name
      */
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
 }
