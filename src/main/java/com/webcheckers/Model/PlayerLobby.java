@@ -44,4 +44,16 @@ public class PlayerLobby
      * @return players
      */
     public ArrayList<Player> getPlayers() { return players; }
+
+    /**
+     * this is me trying to trick nav-bar.ftl into taking a username (clayton)
+     */
+    public String getUsername(){
+        String username = players.get(0).getUserName();
+        if (username == null){
+            return "Harry";
+        } else {
+            return username;
+        }
+    }
 }

@@ -21,6 +21,7 @@ public class GetHomeRoute implements Route {
 
   // Values used in the view-model map for rendering the home view.
   static final String SIGNED_IN_PLAYER_ATTR = "username";
+  static final String PLAYERSIGNEDIN_PARAM = "playerIsSignedIn";
 
   // idk what these are
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
@@ -68,6 +69,8 @@ public class GetHomeRoute implements Route {
     if (session.attribute(PlayerLobby.PLAYERLOBBY_KEY) == null){
       final PlayerLobby playerLobby = new PlayerLobby();
       session.attribute(PlayerLobby.PLAYERLOBBY_KEY, playerLobby);
+      vm.put(PLAYERSIGNEDIN_PARAM, Boolean.FALSE);
+      System.out.println("Created lobby.");
     }
 
     // render the View
