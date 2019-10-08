@@ -3,6 +3,7 @@ package com.webcheckers.ui;
 // THIS CLASS STILL NEED TO BE COMPLETED
 
 import com.webcheckers.Model.Player;
+import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
 import spark.*;
 
@@ -70,12 +71,17 @@ public class PostSignInRoute implements Route {
         // initialize view-model
         final Map<String, Object> vm = new HashMap<>();
 
-        // get username from template parameters
-        final String username = request.queryParams(USERNAME_PARAM);
+        // retrieve player lobby
+        final Session session = request.session();
+        final PlayerLobby playerLobby = session.attribute(PlayerLobby.PLAYERLOBBY_KEY);
 
-        // put the player into our model
-        vm.put(CURRENTUSER_PARAM, new Player(username));
-        vm.put(USERNAME_PARAM, username);
+        // validate player log in
+        final String username = request.queryParams(USERNAME_PARAM);
+        if (playerLobby.authenticateSignIn(username)){
+            // put the player into our model
+            vm.put(CURRENTUSER_PARAM, new Player(username));
+            vm.put(USERNAME_PARAM, username);
+        }
 
         // put the display messages for the home page in the view-model
         vm.put("title", "Welcfome!");
