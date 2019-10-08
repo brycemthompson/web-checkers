@@ -40,4 +40,25 @@ public class PlayerLobby
      */
     public void addPlayer(String playerName){ players.add(new Player(playerName)); }
 
+    /**
+     * Checks if any players exist with the given username. If not, add the given player to
+     * the list of signed-in players.
+     * @param username a username to authenticate
+     * @return boolean for whether sign in was successful
+     */
+    public boolean authenticateSignIn(String username){
+        // check for other players with the same username
+        for (Player player : players){
+            if (player.getName() == null){ //TODO: why are there null names?
+                continue;
+            }
+            if (player.getName().equals(username)) {
+                return false;
+            }
+        }
+        // authentication successful; sign in the new player
+        this.addPlayer(username);
+        return true;
+    }
+
 }
