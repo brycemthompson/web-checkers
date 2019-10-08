@@ -81,13 +81,13 @@ public class PostSignInRoute implements Route {
         // initialize view-model
         final Map<String, Object> vm = new HashMap<>();
 
-        // get username
+        // get username from template parameters
         final String username = request.queryParams(USERNAME_PARAM);
-        //storeUsername(username, request.session());
+        // put the username into our view-model
         vm.put(PLAYERSIGNEDIN_PARAM, true);
         vm.put(USERNAME_PARAM, username);
-        System.out.println("Signed in.");
-        // display message on Sign In page
+
+        // put the display messages for the home page in the view-model
         vm.put("title", "Welcome!");
         vm.put("message", WELCOME_MSG);
 
