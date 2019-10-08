@@ -9,6 +9,7 @@ import spark.TemplateEngine;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 /**
  * The PostSignInRoute Class Handling Current Player Input
@@ -19,6 +20,8 @@ import java.util.Objects;
  * @contributor Isaias Villalobos
  */
 public class PostHomeRoute implements Route {
+
+    private static final Logger LOG = Logger.getLogger(PostHomeRoute.class.getName());
 
     //
     // Attributes
@@ -52,6 +55,7 @@ public class PostHomeRoute implements Route {
      */
     @Override
     public String handle(Request request, Response response){
+        LOG.finer("GetSignInRoute is invoked.");
         // start building our View-Model
         final Map<String, Object> viewmodel = new HashMap<>();
         viewmodel.put(GetHomeRoute.SIGNED_IN_PLAYER_ATTR, signedInPlayer);
