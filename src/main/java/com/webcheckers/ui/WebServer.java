@@ -152,7 +152,7 @@ public class WebServer {
     post(SIGNIN_URL, new PostSignInRoute(templateEngine));
 
     // Initialize the GetGameRoute.
-//    get(GAME_URL, new GetGameRoute(templateEngine));
+    get(GAME_URL, new GetGameRoute(templateEngine));
 
     // Initialize the PostGameRoute
 //    post(GAME_URL, new PostGameRoute(templateEngine));
