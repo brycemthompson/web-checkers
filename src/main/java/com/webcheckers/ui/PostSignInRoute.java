@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 // THIS CLASS STILL NEED TO BE COMPLETED
 
+import com.webcheckers.Model.Authentication;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
@@ -32,6 +33,8 @@ public class PostSignInRoute implements Route {
     static final String CURRENTUSER_PARAM = "currentUser";
     static final String PLAYERLIST_PARAM = "users";
     private static final Message WELCOME_MSG = Message.info("Sign In to Play!");
+    private static final Message SIGNIN_FAILED_INVALID_MSG = Message.info("Username must contain only alphanumeric character.");
+    private static final Message SIGNIN_FAILED_NAME_TAKEN_MSG = Message.info("Username taken. Please enter a unique username.");
     private final TemplateEngine templateEngine;
 
     PostSignInRoute(TemplateEngine templateEngine)
@@ -77,20 +80,37 @@ public class PostSignInRoute implements Route {
         final PlayerLobby playerLobby = session.attribute(PlayerLobby.PLAYERLOBBY_KEY);
 
         // authenticate player log in. if successful, store Player in session
+
         final String username = request.queryParams(USERNAME_PARAM);
-        if (playerLobby.authenticateSignIn(username)){
-            vm.put(CURRENTUSER_PARAM, new Player(username));
-            vm.put(USERNAME_PARAM, username);
-            ArrayList<String> playerNames = playerLobby.getPlayerNames();
-            playerNames.remove(username); // do not want to play the current user
-            vm.put(PLAYERLIST_PARAM, playerNames);
+        Authentication authResult = playerLobby.authenticateSignIn(username);
+
+        switch (authResult) {
+            case FAIL_INVALID_USERNAME:
+                vm.put("title", "Welcome!");
+                vm.put("message", SIGNIN_FAILED_INVALID_MSG);
+                return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
+            case FAIL_NAME_TAKEN:
+                vm.put("title", "Welcome!");
+                vm.put("message", SIGNIN_FAILED_NAME_TAKEN_MSG);
+                return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
+            case SUCCESS:
+                vm.put(CURRENTUSER_PARAM, new Player(username));
+                vm.put(USERNAME_PARAM, username);
+                ArrayList<String> playerNames = playerLobby.getPlayerNames();
+                playerNames.remove(username); // do not want to play the current user
+                vm.put(PLAYERLIST_PARAM, playerNames);
+
+                // put the display messages for the home page in the view-model
+                vm.put("title", "Welcfome!");
+                vm.put("message", WELCOME_MSG);
+
+                // render the view
+                return templateEngine.render(new ModelAndView(vm, GetHomeRoute.VIEW_NAME));
+            default:
+                vm.put("title", "Welcome!");
+                vm.put("message", "Unknown error.");
+                return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
         }
 
-        // put the display messages for the home page in the view-model
-        vm.put("title", "Welcfome!");
-        vm.put("message", WELCOME_MSG);
-
-        // render the view
-        return templateEngine.render(new ModelAndView(vm, GetHomeRoute.VIEW_NAME));
     }
 }
