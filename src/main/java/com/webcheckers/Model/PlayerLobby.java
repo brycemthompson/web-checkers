@@ -7,10 +7,11 @@ import java.util.ArrayList;
 /**
  * The PlayerLobby to handle Sign-In actions
  * @author Bryce Thompson : bxt6698@rit.edu
+ * @contributor Clayton Pruitt : chp4145@rit.edu
  */
 public class PlayerLobby
 {
-    //Player Lobby Fields
+    // Player Lobby Fields
     ArrayList<Player> players;
 
     // key for player lobby in the Session HashMap
@@ -39,8 +40,7 @@ public class PlayerLobby
      * @param playerName: the name of the new Player to initialize and put in the lobby
      */
     public void addPlayer(String playerName){
-        players.add(new Player(playerName));
-        System.out.println("Lobby size: " + players.size());
+        addPlayer(new Player(playerName));
     }
 
     /**
@@ -60,21 +60,43 @@ public class PlayerLobby
     }
 
     /**
-     * Checks if any players exist with the given username. If not, add the given player to
-     * the list of signed-in players.
-     * @param username a username to authenticate
-     * @return boolean for whether sign in was successful
+     * Gets the amount of players in the lobby.
+     * @return size of players
      */
-    public boolean authenticateSignIn(String username){
+    public int size(){
+        return players.size();
+    }
+
+    /**
+     * Authenticates a player's sign-in to the application.
+     * @param username a username to authenticate
+     * @return Authentication enum for result of the authentication
+     */
+    public Authentication authenticateSignIn(String username){
+
+        // check if username has at least one alphanumeric character
+        int alphanumericChars = 0;
+        for (int i = 0; i < username.length(); i++){
+            char c = username.charAt(i);
+            if (!Character.isDigit(c) && !Character.isLetter(c)){
+                return Authentication.FAIL_INVALID_USERNAME;
+            } else {
+                alphanumericChars++;
+            }
+        }
+        if (alphanumericChars == 0){
+            return Authentication.FAIL_INVALID_USERNAME;
+        }
+
         // check for other players with the same username
         for (Player player : players){
             if (player.getName().equals(username)) {
-                return false;
+                return Authentication.FAIL_NAME_TAKEN;
             }
         }
         // authentication successful; sign in the new player
         this.addPlayer(username);
-        return true;
+        return Authentication.SUCCESS;
     }
 
 }
