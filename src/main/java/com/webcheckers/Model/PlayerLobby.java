@@ -38,10 +38,43 @@ public class PlayerLobby
      * addPlayer function overload to add a player by name.
      * @param playerName: the name of the new Player to initialize and put in the lobby
      */
-    public void addPlayer(String playerName){ players.add(new Player(playerName)); }
+    public void addPlayer(String playerName){
+        players.add(new Player(playerName));
+        System.out.println("Lobby size: " + players.size());
+    }
 
     /**
      * @return players
      */
-    public ArrayList<Player> getPlayers() { return players; }
+    public ArrayList<Player> getPlayers(){ return players; }
+
+    /**
+     * @return an ArrayList of all Player names in this lobby
+     */
+    public ArrayList<String> getPlayerNames(){
+        ArrayList<String> names = new ArrayList<>();
+        for (Player player : players){
+            names.add(player.getName());
+        }
+        return names;
+    }
+
+    /**
+     * Checks if any players exist with the given username. If not, add the given player to
+     * the list of signed-in players.
+     * @param username a username to authenticate
+     * @return boolean for whether sign in was successful
+     */
+    public boolean authenticateSignIn(String username){
+        // check for other players with the same username
+        for (Player player : players){
+            if (player.getName().equals(username)) {
+                return false;
+            }
+        }
+        // authentication successful; sign in the new player
+        this.addPlayer(username);
+        return true;
+    }
+
 }

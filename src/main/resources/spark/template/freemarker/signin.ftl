@@ -20,7 +20,13 @@
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
 
-    <#include "signInComponent.ftl" />
+   <div class="Form">
+           <form action="./signin" method="POST">
+             Username:
+             <input name = "username" />
+             <button type = "submit">Enter</button>
+           </form>
+   </div>
 
   </div>
 

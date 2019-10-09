@@ -2,6 +2,8 @@ package com.webcheckers.ui;
 
 // THIS CLASS STILL NEED TO BE COMPLETED
 
+import com.webcheckers.Model.Player;
+import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
 import spark.*;
 
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * The PostSignInRoute Class Handling Username Input
@@ -17,11 +20,17 @@ import java.util.Map;
  * @author <a href='mailto:jrv@se.rit.edu'>Jim Vallino</a>
  * @contributor Bryce Thompson : bxt6698@rit.edu
  * @constributor Daniel Kitchen
+ * @contributor Clayton Pruitt : chp4145@rit.edu
  */
 public class PostSignInRoute implements Route {
+
+    private static final Logger LOG = Logger.getLogger(PostSignInRoute.class.getName());
+
     // Constants
     // Values used in the view-model map for rendering the game view after a guess.
     static final String USERNAME_PARAM = "username";
+    static final String CURRENTUSER_PARAM = "currentUser";
+    static final String PLAYERLIST_PARAM = "users";
     private static final Message WELCOME_MSG = Message.info("Sign In to Play!");
     private final TemplateEngine templateEngine;
 
@@ -58,29 +67,30 @@ public class PostSignInRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) {
-        /*
         LOG.finer("GetSignInRoute is invoked.");
-        //
-        Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Welcome!");
 
-        // display a user message in the Home page
-        vm.put("message", WELCOME_MSG);
-
-        // render the View
-        return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
-         */
-
-        // get username
-        final String username = request.queryParams(USERNAME_PARAM);
-        storeUsername(username, request.session());
-
-        // display message on Sign In page
+        // initialize view-model
         final Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Welcome!");
+
+        // retrieve player lobby
+        final Session session = request.session();
+        final PlayerLobby playerLobby = session.attribute(PlayerLobby.PLAYERLOBBY_KEY);
+
+        // authenticate player log in. if successful, store Player in session
+        final String username = request.queryParams(USERNAME_PARAM);
+        if (playerLobby.authenticateSignIn(username)){
+            vm.put(CURRENTUSER_PARAM, new Player(username));
+            vm.put(USERNAME_PARAM, username);
+            ArrayList<String> playerNames = playerLobby.getPlayerNames();
+            playerNames.remove(username); // do not want to play the current user
+            vm.put(PLAYERLIST_PARAM, playerNames);
+        }
+
+        // put the display messages for the home page in the view-model
+        vm.put("title", "Welcfome!");
         vm.put("message", WELCOME_MSG);
 
         // render the view
-        return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
+        return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     }
 }
