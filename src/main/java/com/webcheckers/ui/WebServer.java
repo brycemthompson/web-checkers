@@ -55,11 +55,11 @@ public class WebServer {
    */
   public static final String HOME_URL = "/";
 
-    /**
-     * The URL pattern to request the Sign-In page.
-     */
-    public static final String SIGNIN_URL = "/signin";
-    public static final String GAME_URL = "/game";
+  /**
+   * The URL pattern to request the Sign-In page.
+   */
+  public static final String SIGNIN_URL = "/signin";
+  public static final String GAME_URL = "/game";
   //
   // Attributes
   //
@@ -152,7 +152,7 @@ public class WebServer {
     post(SIGNIN_URL, new PostSignInRoute(templateEngine));
 
     // Initialize the GetGameRoute.
-    get(GAME_URL, new GetGameRoute(templateEngine));
+//    get(GAME_URL, new GetGameRoute(templateEngine));
 
     // Initialize the PostGameRoute
 //    post(GAME_URL, new PostGameRoute(templateEngine));

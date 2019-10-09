@@ -13,14 +13,11 @@ public class GetGameRoute implements Route{
 
     // idk what these are
     private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
-
     private static final Message WELCOME_MSG = Message.info("Welcome to the Game Page.");
-
     private final TemplateEngine templateEngine;
 
     /**
      * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
-     *
      * @param templateEngine
      *   the HTML template rendering engine
      */
@@ -31,7 +28,7 @@ public class GetGameRoute implements Route{
 
 
     public Object handle(Request request, Response response) {
-        LOG.finer("GetHomeRoute is invoked.");
+        LOG.finer("GetGameRoute is invoked.");
 
         // retrieve the HTTP session
         final Session session = request.session();
