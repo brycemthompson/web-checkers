@@ -28,6 +28,10 @@ public class GetHomeRoute implements Route {
 
   private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
 
+  private static final String PLAYERSPLAYING_PARAM = "amountOfPlayersPlaying";
+
+  public static final String VIEW_NAME = "home.ftl";
+
   private final TemplateEngine templateEngine;
 
   /**
@@ -65,12 +69,17 @@ public class GetHomeRoute implements Route {
     vm.put("title", "Welcome!");
     vm.put("message", WELCOME_MSG);
 
+    PlayerLobby playerLobby = session.attribute(PlayerLobby.PLAYERLOBBY_KEY);
+
     // if this a brand new session, create a new lobby
-    if (session.attribute(PlayerLobby.PLAYERLOBBY_KEY) == null){
-      final PlayerLobby playerLobby = new PlayerLobby();
+    if (playerLobby == null){
+      playerLobby = new PlayerLobby();
       session.attribute(PlayerLobby.PLAYERLOBBY_KEY, playerLobby);
       vm.put(PLAYERSIGNEDIN_PARAM, Boolean.FALSE);
     }
+
+    int amountOfPlayersPlaying = playerLobby.size();
+    vm.put(PLAYERSPLAYING_PARAM, amountOfPlayersPlaying);
 
     // render the View
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
