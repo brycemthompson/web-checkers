@@ -91,6 +91,6 @@ public class PostSignInRoute implements Route {
         vm.put("message", WELCOME_MSG);
 
         // render the view
-        return templateEngine.render(new ModelAndView(vm, "home.ftl"));
+        return templateEngine.render(new ModelAndView(vm, GetHomeRoute.VIEW_NAME));
     }
 }

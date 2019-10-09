@@ -39,8 +39,7 @@ public class PlayerLobby
      * @param playerName: the name of the new Player to initialize and put in the lobby
      */
     public void addPlayer(String playerName){
-        players.add(new Player(playerName));
-        System.out.println("Lobby size: " + players.size());
+        addPlayer(new Player(playerName));
     }
 
     /**
@@ -57,6 +56,14 @@ public class PlayerLobby
             names.add(player.getName());
         }
         return names;
+    }
+
+    /**
+     * Gets the amount of players in the lobby.
+     * @return size of players
+     */
+    public int size(){
+        return players.size();
     }
 
     /**
