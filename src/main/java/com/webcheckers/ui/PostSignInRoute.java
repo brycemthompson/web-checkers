@@ -87,7 +87,7 @@ public class PostSignInRoute implements Route {
         }
 
         // put the display messages for the home page in the view-model
-        vm.put("title", "Welcfome!");
+        vm.put("title", "User Sign In Page!");
         vm.put("message", WELCOME_MSG);
 
         // render the view
