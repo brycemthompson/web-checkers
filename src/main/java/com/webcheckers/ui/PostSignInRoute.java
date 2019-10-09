@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 // THIS CLASS STILL NEED TO BE COMPLETED
 
+import com.webcheckers.Model.Authentication;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
@@ -78,7 +79,7 @@ public class PostSignInRoute implements Route {
 
         // authenticate player log in. if successful, store Player in session
         final String username = request.queryParams(USERNAME_PARAM);
-        if (playerLobby.authenticateSignIn(username)){
+        if (playerLobby.authenticateSignIn(username).equals(Authentication.SUCCESS)){
             vm.put(CURRENTUSER_PARAM, new Player(username));
             vm.put(USERNAME_PARAM, username);
             ArrayList<String> playerNames = playerLobby.getPlayerNames();
