@@ -7,6 +7,7 @@ import java.util.ArrayList;
 /**
  * The PlayerLobby to handle Sign-In actions
  * @author Bryce Thompson : bxt6698@rit.edu
+ * @contributor Clayton Pruitt : chp4145@rit.edu
  */
 public class PlayerLobby
 {

@@ -41,6 +41,7 @@ import spark.TemplateEngine;
  * </p>
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
+ * @contributor Clayton Pruitt
  */
 public class WebServer {
   private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
