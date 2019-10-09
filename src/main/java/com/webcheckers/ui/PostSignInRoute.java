@@ -82,6 +82,7 @@ public class PostSignInRoute implements Route {
             vm.put(CURRENTUSER_PARAM, new Player(username));
             vm.put(USERNAME_PARAM, username);
             ArrayList<String> playerNames = playerLobby.getPlayerNames();
+            playerNames.remove(username); // do not want to play the current user
             vm.put(PLAYERLIST_PARAM, playerNames);
         }
 
