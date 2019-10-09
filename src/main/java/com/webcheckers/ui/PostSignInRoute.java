@@ -30,6 +30,7 @@ public class PostSignInRoute implements Route {
     // Values used in the view-model map for rendering the game view after a guess.
     static final String USERNAME_PARAM = "username";
     static final String CURRENTUSER_PARAM = "currentUser";
+    static final String PLAYERLIST_PARAM = "users";
     private static final Message WELCOME_MSG = Message.info("Sign In to Play!");
     private final TemplateEngine templateEngine;
 
@@ -75,12 +76,13 @@ public class PostSignInRoute implements Route {
         final Session session = request.session();
         final PlayerLobby playerLobby = session.attribute(PlayerLobby.PLAYERLOBBY_KEY);
 
-        // validate player log in
+        // authenticate player log in. if successful, store Player in session
         final String username = request.queryParams(USERNAME_PARAM);
         if (playerLobby.authenticateSignIn(username)){
-            // put the player into our model
             vm.put(CURRENTUSER_PARAM, new Player(username));
             vm.put(USERNAME_PARAM, username);
+            ArrayList<String> playerNames = playerLobby.getPlayerNames();
+            vm.put(PLAYERLIST_PARAM, playerNames);
         }
 
         // put the display messages for the home page in the view-model
