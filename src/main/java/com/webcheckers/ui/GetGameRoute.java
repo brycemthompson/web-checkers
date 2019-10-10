@@ -17,6 +17,7 @@ public class GetGameRoute implements Route {
 
     private static final Message WELCOME_MSG = Message.info("Welcome to the game page.");
 
+    /*
     private PlayerLobby players;
 
     private Player redPlayer = players.getPlayers().get(0);
@@ -27,6 +28,8 @@ public class GetGameRoute implements Route {
 
     private String activeColor = "RED";
 
+     */
+
     public static final String VIEW_NAME = "game.ftl";
 
     private final TemplateEngine templateEngine;
@@ -36,6 +39,7 @@ public class GetGameRoute implements Route {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
         //
         LOG.config("GetGameRoute is initialized.");
+        System.out.println("i want to die");
     }
 
 
@@ -46,12 +50,16 @@ public class GetGameRoute implements Route {
         // start building the view model
         final Map<String, Object> vm = new HashMap<>();
         vm.put("title", "welcome");
-        vm.put("currentUser.name", currentUser);
+        //vm.put("currentUser", currentUser);
+        Player clayton = new Player("Clayton");
+        vm.put("currentUser", clayton);
         vm.put("viewMode", "PLAY");
         vm.put("message", WELCOME_MSG);
-        vm.put("redPlayer.name", redPlayer);
-        vm.put("whitePlayer.name", whitePlayer);
-        vm.put("activeColor", "RED");
+        //vm.put("redPlayer", redPlayer);
+        Player isaias = new Player("Isaias");
+        vm.put("redPlayer", clayton);
+        vm.put("whitePlayer", isaias);
+        vm.put("activeColor", "red");
         // render the View
         return templateEngine.render(new ModelAndView(vm , VIEW_NAME));
 
