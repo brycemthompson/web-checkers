@@ -21,11 +21,9 @@
     <#include "message.ftl" />
 
 
-    <!-- TODO: future content on the Home:
-            to start games,
-            spectating active games,
-            or replay archived games
-    -->
+    <#if amountOfPlayersPlaying??>
+            currently playing: ${amountOfPlayersPlaying}
+    </#if>
 
   </div>
 

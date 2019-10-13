@@ -21,7 +21,7 @@
     <#include "message.ftl" />
 
    <div class="Form">
-           <form action="./signin" method="POST">
+           <form action="./" method="GET">
              Username:
              <input name = "username" />
              <button type = "submit">Enter</button>

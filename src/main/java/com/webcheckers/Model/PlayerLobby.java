@@ -32,6 +32,7 @@ public class PlayerLobby
      */
     public void addPlayer(Player player)
     {
+        //Make sure to add if check so that the player is not added agai, check if exist in list
         players.add(player);
     }
 

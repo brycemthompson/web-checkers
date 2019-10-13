@@ -22,15 +22,18 @@ public class GetSignInRoute implements Route {
   private static final Message WELCOME_MSG = Message.info("Sign In to Play!");
 
   private final TemplateEngine templateEngine;
+  private PlayerLobby playerLobby;
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
    *
    * @param templateEngine
    *   the HTML template rendering engine
+   * @param playerLobby
    */
-  public GetSignInRoute(final TemplateEngine templateEngine) {
+  public GetSignInRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby) {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
+    this.playerLobby = playerLobby;
     //
     LOG.config("GetSignInRoute is initialized.");
   }

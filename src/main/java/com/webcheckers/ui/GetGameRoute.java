@@ -33,11 +33,13 @@ public class GetGameRoute implements Route {
     public static final String VIEW_NAME = "game.ftl";
 
     private final TemplateEngine templateEngine;
+    private final PlayerLobby playerLobby;
 
 
-    public GetGameRoute(final TemplateEngine templateEngine) {
+    public GetGameRoute(final TemplateEngine templateEngine, PlayerLobby lobby) {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
         //
+        this.playerLobby = lobby;
         LOG.config("GetGameRoute is initialized.");
         System.out.println("i want to die");
     }
