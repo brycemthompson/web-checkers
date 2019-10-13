@@ -32,8 +32,9 @@ public class PlayerLobby
      */
     public void addPlayer(Player player)
     {
-        //Make sure to add if check so that the player is not added agai, check if exist in list
-        players.add(player);
+        boolean isInList = players.contains(player);
+        if(!isInList)
+            players.add(player);
     }
 
     /**
@@ -88,7 +89,12 @@ public class PlayerLobby
         if (alphanumericChars == 0){
             return Authentication.FAIL_INVALID_USERNAME;
         }
-
+        else if(username.contains(" ")){
+            return Authentication.FAIL_INVALID_USERNAME;
+        }
+        else if(username.contains("\"")){
+            return Authentication.FAIL_INVALID_USERNAME;
+        }
         // check for other players with the same username
         for (Player player : players){
             if (player.getName().equals(username)) {

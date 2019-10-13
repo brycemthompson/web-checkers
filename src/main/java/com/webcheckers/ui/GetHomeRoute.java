@@ -72,12 +72,17 @@ public class GetHomeRoute implements Route {
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
     vm.put("message", WELCOME_MSG);
-    //The name  in the ftl is "name"
-      if(request.queryParams("username") != null ){
-      Player player = new Player(request.queryParams("username") );
-      playerLobby.addPlayer(player);
-      vm.put("currentUser", player);
+
+    //The name  in the ftl is "username"
+      if(request.queryParams("username") != null){
+        Player player = new Player(request.queryParams("username") );
+        //This will make sure to not have duplicates in the list, this may still be buggy, need QA to check
+        if(!playerLobby.getPlayerNames().contains(player.getName())) {
+            playerLobby.addPlayer(player);
+            vm.put("currentUser", player);
+        }
     }
+
     int amountOfPlayersPlaying = playerLobby.size();
     vm.put(PLAYERSPLAYING_PARAM, amountOfPlayersPlaying);
 
