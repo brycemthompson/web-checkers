@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import spark.*;
 
@@ -33,16 +34,19 @@ public class GetHomeRoute implements Route {
   public static final String VIEW_NAME = "home.ftl";
 
   private final TemplateEngine templateEngine;
+  private final PlayerLobby playerLobby;
 
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
    *
    * @param templateEngine
    *   the HTML template rendering engine
+   * @param playerLobby
    */
-  public GetHomeRoute(final TemplateEngine templateEngine) {
+  public GetHomeRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby) {
     this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
     //
+    this.playerLobby = playerLobby;
     LOG.config("GetHomeRoute is initialized.");
   }
 
@@ -68,20 +72,16 @@ public class GetHomeRoute implements Route {
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
     vm.put("message", WELCOME_MSG);
-
-    PlayerLobby playerLobby = session.attribute(PlayerLobby.PLAYERLOBBY_KEY);
-
-    // if this a brand new session, create a new lobby
-    if (playerLobby == null){
-      playerLobby = new PlayerLobby();
-      session.attribute(PlayerLobby.PLAYERLOBBY_KEY, playerLobby);
-      vm.put(PLAYERSIGNEDIN_PARAM, Boolean.FALSE);
+    //The name  in the ftl is "name"
+      if(request.queryParams("username") != null ){
+      Player player = new Player(request.queryParams("username") );
+      playerLobby.addPlayer(player);
+      vm.put("currentUser", player);
     }
-
     int amountOfPlayersPlaying = playerLobby.size();
     vm.put(PLAYERSPLAYING_PARAM, amountOfPlayersPlaying);
 
     // render the View
-    return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+    return templateEngine.render(new ModelAndView(vm, "home.ftl"));
   }
 }

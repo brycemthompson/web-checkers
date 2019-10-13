@@ -36,10 +36,12 @@ public class PostSignInRoute implements Route {
     private static final Message SIGNIN_FAILED_INVALID_MSG = Message.info("Username must contain only alphanumeric character.");
     private static final Message SIGNIN_FAILED_NAME_TAKEN_MSG = Message.info("Username taken. Please enter a unique username.");
     private final TemplateEngine templateEngine;
+    private PlayerLobby playerLobby;
 
-    PostSignInRoute(TemplateEngine templateEngine)
+    PostSignInRoute(TemplateEngine templateEngine, PlayerLobby playerLobby)
     {
         this.templateEngine = templateEngine;
+        this.playerLobby = playerLobby;
     }
 
     /**

@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 
+import com.webcheckers.Model.PlayerLobby;
 import spark.TemplateEngine;
 
 
@@ -66,10 +67,7 @@ public class WebServer {
 
   private final TemplateEngine templateEngine;
   private final Gson gson;
-
-  //
-  // Constructor
-  //
+  private final PlayerLobby playerLobby;
 
   /**
    * The constructor for the Web Server.
@@ -82,11 +80,12 @@ public class WebServer {
    * @throws NullPointerException
    *    If any of the parameters are {@code null}.
    */
-  public WebServer(final TemplateEngine templateEngine, final Gson gson) {
+  public WebServer(final TemplateEngine templateEngine, final Gson gson, PlayerLobby lobby) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
     //
+    this.playerLobby = lobby;
     this.templateEngine = templateEngine;
     this.gson = gson;
   }
@@ -110,6 +109,7 @@ public class WebServer {
     staticFileLocation("/public");
 
     //// Setting any route (or filter) in Spark triggers initialization of the
+    //// embedded Jetty web server.
     //// embedded Jetty web server.
 
     //// A route is set for a request verb by specifying the path for the
@@ -143,16 +143,16 @@ public class WebServer {
     //// code clean; using small classes.
 
     // Initialize the GetGameRoute.
-    get(GAME_URL, new GetGameRoute(templateEngine));
+    get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
 
     // Initializes the GetHomeRoute.
-    get(HOME_URL, new GetHomeRoute(templateEngine));
+    get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby));
 
     // Initializes the GetSignInRoute.
-    get(SIGNIN_URL, new GetSignInRoute(templateEngine));
+    get(SIGNIN_URL, new GetSignInRoute(templateEngine, playerLobby));
 
     // Initializes the PostSignInRoute.
-    post(SIGNIN_URL, new PostSignInRoute(templateEngine));
+    post(SIGNIN_URL, new PostSignInRoute(templateEngine, playerLobby));
 
 
     // Initialize the PostGameRoute
