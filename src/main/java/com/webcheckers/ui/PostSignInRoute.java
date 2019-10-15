@@ -103,7 +103,7 @@ public class PostSignInRoute implements Route {
                 vm.put(PLAYERLIST_PARAM, playerNames);
 
                 // put the display messages for the home page in the view-model
-                vm.put("title", "Welcfome!");
+                vm.put("title", "Welcome!");
                 vm.put("message", WELCOME_MSG);
 
                 // render the view
