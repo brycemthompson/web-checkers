@@ -59,6 +59,11 @@ public class WebServer {
   /**
    * The URL pattern to request the Sign-In page.
    */
+
+  /**
+   * The URL pattern to request the Game page.
+   */
+
   public static final String SIGNIN_URL = "/signin";
   public static final String GAME_URL = "/game";
   //
