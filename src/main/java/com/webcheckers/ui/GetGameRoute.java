@@ -52,13 +52,15 @@ public class GetGameRoute implements Route {
         // start building the view model
         final Map<String, Object> vm = new HashMap<>();
         vm.put("title", "welcome");
+
         //vm.put("currentUser", currentUser);
         Player clayton = new Player("Clayton");
+        Player isaias = new Player("Isaias");
+
         vm.put("currentUser", clayton);
         vm.put("viewMode", "PLAY");
         vm.put("message", WELCOME_MSG);
         //vm.put("redPlayer", redPlayer);
-        Player isaias = new Player("Isaias");
         vm.put("redPlayer", clayton);
         vm.put("whitePlayer", isaias);
         vm.put("activeColor", "red");
