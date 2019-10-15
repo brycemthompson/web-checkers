@@ -22,7 +22,19 @@
 
 
     <#if amountOfPlayersPlaying??>
-            currently playing: ${amountOfPlayersPlaying}
+        currently playing: ${amountOfPlayersPlaying}
+    </#if>
+
+    <#if playerIsSignedIn??>
+        List of Users:
+        <#list list as children>
+            <a href="/game"</a> ${children}
+        </#list>
+    </#if>
+
+    <#if failUserNameMessage??>
+        <br>
+        <br>Error Message: ${failUserNameMessage}
     </#if>
 
   </div>

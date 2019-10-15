@@ -56,7 +56,7 @@ public class GetSignInRoute implements Route {
 
     // start building the view model
     final Map<String, Object> vm = new HashMap<>();
-    vm.put("title", "Welcome!");
+    vm.put("title", "Sign-In Page!");
     vm.put("message", WELCOME_MSG);
 
     // render the View

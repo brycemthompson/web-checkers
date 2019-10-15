@@ -1,10 +1,12 @@
 package com.webcheckers.ui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.Model.Authentication;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import spark.*;
@@ -70,18 +72,41 @@ public class GetHomeRoute implements Route {
 
     // start building the view model
     Map<String, Object> vm = new HashMap<>();
-    vm.put("title", "Welcome!");
+    vm.put("title", "Welcome to Home Page!");
     vm.put("message", WELCOME_MSG);
 
-    //The name  in the ftl is "username"
+    //The name in the ftl is "username"
       if(request.queryParams("username") != null){
         Player player = new Player(request.queryParams("username") );
+
         //This will make sure to not have duplicates in the list, this may still be buggy, need QA to check
         if(!playerLobby.getPlayerNames().contains(player.getName())) {
             playerLobby.addPlayer(player);
             vm.put("currentUser", player);
+        }else{
+          String failMessage = "\nUser already exists, please choose different name";
+          vm.put("failUserNameMessage", failMessage);
         }
     }
+
+    ArrayList<String>names = playerLobby.getPlayerNames();
+
+    //This works but there is a bug
+//    //This should display all the users that signed in to play a game, on homepage.
+//    for(int i = 0; i < playerLobby.getPlayers().size(); i++){
+//      String auth = playerLobby.authenticateSignIn(playerLobby.getPlayerNames().get(i)).toString();
+//      if(auth.equals("SUCESSS") ){
+//        String playerIsSignedIn = "playerIsSignedIn";
+//        vm.put(playerIsSignedIn, playerIsSignedIn);
+//        vm.put("list", names);
+//      }
+//      else{
+//        String playerIsSignedIn = "playerIsSignedIn";
+//        vm.put(playerIsSignedIn, playerIsSignedIn);
+//        vm.put("list", names);
+//      }
+//
+//    }
 
     int amountOfPlayersPlaying = playerLobby.size();
     vm.put(PLAYERSPLAYING_PARAM, amountOfPlayersPlaying);
