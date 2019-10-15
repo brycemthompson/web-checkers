@@ -19,8 +19,10 @@ public class GetSignInRoute implements Route {
 
   private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
 
+  // Messages
   private static final Message WELCOME_MSG = Message.info("Sign In to Play!");
 
+  // Various objects the route needs to keep track of.
   private final TemplateEngine templateEngine;
   private PlayerLobby playerLobby;
 
