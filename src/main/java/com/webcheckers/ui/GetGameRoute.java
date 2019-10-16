@@ -20,8 +20,8 @@ public class GetGameRoute implements Route {
     /*
     private PlayerLobby players;
 
+    // These two need to be passed in forming their own "game"
     private Player redPlayer = players.getPlayers().get(0);
-
     private Player whitePlayer = players.getPlayers().get(1);
 
     private String currentUser = redPlayer.toString();

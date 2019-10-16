@@ -61,7 +61,7 @@ public class PostHomeRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) {
-        LOG.finer("GetSignInRoute is invoked.");
+        LOG.finer("PostHomeRoute is invoked.");
 
         // initialize view-model
         final Map<String, Object> vm = new HashMap<>();

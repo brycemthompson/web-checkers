@@ -34,7 +34,7 @@ public class PostGameRoute implements Route{
      */
     @Override
     public Object handle(Request request, Response response) {
-        LOG.finer("GetGameRoute is invoked.");
+        LOG.finer("PostGameRoute is invoked.");
 
         // initialize view-model
         final Map<String, Object> vm = new HashMap<>();
