@@ -25,7 +25,7 @@
         currently playing: ${amountOfPlayersPlaying}
     </#if>
 
-    <#if playerIsSignedIn??>
+    <#if currentUser??>
         List of Users:
         <#list allPlayers as player>
             <a href="/game"</a> ${player}
