@@ -26,7 +26,7 @@
     </#if>
 
     <div class="Form">
-           <form action="/game" method="GET">
+           <form action="/game" method="POST">
                 <#if currentUser??>
                     List of Users:
                     <#list allPlayers as player>
