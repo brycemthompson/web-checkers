@@ -1,5 +1,11 @@
 package com.webcheckers.Model;
 
+/**
+ * Java class object representing a piece on a board of checkers.
+ * @author Clayton Pruitt
+ * @author Isaias Villalobos
+ */
+
 public class Piece {
 
     /**
@@ -43,5 +49,5 @@ public class Piece {
     public Color getColor(){
         return this.color;
     }
-    
+
 }
