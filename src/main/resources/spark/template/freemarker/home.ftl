@@ -25,12 +25,16 @@
         currently playing: ${amountOfPlayersPlaying}
     </#if>
 
-    <#if currentUser??>
-        List of Users:
-        <#list allPlayers as player>
-            <a href="/game"</a> ${player}
-        </#list>
-    </#if>
+    <div class="Form">
+           <form action="/game" method="GET">
+                <#if currentUser??>
+                    List of Users:
+                    <#list allPlayers as player>
+                        <button type = "submit">${player}</button>
+                    </#list>
+                </#if>
+           </form>
+    </div>
 
     <#if failUserNameMessage??>
         <br>
