@@ -10,6 +10,7 @@ public class Player
 
     // Player Fields
     private String name;
+    private boolean inGame;
 
     /**
      * Player Constructor
@@ -18,6 +19,7 @@ public class Player
     public Player(String name)
     {
         this.name = name;
+        this.inGame = false;
     }
 
     /**
@@ -25,6 +27,15 @@ public class Player
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Player accessor for their game availability status
+     * @return this.inGame: boolean attribute for their availability status
+     */
+    public boolean isInGame()
+    {
+        return this.inGame;
     }
 
     /**
