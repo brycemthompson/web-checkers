@@ -2,13 +2,46 @@ package com.webcheckers.Model;
 
 public class Piece {
 
-    //Use 1 for a certain color or 0 for another color.
-    public int color;
-    public int typeOfPiece; //Not sure going off what the FTL says, inside of board
+    /**
+     * Enums
+     */
+    public enum Type {
+        SINGLE,
+        KING
+    }
 
-    public Piece() {
-
+    public enum Color {
+        RED,
+        WHITE
     }
 
 
+    /**
+     * Piece information
+     */
+    private Type type;
+    private Color color;
+
+    /**
+     * Constructor.
+     */
+    public Piece(Type type, Color color){
+        this.type = type;
+        this.color = color;
+    }
+
+    /**
+     * Getter for type.
+     */
+    public Type getType(){
+        return this.type;
+    }
+
+    /**
+     * Getter for color.
+     */
+    public Color getColor(){
+        return this.color;
+    }
+    
 }
