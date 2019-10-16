@@ -153,6 +153,9 @@ public class WebServer {
     // Initializes the GetHomeRoute.
     get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby));
 
+    // Initializes the PostHomeRoute.
+    post(HOME_URL, new PostHomeRoute(templateEngine, playerLobby));
+
     // Initializes the GetSignInRoute.
     get(SIGNIN_URL, new GetSignInRoute(templateEngine, playerLobby));
 

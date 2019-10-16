@@ -22,19 +22,19 @@ import com.webcheckers.util.Message;
  */
 public class GetHomeRoute implements Route {
 
+  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
+
   // Values used in the view-model map for rendering the home view.
   static final String SIGNED_IN_PLAYER_ATTR = "username";
   static final String PLAYERSIGNEDIN_PARAM = "playerIsSignedIn";
-
-  // idk what these are
-  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
-
-  private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
-
   private static final String PLAYERSPLAYING_PARAM = "amountOfPlayersPlaying";
-
   public static final String VIEW_NAME = "home.ftl";
 
+  // Messages
+  private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+
+
+  // Various objects the route needs to track.
   private final TemplateEngine templateEngine;
   private final PlayerLobby playerLobby;
 
@@ -75,6 +75,24 @@ public class GetHomeRoute implements Route {
     vm.put("title", "Welcome to Home Page!");
     vm.put("message", WELCOME_MSG);
 
+    // get current user (null if none exists)
+    Player currentUser = request.session().attribute(PostHomeRoute.CURRENTUSER_PARAM);
+
+    if (currentUser != null){
+        // populate view model
+        vm.put(PostHomeRoute.CURRENTUSER_PARAM, currentUser);
+        vm.put(PostHomeRoute.USERNAME_PARAM, currentUser.getName());
+        ArrayList<String> playerNames = playerLobby.getPlayerNames();
+        playerNames.remove(currentUser.getName()); // do not want to play the current user
+        vm.put(PostHomeRoute.PLAYERLIST_PARAM, playerNames);
+        return templateEngine.render(new ModelAndView(vm, "home.ftl"));
+    } else {
+        int amountOfPlayersPlaying = playerLobby.size();
+        vm.put(PLAYERSPLAYING_PARAM, amountOfPlayersPlaying);
+        return templateEngine.render(new ModelAndView(vm, "home.ftl"));
+    }
+
+    /*
     //The name in the ftl is "username"
       if(request.queryParams("username") != null){
         Player player = new Player(request.queryParams("username") );
@@ -88,8 +106,8 @@ public class GetHomeRoute implements Route {
           vm.put("failUserNameMessage", failMessage);
         }
     }
+     */
 
-    ArrayList<String>names = playerLobby.getPlayerNames();
 
     //This works but there is a bug
 //    //This should display all the users that signed in to play a game, on homepage.
@@ -108,10 +126,5 @@ public class GetHomeRoute implements Route {
 //
 //    }
 
-    int amountOfPlayersPlaying = playerLobby.size();
-    vm.put(PLAYERSPLAYING_PARAM, amountOfPlayersPlaying);
-
-    // render the View
-    return templateEngine.render(new ModelAndView(vm, "home.ftl"));
   }
 }

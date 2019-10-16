@@ -10,12 +10,11 @@ import spark.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * The PostSignInRoute Class Handling Username Input
+ * The PostHomeRoute Class Handling Username Input
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  * @author <a href='mailto:jrv@se.rit.edu'>Jim Vallino</a>
@@ -23,26 +22,27 @@ import java.util.logging.Logger;
  * @constributor Daniel Kitchen
  * @contributor Clayton Pruitt : chp4145@rit.edu
  */
-public class PostSignInRoute implements Route {
+public class PostHomeRoute implements Route {
 
-    private static final Logger LOG = Logger.getLogger(PostSignInRoute.class.getName());
+    private static final Logger LOG = Logger.getLogger(PostHomeRoute.class.getName());
 
 
     // Values used in the view-model map for rendering the game view after a guess.
     static final String USERNAME_PARAM = "username";
     static final String CURRENTUSER_PARAM = "currentUser";
-    static final String PLAYERLIST_PARAM = "users";
+    static final String PLAYERLIST_PARAM = "allPlayers";
 
     // Messages
     private static final Message WELCOME_MSG = Message.info("Sign In to Play!");
     private static final Message SIGNIN_FAILED_INVALID_MSG = Message.info("Username must contain only alphanumeric character.");
     private static final Message SIGNIN_FAILED_NAME_TAKEN_MSG = Message.info("Username taken. Please enter a unique username.");
+    private static final Message SIGNIN_FAILED_UNKNOWN_MSG = Message.info("Unknown error. Please try another username.");
 
     // Various objects the route needs to track.
     private final TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
 
-    PostSignInRoute(TemplateEngine templateEngine, PlayerLobby playerLobby)
+    PostHomeRoute(TemplateEngine templateEngine, PlayerLobby playerLobby)
     {
         this.templateEngine = templateEngine;
         this.playerLobby = playerLobby;
@@ -66,10 +66,6 @@ public class PostSignInRoute implements Route {
         // initialize view-model
         final Map<String, Object> vm = new HashMap<>();
 
-        // retrieve player lobby
-        final Session session = request.session();
-        final PlayerLobby playerLobby = session.attribute(PlayerLobby.PLAYERLOBBY_KEY);
-
         // authenticate player log in. if successful, store Player in session
 
         final String username = request.queryParams(USERNAME_PARAM);
@@ -79,17 +75,22 @@ public class PostSignInRoute implements Route {
             case FAIL_INVALID_USERNAME:
                 vm.put("title", "Welcome!");
                 vm.put("message", SIGNIN_FAILED_INVALID_MSG);
-                return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
+                return templateEngine.render(new ModelAndView(vm, GetHomeRoute.VIEW_NAME));
             case FAIL_NAME_TAKEN:
                 vm.put("title", "Welcome!");
                 vm.put("message", SIGNIN_FAILED_NAME_TAKEN_MSG);
-                return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
+                return templateEngine.render(new ModelAndView(vm, GetHomeRoute.VIEW_NAME));
             case SUCCESS:
-                vm.put(CURRENTUSER_PARAM, new Player(username));
+                // populate view model
+                Player currentUser = new Player(username);
+                vm.put(CURRENTUSER_PARAM, currentUser);
                 vm.put(USERNAME_PARAM, username);
                 ArrayList<String> playerNames = playerLobby.getPlayerNames();
                 playerNames.remove(username); // do not want to play the current user
                 vm.put(PLAYERLIST_PARAM, playerNames);
+
+                // put that there is a current user into the session
+                request.session().attribute(CURRENTUSER_PARAM, currentUser);
 
                 // put the display messages for the home page in the view-model
                 vm.put("title", "Welcome!");
@@ -99,8 +100,8 @@ public class PostSignInRoute implements Route {
                 return templateEngine.render(new ModelAndView(vm, GetHomeRoute.VIEW_NAME));
             default:
                 vm.put("title", "Welcome!");
-                vm.put("message", "Unknown error.");
-                return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
+                vm.put("message", SIGNIN_FAILED_UNKNOWN_MSG);
+                return templateEngine.render(new ModelAndView(vm, GetHomeRoute.VIEW_NAME));
         }
 
     }

@@ -27,8 +27,8 @@
 
     <#if playerIsSignedIn??>
         List of Users:
-        <#list list as children>
-            <a href="/game"</a> ${children}
+        <#list allPlayers as player>
+            <a href="/game"</a> ${player}
         </#list>
     </#if>
 
