@@ -46,6 +46,14 @@ public class PlayerLobby
     }
 
     /**
+     * removePlayer function to remove a Player from the lobby
+     * @param player : Player to remove from the lobby
+     */
+    public void removePlayer(Player player){
+        players.remove(player);
+    }
+
+    /**
      * @return players
      */
     public ArrayList<Player> getPlayers(){ return players; }

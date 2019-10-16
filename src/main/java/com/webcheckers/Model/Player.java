@@ -27,4 +27,18 @@ public class Player
         return name;
     }
 
+    /**
+     * Overriding equals() to compare two Player objects.
+     */
+    @Override
+    public boolean equals(Object o){
+        if (!(o instanceof Player)){
+            return false;
+        }
+
+        Player p = (Player) o;
+
+        return this.getName().equals(p.getName());
+    }
+
 }
