@@ -94,7 +94,7 @@ public class PostHomeRoute implements Route {
 
                 // put the display messages for the home page in the view-model
                 vm.put("title", "Welcome!");
-                vm.put("message", WELCOME_MSG);
+                vm.put("message", GetHomeRoute.WELCOME_MSG);
 
                 // render the view
                 return templateEngine.render(new ModelAndView(vm, GetHomeRoute.VIEW_NAME));

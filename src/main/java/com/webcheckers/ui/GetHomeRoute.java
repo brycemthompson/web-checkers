@@ -27,11 +27,11 @@ public class GetHomeRoute implements Route {
   // Values used in the view-model map for rendering the home view.
   static final String SIGNED_IN_PLAYER_ATTR = "username";
   static final String PLAYERSIGNEDIN_PARAM = "playerIsSignedIn";
-  private static final String PLAYERSPLAYING_PARAM = "amountOfPlayersPlaying";
+  public static final String PLAYERSPLAYING_PARAM = "amountOfPlayersPlaying";
   public static final String VIEW_NAME = "home.ftl";
 
   // Messages
-  private static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+  public static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
 
 
   // Various objects the route needs to track.
