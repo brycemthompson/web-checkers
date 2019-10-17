@@ -33,7 +33,6 @@ public class PostHomeRoute implements Route {
     static final String PLAYERLIST_PARAM = "allPlayers";
 
     // Messages
-    private static final Message WELCOME_MSG = Message.info("Sign In to Play!");
     private static final Message SIGNIN_FAILED_INVALID_MSG = Message.info("Username must contain only alphanumeric character.");
     private static final Message SIGNIN_FAILED_NAME_TAKEN_MSG = Message.info("Username taken. Please enter a unique username.");
     private static final Message SIGNIN_FAILED_UNKNOWN_MSG = Message.info("Unknown error. Please try another username.");
@@ -68,47 +67,47 @@ public class PostHomeRoute implements Route {
 
         // authenticate player log in. if successful, store Player in session
 
-        final String username = request.queryParams(USERNAME_PARAM);
+        final String username = request.queryParams(ConstsUI.USERNAME_PARAM);
         Authentication authResult = playerLobby.authenticateSignIn(username);
 
         switch (authResult) {
             case FAIL_INVALID_USERNAME:
-                vm.put("title", "Welcome!");
-                vm.put("message", SIGNIN_FAILED_INVALID_MSG);
-                request.session().attribute("message", SIGNIN_FAILED_INVALID_MSG);
-                response.redirect("/signin");
-                return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
+                vm.put(ConstsUI.TITLE_PARAM, ConstsUI.DEFAULT_WELCOME_FOR_TITLE);
+                vm.put(ConstsUI.MESSAGE_PARAM, SIGNIN_FAILED_INVALID_MSG);
+                request.session().attribute(ConstsUI.MESSAGE_PARAM, SIGNIN_FAILED_INVALID_MSG);
+                response.redirect(ConstsUI.SIGNIN_URL);
+                return templateEngine.render(new ModelAndView(vm, ConstsUI.SIGNIN_VIEW));
             case FAIL_NAME_TAKEN:
-                vm.put("title", "Welcome!");
-                vm.put("message", SIGNIN_FAILED_NAME_TAKEN_MSG);
-                request.session().attribute("message", SIGNIN_FAILED_NAME_TAKEN_MSG);
-                response.redirect("/signin");
-                return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
+                vm.put(ConstsUI.TITLE_PARAM, ConstsUI.DEFAULT_WELCOME_FOR_TITLE);
+                vm.put(ConstsUI.MESSAGE_PARAM, SIGNIN_FAILED_NAME_TAKEN_MSG);
+                request.session().attribute(ConstsUI.MESSAGE_PARAM, SIGNIN_FAILED_NAME_TAKEN_MSG);
+                response.redirect(ConstsUI.SIGNIN_URL);
+                return templateEngine.render(new ModelAndView(vm, ConstsUI.SIGNIN_VIEW));
             case SUCCESS:
                 // populate view model
                 Player currentUser = new Player(username);
                 playerLobby.addPlayer(currentUser);
-                vm.put(CURRENTUSER_PARAM, currentUser);
-                vm.put(USERNAME_PARAM, username);
+                vm.put(ConstsUI.CURRENT_USER_PARAM, currentUser);
+                vm.put(ConstsUI.USERNAME_PARAM, username);
                 ArrayList<String> playerNames = playerLobby.getPlayerNames();
                 playerNames.remove(username); // do not want to play the current user
-                vm.put(PLAYERLIST_PARAM, playerNames);
+                vm.put(ConstsUI.PLAYER_LIST_PARAM, playerNames);
 
                 // put that there is a current user into the session
-                request.session().attribute(CURRENTUSER_PARAM, currentUser);
+                request.session().attribute(ConstsUI.CURRENT_USER_PARAM, currentUser);
 
                 // put the display messages for the home page in the view-model
-                vm.put("title", "Welcome!");
-                vm.put("message", GetHomeRoute.WELCOME_MSG);
+                vm.put(ConstsUI.TITLE_PARAM, ConstsUI.DEFAULT_WELCOME_FOR_TITLE);
+                vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.WELCOME_MSG);
 
                 // render the view
                 return templateEngine.render(new ModelAndView(vm, GetHomeRoute.VIEW_NAME));
             default:
-                vm.put("title", "Welcome!");
-                vm.put("message", SIGNIN_FAILED_UNKNOWN_MSG);
-                request.session().attribute("message", SIGNIN_FAILED_UNKNOWN_MSG);
-                response.redirect("/signin");
-                return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
+                vm.put(ConstsUI.TITLE_PARAM, ConstsUI.WELCOME_MSG);
+                vm.put(ConstsUI.MESSAGE_PARAM, SIGNIN_FAILED_UNKNOWN_MSG);
+                request.session().attribute(ConstsUI.MESSAGE_PARAM, SIGNIN_FAILED_UNKNOWN_MSG);
+                response.redirect(ConstsUI.SIGNIN_URL);
+                return templateEngine.render(new ModelAndView(vm, ConstsUI.SIGNIN_VIEW));
         }
 
     }
