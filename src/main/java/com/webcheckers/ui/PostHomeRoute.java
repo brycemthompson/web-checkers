@@ -19,18 +19,12 @@ import java.util.logging.Logger;
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  * @author <a href='mailto:jrv@se.rit.edu'>Jim Vallino</a>
  * @contributor Bryce Thompson : bxt6698@rit.edu
- * @constributor Daniel Kitchen
+ * @constributor Daniel Kitchen : dkj9755@rit.edu
  * @contributor Clayton Pruitt : chp4145@rit.edu
  */
 public class PostHomeRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(PostHomeRoute.class.getName());
-
-
-    // Values used in the view-model map for rendering the game view after a guess.
-    static final String USERNAME_PARAM = "username";
-    static final String CURRENTUSER_PARAM = "currentUser";
-    static final String PLAYERLIST_PARAM = "allPlayers";
 
     // Messages
     private static final Message SIGNIN_FAILED_INVALID_MSG = Message.info("Username must contain only alphanumeric character.");
@@ -101,7 +95,7 @@ public class PostHomeRoute implements Route {
                 vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.WELCOME_MSG);
 
                 // render the view
-                return templateEngine.render(new ModelAndView(vm, GetHomeRoute.VIEW_NAME));
+                return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
             default:
                 vm.put(ConstsUI.TITLE_PARAM, ConstsUI.WELCOME_MSG);
                 vm.put(ConstsUI.MESSAGE_PARAM, SIGNIN_FAILED_UNKNOWN_MSG);

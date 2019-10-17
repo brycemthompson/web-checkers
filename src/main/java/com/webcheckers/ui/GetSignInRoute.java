@@ -12,15 +12,12 @@ import com.webcheckers.util.Message;
  * The UI Controller to GET the Sign In page.
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
- * @contributor Bryce Thompson
- * @contributor Clayton Pruitt
+ * @contributor Bryce Thompson : bxt6698@rit.edu
+ * @contributor Clayton Pruitt : chp4145@rit.edu
  */
 public class GetSignInRoute implements Route {
 
   private static final Logger LOG = Logger.getLogger(GetSignInRoute.class.getName());
-
-  // Messages
-  private static final Message WELCOME_MSG = Message.info("Sign In to Play!");
 
   // Various objects the route needs to keep track of.
   private final TemplateEngine templateEngine;

@@ -2,6 +2,10 @@ package com.webcheckers.ui;
 
 import com.webcheckers.util.Message;
 
+/**
+ * @author Clayton Pruitt : chp4145@rit.edu
+ */
+
 public final class ConstsUI {
 
     /**
@@ -28,6 +32,7 @@ public final class ConstsUI {
      */
     public static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
     public static final Message SIGN_IN_MSG = Message.info("Sign in to play!");
+    public static final Message PLAYER_IN_GAME_ERROR_MSG = Message.error("The chosen player is already in a game.");
 
     /**
      * VIEWS

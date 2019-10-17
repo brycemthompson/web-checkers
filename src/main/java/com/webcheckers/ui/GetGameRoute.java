@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.sun.org.apache.bcel.internal.Const;
 import com.webcheckers.Model.Board;
 import com.webcheckers.Model.Piece;
 import com.webcheckers.Model.Player;
@@ -13,21 +14,30 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+/**
+ *  @contributor Clayton Pruitt : chp4145@rit.edu
+ *  @contributor Bryce Thompson : bxt6698@rit.edu
+ */
+
 public class GetGameRoute implements Route {
 
-    // idk what these are
     private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
 
+    // Messages
     private static final Message WELCOME_MSG = Message.info("Welcome to the game page.");
 
+    // Constants for the ViewModel
     public static final String VIEW_NAME = "game.ftl";
-
     public static final String CURRENTPLAYERBOARD_PARAM = "currentPlayerBoard";
 
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
 
-
+    /**
+     * Constructor for GetGameRoute
+     * @param templateEngine: holds the ViewModel
+     * @param lobby: The PlayerLobby containing all the signed in players
+     */
     public GetGameRoute(final TemplateEngine templateEngine, PlayerLobby lobby) {
         this.templateEngine = Objects.requireNonNull(templateEngine, "templateEngine is required");
         //
@@ -36,6 +46,7 @@ public class GetGameRoute implements Route {
     }
 
     /**
+     * Creates a new Board
      * @return new Board
      */
     private Board createBoard(){
@@ -44,6 +55,8 @@ public class GetGameRoute implements Route {
 
     /**
      * Draws the Pieces belonging to the opponent on the given Board.
+     * @param board: The Board to be drawn on
+     * @param color: Color of the opponent's pieces
      */
     public static void drawOpponentPieces(Board board, Piece.Color color){
         for (int r = 0; r < 3; r++){
@@ -56,6 +69,8 @@ public class GetGameRoute implements Route {
 
     /**
      * Draws the Pieces belonging to the current user on the given Board.
+     * @param board: The Board to be drawn on
+     * @param color: Color of the current user's pieces
      */
     public static void drawCurrentUserPieces(Board board, Piece.Color color){
         for (int r = Board.rowsPerBoard - 3; r < Board.rowsPerBoard; r++){
@@ -69,6 +84,9 @@ public class GetGameRoute implements Route {
     /**
      * Draws the board so that the current user's Pieces are on the bottom and the opponent's are on the top on the
      * given Board.
+     * @param board: The Board to be drawn on
+     * @param currentUserColor: Color of the current user's pieces
+     * @param opponentColor: Color of the opponent's pieces
      */
     public static void drawBoard(Board board, Piece.Color currentUserColor, Piece.Color opponentColor){
         drawOpponentPieces(board, opponentColor);
@@ -77,6 +95,9 @@ public class GetGameRoute implements Route {
 
     /**
      * Appropriately populates the view model's player data given the current Player and their opponent.
+     * @param vm: HashMap
+     * @param currentPlayer: currentPlayer's Player object
+     * @param opponent: opponent's Player object
      */
     public static void populateViewModelPlayerData(Map<String, Object> vm, Player currentPlayer, Player opponent){
         if (currentPlayer.getColor() == Piece.Color.RED){
@@ -89,6 +110,12 @@ public class GetGameRoute implements Route {
         vm.put("activeColor", "red");
     }
 
+    /**
+     * Handles all the happenings of GetGameRoute
+     * @param request
+     * @param response
+     * @return templateEngine
+     */
     public Object handle(Request request, Response response) {
 
         LOG.finer("GetGameRoute is invoked.");
@@ -121,9 +148,10 @@ public class GetGameRoute implements Route {
                 {
                     if(player.isInGame()) // The player is in a game and we are sending an error message
                     {
-                        vm.put("title", WELCOME_MSG);
-                        vm.put("message", PostPlayerRoute.PLAYER_IN_GAME_ERROR_MSG);
-                        return templateEngine.render(new ModelAndView(vm, "home.ftl"));
+                        vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
+                        vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
+
+                        return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
                     }
                     else // The player is not in a game and therefore will start the game
                     {
@@ -139,43 +167,43 @@ public class GetGameRoute implements Route {
             currentPlayerBoard = new Board();
             drawBoard(currentPlayerBoard, currentPlayer.getColor(), opponent.getColor());
 
-            vm.put("title", WELCOME_MSG);
-            vm.put("currentUser", currentPlayer);
-            vm.put("viewMode", "PLAY");
+            vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
+            vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
+            vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
             populateViewModelPlayerData(vm, currentPlayer, opponent);
-            vm.put("board", currentPlayerBoard);
+            vm.put(ConstsUI.BOARD_PARAM, currentPlayerBoard);
             vm.put(CURRENTPLAYERBOARD_PARAM, currentPlayerBoard);
             response.redirect(ConstsUI.GAME_URL);
 
-            return templateEngine.render(new ModelAndView(vm, "game.ftl"));
+            return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
         } else if (currentPlayerBoard == null && currentPlayer.isInGame()){
             // find the Player who challenged us
             Player opponent = currentPlayer.getOpponent();
-            System.out.println("Opponent is in game: " + opponent.isInGame());
+            //System.out.println("Opponent is in game: " + opponent.isInGame());
             // create our Board
             currentPlayerBoard = new Board();
             drawBoard(currentPlayerBoard, currentPlayer.getColor(), opponent.getColor());
             // populate our view model
-            vm.put("title", WELCOME_MSG);
-            vm.put("currentUser", currentPlayer);
-            vm.put("viewMode", "PLAY");
+            vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
+            vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
+            vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
             populateViewModelPlayerData(vm, currentPlayer, opponent);
-            vm.put("board", currentPlayerBoard);
+            vm.put(ConstsUI.BOARD_PARAM, currentPlayerBoard);
             vm.put(CURRENTPLAYERBOARD_PARAM, currentPlayerBoard);
 
-            return templateEngine.render(new ModelAndView(vm, "game.ftl"));
+            return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
         } else {
             // find the Player who challenged us
             Player opponent = currentPlayer.getOpponent();
             // populate the view model
-            vm.put("title", WELCOME_MSG);
-            vm.put("currentUser", currentPlayer);
-            vm.put("viewMode", "PLAY");
+            vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
+            vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
+            vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
             populateViewModelPlayerData(vm, currentPlayer, opponent);
-            vm.put("board", currentPlayerBoard);
+            vm.put(ConstsUI.BOARD_PARAM, currentPlayerBoard);
             vm.put(CURRENTPLAYERBOARD_PARAM, currentPlayerBoard);
 
-            return templateEngine.render(new ModelAndView(vm, "game.ftl"));
+            return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
         }
     }
 

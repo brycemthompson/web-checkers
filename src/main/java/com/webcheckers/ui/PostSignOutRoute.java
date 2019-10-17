@@ -1,7 +1,5 @@
 package com.webcheckers.ui;
 
-// THIS CLASS STILL NEED TO BE COMPLETED
-
 import com.webcheckers.Model.Authentication;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
@@ -19,16 +17,11 @@ import java.util.logging.Logger;
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  * @author <a href='mailto:jrv@se.rit.edu'>Jim Vallino</a>
  * @contributor Clayton Pruitt : chp4145@rit.edu
+ * @contributor Bryce Thompson : bxt6698@rit.edu
  */
 public class PostSignOutRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(PostSignOutRoute.class.getName());
-
-
-    // Values used in the view-model map for rendering the game view after a guess.
-    static final String USERNAME_PARAM = "username";
-    static final String CURRENTUSER_PARAM = "currentUser";
-    static final String PLAYERLIST_PARAM = "users";
 
     // Messages
     private static final Message WELCOME_MSG = Message.info("Sign In to Play!");
@@ -58,21 +51,21 @@ public class PostSignOutRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) {
-        LOG.finer("GetSignInRoute is invoked.");
+        LOG.finer("PostSignOutRoute is invoked.");
 
         // initialize view-model
         final Map<String, Object> vm = new HashMap<>();
 
         // set currentUser to null => the current user is effectively "signed out"
-        playerLobby.removePlayer(request.session().attribute(PostHomeRoute.CURRENTUSER_PARAM));
-        request.session().attribute(PostHomeRoute.CURRENTUSER_PARAM, null);
+        playerLobby.removePlayer(request.session().attribute(ConstsUI.CURRENT_USER_PARAM));
+        request.session().attribute(ConstsUI.CURRENT_USER_PARAM, null);
 
         // re-render the default home page
-        vm.put("title", "Welcome to Home Page!");
-        vm.put("message", WELCOME_MSG);
+        vm.put(ConstsUI.TITLE_PARAM, "Welcome to Home Page!");
+        vm.put(ConstsUI.MESSAGE_PARAM, WELCOME_MSG);
         int amountOfPlayersPlaying = playerLobby.size();
         vm.put(GetHomeRoute.PLAYERSPLAYING_PARAM, amountOfPlayersPlaying);
-        return templateEngine.render(new ModelAndView(vm, "home.ftl"));
+        return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
 
     }
 }

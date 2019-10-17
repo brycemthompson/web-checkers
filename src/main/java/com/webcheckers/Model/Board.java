@@ -5,7 +5,8 @@ import java.util.Iterator;
 
 /**
  * Java class object representing the board.
- * @author Clayton Pruitt
+ * @author Clayton Pruitt : chp4145@rit.edu
+ * @contributor Bryce Thompson : bxt6698@rit.edu
  */
 
 public class Board implements Iterable<Row> {
@@ -34,6 +35,10 @@ public class Board implements Iterable<Row> {
         this.rows.get(cellIdy).addPieceToSpace(piece, cellIdx);
     }
 
+    /**
+     * Override iterator function. Contains other functions for the iterator
+     * @return it: The new iterator
+     */
     @Override
     public Iterator<Row> iterator() {
         Iterator<Row> it = new Iterator<Row>() {

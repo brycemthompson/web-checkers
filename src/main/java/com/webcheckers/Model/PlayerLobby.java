@@ -68,12 +68,14 @@ public class PlayerLobby
     }
 
     /**
-     * @return players
+     * Getter for Players
+     * @return players: Players in the PlayerLobby
      */
     public ArrayList<Player> getPlayers(){ return players; }
 
     /**
-     * @return an ArrayList of all Player names in this lobby
+     * Getter for the Player names
+     * @return names: an ArrayList of all Player names in this lobby
      */
     public ArrayList<String> getPlayerNames(){
         ArrayList<String> names = new ArrayList<>();
@@ -102,16 +104,13 @@ public class PlayerLobby
         int alphanumericChars = 0;
         for (int i = 0; i < username.length(); i++){
             char c = username.charAt(i);
-            if (!Character.isDigit(c) && !Character.isLetter(c)){
+            if (!Character.isDigit(c) && !Character.isLetter(c) && !Character.isSpace(c)){
                 return Authentication.FAIL_INVALID_USERNAME;
             } else {
                 alphanumericChars++;
             }
         }
         if (alphanumericChars == 0){
-            return Authentication.FAIL_INVALID_USERNAME;
-        }
-        else if(username.contains(" ")){
             return Authentication.FAIL_INVALID_USERNAME;
         }
         else if(username.contains("\"")){
