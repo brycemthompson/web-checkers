@@ -67,7 +67,16 @@ public class GetHomeRoute implements Route {
     // start building the view model
     Map<String, Object> vm = new HashMap<>();
     vm.put(ConstsUI.TITLE_PARAM, ConstsUI.HOME_TITLE_DEFAULT_VALUE);
-    vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.WELCOME_MSG);
+
+    // display default welcome message only if we have nothing else to display
+      Message msg = request.session().attribute(ConstsUI.MESSAGE_PARAM);
+      if(msg != null)
+      {
+          vm.put(ConstsUI.MESSAGE_PARAM, msg);
+      } else {
+          vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.WELCOME_MSG);
+      }
+
 
     // get current user (null if none exists)
     Player currentUser = request.session().attribute(ConstsUI.CURRENT_USER_PARAM);
@@ -82,12 +91,15 @@ public class GetHomeRoute implements Route {
         => then we need to display the amount of players currently playing
      */
 
+    /*
       // push any message (i.e. error message) to the sign in form to be displayed
       Message msg = request.session().attribute(ConstsUI.MESSAGE_PARAM);
       if(msg != null)
       {
           vm.put(ConstsUI.MESSAGE_PARAM, msg);
       }
+
+     */
       if (currentUser != null && !currentUser.isInGame()) { // current user is not in a game
 
         // populate view model with current user's info

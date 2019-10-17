@@ -145,27 +145,21 @@ public class GetGameRoute implements Route {
             {
                 if(player.getName().equals(opponentUsername))
                 {
-                    if(player.isInGame()) // The player is in a game and we are sending an error message
+                    opponent = player;
+
+                    if(opponent.isInGame()) // The player is in a game and we are sending an error message
                     {
+                        System.out.println("BBBBBBBBBBBB");
                         vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
                         vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
+                        request.session().attribute(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
                         response.redirect(ConstsUI.HOME_URL);
+                        System.out.println("AAAAAAAA");
                         return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
                     }
-                    else // The player is not in a game and therefore will start the game
-                    {
-                        opponent = player;
-                        if(opponent.isInGame()) // The player is in a game and we are sending an error message
-                        {
-                            vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
-                            vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
-                            response.redirect(ConstsUI.HOME_URL);
-                            return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
-                        }
-                        opponent.putInGame(currentPlayer, Piece.Color.WHITE);
-                        currentPlayer.putInGame(opponent, Piece.Color.RED);
-                        request.session().attribute(PostPlayerRoute.OPPONENT_PARAM, opponent);
-                    }
+                    opponent.putInGame(currentPlayer, Piece.Color.WHITE);
+                    currentPlayer.putInGame(opponent, Piece.Color.RED);
+                    request.session().attribute(PostPlayerRoute.OPPONENT_PARAM, opponent);
                 }
             }
 

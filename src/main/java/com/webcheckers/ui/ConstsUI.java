@@ -18,6 +18,7 @@ public final class ConstsUI {
     public static final String TITLE_PARAM = "title";
     public static final String USERNAME_PARAM = "username";
     public static final String VIEW_MODE_PARAM = "viewMode";
+    public static final String DISPLAYING_ERROR_PARAM = "displayingError";
 
     /**
      * Default Values
