@@ -75,11 +75,13 @@ public class PostHomeRoute implements Route {
             case FAIL_INVALID_USERNAME:
                 vm.put("title", "Welcome!");
                 vm.put("message", SIGNIN_FAILED_INVALID_MSG);
-                return templateEngine.render(new ModelAndView(vm, GetHomeRoute.VIEW_NAME));
+                response.redirect("/signin");
+                return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
             case FAIL_NAME_TAKEN:
                 vm.put("title", "Welcome!");
                 vm.put("message", SIGNIN_FAILED_NAME_TAKEN_MSG);
-                return templateEngine.render(new ModelAndView(vm, GetHomeRoute.VIEW_NAME));
+                response.redirect("/signin");
+                return templateEngine.render(new ModelAndView(vm, "singin.ftl"));
             case SUCCESS:
                 // populate view model
                 Player currentUser = new Player(username);
