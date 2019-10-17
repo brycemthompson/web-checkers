@@ -36,11 +36,6 @@
            </form>
     </div>
 
-    <#if failUserNameMessage??>
-        <br>
-        <br>Error Message: ${failUserNameMessage}
-    </#if>
-
   </div>
 
 </div>

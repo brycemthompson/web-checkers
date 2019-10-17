@@ -20,6 +20,12 @@
     <!-- Provide a message to the user, if supplied. -->
     <#include "message.ftl" />
 
+    <#if failUserNameMessage??>
+               <br>
+               <br>Error Message: ${failUserNameMessage}
+    </#if>
+
+
    <div class="Form">
            <form action="./" method="POST">
              Username:
