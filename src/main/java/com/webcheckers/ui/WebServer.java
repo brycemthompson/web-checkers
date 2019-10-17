@@ -153,9 +153,6 @@ public class WebServer {
     //// Create separate Route classes to handle each route; this keeps your
     //// code clean; using small classes.
 
-    // Initialize the GetGameRoute.
-    get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
-
     // Initializes the GetHomeRoute.
     get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby));
 
@@ -170,6 +167,9 @@ public class WebServer {
 
     // Initializes the PostSignOutRoute.
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, playerLobby));
+
+    // Initialize the PostGameRoute.
+    post(GAME_URL, new PostGameRoute(templateEngine, playerLobby));
 
 
     // Initialize the PostGameRoute
