@@ -104,7 +104,7 @@ public class PlayerLobby
         int alphanumericChars = 0;
         for (int i = 0; i < username.length(); i++){
             char c = username.charAt(i);
-            if (!Character.isDigit(c) && !Character.isLetter(c) && !Character.isSpace(c)){
+            if (!Character.isDigit(c) && !Character.isLetter(c) && !Character.isSpaceChar(c)){
                 return Authentication.FAIL_INVALID_USERNAME;
             } else {
                 alphanumericChars++;
