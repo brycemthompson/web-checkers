@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.Model.Board;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
@@ -25,6 +26,10 @@ public class PostGameRoute implements Route{
     {
         this.templateEngine = templateEngine;
         this.playerLobby = playerLobby;
+    }
+
+    private Board createBoard(){
+        return new Board();
     }
 
     /**
@@ -79,6 +84,7 @@ public class PostGameRoute implements Route{
         vm.put("redPlayer", currentPlayer);
         vm.put("whitePlayer", opponent);
         vm.put("activeColor", "red");
+        vm.put("board", createBoard());
 
         return templateEngine.render(new ModelAndView(vm, "game.ftl"));
 
