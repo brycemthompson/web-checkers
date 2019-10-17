@@ -2,8 +2,9 @@ package com.webcheckers.Model;
 
 /**
  * Java class object representing a piece on a board of checkers.
- * @author Clayton Pruitt
+ * @author Clayton Pruitt : chp4145@rit.edu
  * @author Isaias Villalobos
+ * @contributor Bryce Thompson : bxt6698@rit.edu
  */
 
 public class Piece {
@@ -29,7 +30,9 @@ public class Piece {
     private Color color;
 
     /**
-     * Constructor.
+     * Constructor for Piece
+     * @param type: type of piece (normal or king)
+     * @param color: color of piece (red or white)
      */
     public Piece(Type type, Color color){
         this.type = type;
@@ -37,14 +40,16 @@ public class Piece {
     }
 
     /**
-     * Getter for type.
+     * Getter for type
+     * @return this.type: the type of the piece
      */
     public Type getType(){
         return this.type;
     }
 
     /**
-     * Getter for color.
+     * Getter for color
+     * @return this.color: the color of the piece
      */
     public Color getColor(){
         return this.color;

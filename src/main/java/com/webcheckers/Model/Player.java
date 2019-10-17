@@ -29,19 +29,22 @@ public class Player
     }
 
     /**
-     * @return name
+     * Getter for name
+     * @return name: name of the player
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @return opponent
+     * Getter for opponent
+     * @return opponent: The opponent as a Player object
      */
     public Player getOpponent() { return opponent; }
 
     /**
-     * @return color
+     * Getter for color
+     * @return this.color: The color of the Player
      */
     public Piece.Color getColor(){ return this.color; }
 
@@ -56,6 +59,8 @@ public class Player
 
     /**
      * Puts this Player into a game with a given opponent.
+     * @param opponent: The current Player's opponent
+     * @param color: The color of the current Player
      */
     public void putInGame(Player opponent, Piece.Color color){
         System.out.println(this.name + " has been put in a game.");
@@ -65,7 +70,9 @@ public class Player
     }
 
     /**
-     * Overriding equals() to compare two Player objects.
+     * Override for equals
+     * @param o: Hopefully another Player object to compare to
+     * @return boolean value based on the comparison
      */
     @Override
     public boolean equals(Object o){

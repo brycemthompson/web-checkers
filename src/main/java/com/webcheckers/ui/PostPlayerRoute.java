@@ -32,7 +32,6 @@ public class PostPlayerRoute implements Route {
 
     // Messages
     static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
-    static final Message PLAYER_IN_GAME_ERROR_MSG = Message.error("The chosen player is already in a game.");
 
     // Various objects the route needs to track.
     private final TemplateEngine templateEngine;
@@ -71,13 +70,18 @@ public class PostPlayerRoute implements Route {
         Player opponent = null;
         for(Player player: players)
         {
+            System.out.println(player.getName());
             if(player.getName().equals(opponentUsername))
             {
+                System.out.println("Player is in game status: " + player.isInGame());
                 if(player.isInGame()) // The player is in a game and we are sending an error message
                 {
-                    vm.put("title", WELCOME_MSG);
-                    vm.put("message", PLAYER_IN_GAME_ERROR_MSG);
-                    return templateEngine.render(new ModelAndView(vm, "home.ftl"));
+                    System.out.println("Player found in game. Trying to go home.");
+                    vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
+                    vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
+                    request.session().attribute(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
+                    response.redirect(ConstsUI.HOME_URL);
+                    return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
                 }
                 else // The player is not in a game and therefore will start the game
                 {
@@ -87,14 +91,14 @@ public class PostPlayerRoute implements Route {
             }
         }
 
-        vm.put("currentUser", currentPlayer);
-        vm.put("viewMode", "PLAY");
-        vm.put("message", WELCOME_MSG);
+        vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
+        vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
+        vm.put(ConstsUI.MESSAGE_PARAM, WELCOME_MSG);
         vm.put("redPlayer", currentPlayer);
         vm.put("whitePlayer", opponent);
         vm.put("activeColor", "red");
 
-        return templateEngine.render(new ModelAndView(vm, "game.ftl"));
+        return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
 
     }
 }

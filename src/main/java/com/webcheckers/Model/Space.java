@@ -2,8 +2,9 @@ package com.webcheckers.Model;
 
 /**
  * Java class object representing a space on a board of checkers.
- * @author Clayton Pruitt
- * @author Isaias Villalobos
+ * @author Clayton Pruitt : chp4145@rit.edu
+ * @author Isaias Villalobos : ixv8608@rit.edu
+ * @contributor Bryce Thompson : bxt6698@rit.edu
  */
 
 public class Space {
@@ -17,7 +18,10 @@ public class Space {
     private Piece piece;
 
     /**
-     * Constructor.
+     * Constructor for Space
+     * @param cellIdx: The x value of the cell
+     * @param cellIdy: The y value of the cell
+     * @param piece: The Piece in the cell
      */
     public Space(int cellIdx, int cellIdy, Piece piece){
         this.cellIdx = cellIdx;
@@ -26,26 +30,33 @@ public class Space {
     }
 
     /**
-     * Getter for cellIdX.
+     * Getter for the cellIdx
+     * @return cellIdx
      */
     public int getCellIdx() {
         return cellIdx;
     }
 
     /**
-     * Getter for piece.
+     * Getter for Piece
+     * @return this.piece
      */
     public Piece getPiece(){
         return this.piece;
     }
 
     /**
-     * Adds a Piece to this Space.
+     * Adds a Piece to this space
+     * @param piece: The Piece to add
      */
     public void addPieceToSpace(Piece piece){
         this.piece = piece;
     }
 
+    /**
+     * Function to check validity of the Space
+     * @return boolean value based on validity
+     */
     public boolean isValid(){
         return ((cellIdx % 2 != cellIdy % 2) && this.piece == null);
     }

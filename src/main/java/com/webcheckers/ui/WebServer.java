@@ -42,7 +42,8 @@ import spark.TemplateEngine;
  * </p>
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
- * @contributor Clayton Pruitt
+ * @contributor Clayton Pruitt : chp4145@rit.edu
+ * @contributor Bryce Thompson : bxt6698@rit.edu
  */
 public class WebServer {
   private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
@@ -139,6 +140,9 @@ public class WebServer {
 
     // Initializes the PostSignOutRoute.
     post(ConstsUI.SIGNOUT_URL, new PostSignOutRoute(templateEngine, playerLobby));
+
+    // Initialized the PostPlayerRoute.
+    post(ConstsUI.GAME_URL, new PostPlayerRoute(templateEngine, playerLobby));
 
     // Initialize the GetGameRoute.
     get(ConstsUI.GAME_URL, new GetGameRoute(templateEngine, playerLobby));

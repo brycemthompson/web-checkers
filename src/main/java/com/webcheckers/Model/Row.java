@@ -5,7 +5,8 @@ import java.util.Iterator;
 
 /**
  * Java class object representing a row of a board of checkers.
- * @author Clayton Pruitt
+ * @author Clayton Pruitt : chp4145@rit.edu
+ * @contributor Bryce Thompson : bxt6698@rit.edu
  */
 
 public class Row implements  Iterable<Space> {
@@ -20,6 +21,7 @@ public class Row implements  Iterable<Space> {
 
     /**
      * Constructor. Automatically populates the Row with 8 spaces.
+     * @param index: Index of the row on the board
      */
     public Row(int index){
         this.index = index;
@@ -31,7 +33,8 @@ public class Row implements  Iterable<Space> {
     }
 
     /**
-     * Getter for index.
+     * Getter for the index
+     * @return index
      */
     public int getIndex(){
         return this.index;
@@ -39,11 +42,17 @@ public class Row implements  Iterable<Space> {
 
     /**
      * Adds a given Piece to the Space with the given cellIdx.
+     * @param piece: The Piece to be added to the Space
+     * @param cellIdx: The cellIdx
      */
     public void addPieceToSpace(Piece piece, int cellIdx){
         this.spaces.get(cellIdx).addPieceToSpace(piece);
     }
 
+    /**
+     * Override function for iterator
+     * @return it
+     */
     @Override
     public Iterator<Space> iterator() {
         Iterator<Space> it = new Iterator<Space>() {

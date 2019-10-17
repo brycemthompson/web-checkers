@@ -10,6 +10,7 @@ import com.webcheckers.Model.Authentication;
 import com.webcheckers.Model.Board;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
+import jdk.swing.interop.SwingInterOpUtils;
 import spark.*;
 
 import com.webcheckers.util.Message;
@@ -19,7 +20,7 @@ import com.webcheckers.util.Message;
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  * @contributor Bryce Thompson : bxt6698@rit.edu
- * @contributor Clayton Pruitt: chp4145@ritledu
+ * @contributor Clayton Pruitt : chp4145@rit.edu
  */
 public class GetHomeRoute implements Route {
 
@@ -27,11 +28,6 @@ public class GetHomeRoute implements Route {
 
   // Values used in the view-model map for rendering the home view.
   public static final String PLAYERSPLAYING_PARAM = "amountOfPlayersPlaying";
-  public static final String VIEW_NAME = "home.ftl";
-
-  // Messages
-  public static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
-
 
   // Various objects the route needs to track.
   private final TemplateEngine templateEngine;
@@ -75,7 +71,7 @@ public class GetHomeRoute implements Route {
     vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.WELCOME_MSG);
 
     // get current user (null if none exists)
-    Player currentUser = request.session().attribute(PostHomeRoute.CURRENTUSER_PARAM);
+    Player currentUser = request.session().attribute(ConstsUI.CURRENT_USER_PARAM);
 
     /*
     There are three cases to consider.
@@ -87,16 +83,24 @@ public class GetHomeRoute implements Route {
         => then we need to display the amount of players currently playing
      */
 
-    if (currentUser != null && !currentUser.isInGame()) { // current user is not in a game
+      // push any message (i.e. error message) to the sign in form to be displayed
+      Message msg = request.session().attribute(ConstsUI.MESSAGE_PARAM);
+      if(msg != null)
+      {
+          //System.out.println("Made it back into home");
+          vm.put(ConstsUI.MESSAGE_PARAM, msg);
+          return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
+      }
+    else if (currentUser != null && !currentUser.isInGame()) { // current user is not in a game
 
         // populate view model with current user's info
-        vm.put(PostHomeRoute.CURRENTUSER_PARAM, currentUser);
-        vm.put(PostHomeRoute.USERNAME_PARAM, currentUser.getName());
+        vm.put(ConstsUI.CURRENT_USER_PARAM, currentUser);
+        vm.put(ConstsUI.USERNAME_PARAM, currentUser.getName());
 
         // populate view model with list of players that excludes the current player
         ArrayList<String> playerNames = playerLobby.getPlayerNames();
         playerNames.remove(currentUser.getName());
-        vm.put(PostHomeRoute.PLAYERLIST_PARAM, playerNames);
+        vm.put(ConstsUI.PLAYER_LIST_PARAM, playerNames);
 
         return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
 
@@ -110,7 +114,7 @@ public class GetHomeRoute implements Route {
         GetGameRoute.drawBoard(currentUserBoard, currentUser.getColor(), opponent.getColor());
 
         // populate our view model
-        vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
+        vm.put(ConstsUI.TITLE_PARAM, ConstsUI.WELCOME_MSG);
         vm.put(ConstsUI.CURRENT_USER_PARAM, currentUser);
         vm.put(ConstsUI.VIEW_MODE_PARAM, ConstsUI.VIEW_MODEL_DEFAULT_VALUE);
         GetGameRoute.populateViewModelPlayerData(vm, currentUser, opponent);

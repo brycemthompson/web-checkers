@@ -10,12 +10,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+/**
+ * @contributor Bryce Thompson : bxt6698@rit.edu
+ * @contributor Clayton Pruitt : chp4145@rit.edu
+ **/
 
 public class PostGameRoute implements Route{
     private static final Logger LOG = Logger.getLogger(PostGameRoute.class.getName());
 
     // Messages
-    public static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
     public static final Message MESSAGE_MSG = Message.info("AAAAAAAAAA");
 
     // Values used in the view-model map for rendering the game view after a guess.
@@ -55,7 +58,7 @@ public class PostGameRoute implements Route{
 
         // Finding the opponent in the playerList
         final String opponentUsername = request.queryParams("opponentUsername");
-        System.out.println(opponentUsername);
+        //System.out.println(opponentUsername);
         ArrayList<Player> players = playerLobby.getPlayers();
         Player opponent = null;
         for(Player player: players)
@@ -64,9 +67,11 @@ public class PostGameRoute implements Route{
             {
                 if(player.isInGame()) // The player is in a game and we are sending an error message
                 {
-                    vm.put("title", WELCOME_MSG);
-                    vm.put("message", PostPlayerRoute.PLAYER_IN_GAME_ERROR_MSG);
-                    return templateEngine.render(new ModelAndView(vm, "home.ftl"));
+                    vm.put(ConstsUI.TITLE_PARAM, ConstsUI.WELCOME_MSG);
+                    vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
+                    request.session().attribute(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
+                    response.redirect(ConstsUI.HOME_URL);
+                    return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
                 }
                 else // The player is not in a game and therefore will start the game
                 {
@@ -76,17 +81,17 @@ public class PostGameRoute implements Route{
             }
         }
 
-        vm.put("title", WELCOME_MSG);
-        vm.put("message", MESSAGE_MSG);
-        vm.put("currentUser", currentPlayer);
-        vm.put("viewMode", "PLAY");
-        vm.put("message", WELCOME_MSG);
+        vm.put(ConstsUI.TITLE_PARAM, ConstsUI.WELCOME_MSG);
+        vm.put(ConstsUI.MESSAGE_PARAM, MESSAGE_MSG);
+        vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
+        vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
+        vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.WELCOME_MSG);
         vm.put("redPlayer", currentPlayer);
         vm.put("whitePlayer", opponent);
         vm.put("activeColor", "red");
-        vm.put("board", createBoard());
+        vm.put(ConstsUI.BOARD_PARAM, createBoard());
 
-        return templateEngine.render(new ModelAndView(vm, "game.ftl"));
+        return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
 
     }
 }
