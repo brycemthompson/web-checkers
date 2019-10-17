@@ -46,7 +46,7 @@ public class GetGameRoute implements Route {
      * Draws the Pieces belonging to the opponent on the given Board.
      */
     public static void drawOpponentPieces(Board board, Piece.Color color){
-        for (int r = 0; r < 2; r++){
+        for (int r = 0; r < 3; r++){
             for (int c = (r+1)%2; c < Board.rowsPerBoard; c += 2){
                 Piece piece = new Piece(Piece.Type.SINGLE, color);
                 board.addPieceToSpace(piece, c, r);
@@ -58,7 +58,7 @@ public class GetGameRoute implements Route {
      * Draws the Pieces belonging to the current user on the given Board.
      */
     public static void drawCurrentUserPieces(Board board, Piece.Color color){
-        for (int r = Board.rowsPerBoard - 2; r < Board.rowsPerBoard; r++){
+        for (int r = Board.rowsPerBoard - 3; r < Board.rowsPerBoard; r++){
             for (int c = (r+1)%2; c < Board.rowsPerBoard; c += 2){
                 Piece piece = new Piece(Piece.Type.SINGLE, color);
                 board.addPieceToSpace(piece, c, r);
