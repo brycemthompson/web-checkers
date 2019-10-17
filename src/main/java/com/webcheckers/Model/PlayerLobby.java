@@ -46,6 +46,20 @@ public class PlayerLobby
     }
 
     /**
+     * Gets a Player by their username.
+     * @param playerName the username of the Player to get
+     * @return the Player with the matching username
+     */
+    public Player getPlayer(String playerName){
+        for (Player player : players){
+            if (player.getName().equals(playerName)){
+                return player;
+            }
+        }
+        return null;
+    }
+
+    /**
      * removePlayer function to remove a Player from the lobby
      * @param player : Player to remove from the lobby
      */
@@ -109,8 +123,8 @@ public class PlayerLobby
                 return Authentication.FAIL_NAME_TAKEN;
             }
         }
-        // authentication successful; sign in the new player
-        this.addPlayer(username);
+
+        // authentication successful
         return Authentication.SUCCESS;
     }
 

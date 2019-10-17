@@ -58,6 +58,7 @@ public class Player
      * Puts this Player into a game with a given opponent.
      */
     public void putInGame(Player opponent, Piece.Color color){
+        System.out.println(this.name + " has been put in a game.");
         this.opponent = opponent;
         this.color = color;
         this.inGame = true;

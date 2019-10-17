@@ -88,6 +88,11 @@ public class GetHomeRoute implements Route {
     3) There is a current user signed in and they're in a game.
         => then we need to yeet them to the game view
      */
+
+    if (currentUser != null) {
+        System.out.println(currentUser.getName() + ": " + currentUser.isInGame());
+    }
+
     if (currentUser != null && !currentUser.isInGame()) {
         // populate view model
         vm.put(PostHomeRoute.CURRENTUSER_PARAM, currentUser);
@@ -95,6 +100,7 @@ public class GetHomeRoute implements Route {
         ArrayList<String> playerNames = playerLobby.getPlayerNames();
         playerNames.remove(currentUser.getName()); // do not want to play the current user
         vm.put(PostHomeRoute.PLAYERLIST_PARAM, playerNames);
+        System.out.println(playerLobby.size());
         return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     } else if (currentUser != null && currentUser.isInGame()){
         // find the Player who challenged us

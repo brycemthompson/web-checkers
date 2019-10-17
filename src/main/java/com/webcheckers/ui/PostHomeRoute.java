@@ -87,6 +87,7 @@ public class PostHomeRoute implements Route {
             case SUCCESS:
                 // populate view model
                 Player currentUser = new Player(username);
+                playerLobby.addPlayer(currentUser);
                 vm.put(CURRENTUSER_PARAM, currentUser);
                 vm.put(USERNAME_PARAM, username);
                 ArrayList<String> playerNames = playerLobby.getPlayerNames();
