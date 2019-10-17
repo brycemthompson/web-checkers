@@ -70,7 +70,7 @@ public class GetSignInRoute implements Route {
     }
 
     // render the View
-    return templateEngine.render(new ModelAndView(vm , ConstsUI.SIGNIN_URL));
+    return templateEngine.render(new ModelAndView(vm , ConstsUI.SIGNIN_VIEW));
 
   }
 }
