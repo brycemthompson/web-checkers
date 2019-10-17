@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class PostGameRoute implements Route{
-    private static final Logger LOG = Logger.getLogger(PostSignInRoute.class.getName());
+    private static final Logger LOG = Logger.getLogger(PostGameRoute.class.getName());
 
     // Messages
     public static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
