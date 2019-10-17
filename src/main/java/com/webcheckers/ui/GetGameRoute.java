@@ -1,6 +1,5 @@
 package com.webcheckers.ui;
 
-import com.sun.org.apache.bcel.internal.Const;
 import com.webcheckers.Model.Board;
 import com.webcheckers.Model.Piece;
 import com.webcheckers.Model.Player;

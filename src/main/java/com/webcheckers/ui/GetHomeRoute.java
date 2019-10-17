@@ -10,7 +10,6 @@ import com.webcheckers.Model.Authentication;
 import com.webcheckers.Model.Board;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
-import jdk.swing.interop.SwingInterOpUtils;
 import spark.*;
 
 import com.webcheckers.util.Message;
