@@ -162,9 +162,6 @@ public class WebServer {
     // Initializes the GetSignInRoute.
     get(SIGNIN_URL, new GetSignInRoute(templateEngine, playerLobby));
 
-    // Initializes the PostSignInRoute.
-    post(SIGNIN_URL, new PostSignInRoute(templateEngine, playerLobby));
-
     // Initializes the PostSignOutRoute.
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, playerLobby));
 

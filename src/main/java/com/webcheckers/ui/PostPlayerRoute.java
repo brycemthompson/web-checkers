@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  */
 public class PostPlayerRoute implements Route {
 
-    private static final Logger LOG = Logger.getLogger(PostSignOutRoute.class.getName());
+    private static final Logger LOG = Logger.getLogger(PostPlayerRoute.class.getName());
 
 
     // Values used in the view-model map for rendering the game view after a guess.
