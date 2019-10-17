@@ -60,7 +60,7 @@ public class GetGameRoute implements Route {
      */
     public static void drawOpponentPieces(Board board, Piece.Color color){
         for (int r = 0; r < 2; r++){
-            for (int c = r%2; c < Board.rowsPerBoard; c += 2){
+            for (int c = (r+1)%2; c < Board.rowsPerBoard; c += 2){
                 Piece piece = new Piece(Piece.Type.SINGLE, color);
                 board.addPieceToSpace(piece, c, r);
             }
@@ -72,7 +72,7 @@ public class GetGameRoute implements Route {
      */
     public static void drawCurrentUserPieces(Board board, Piece.Color color){
         for (int r = Board.rowsPerBoard - 2; r < Board.rowsPerBoard; r++){
-            for (int c = r%2; c < Board.rowsPerBoard; c += 2){
+            for (int c = (r+1)%2; c < Board.rowsPerBoard; c += 2){
                 Piece piece = new Piece(Piece.Type.SINGLE, color);
                 board.addPieceToSpace(piece, c, r);
             }
@@ -128,7 +128,6 @@ public class GetGameRoute implements Route {
             // Finding the opponent in the playerList
             final String opponentUsername = request.queryParams("opponentUsername");
             Player opponent = null;
-            /*
             for(Player player: playerLobby.getPlayers())
             {
                 if(player.getName().equals(opponentUsername))
@@ -149,9 +148,6 @@ public class GetGameRoute implements Route {
                     }
                 }
             }
-            */
-
-            opponent = playerLobby.getPlayer(opponentUsername);
 
             currentPlayerBoard = new Board();
             drawBoard(currentPlayerBoard, currentPlayer.getColor(), opponent.getColor());
