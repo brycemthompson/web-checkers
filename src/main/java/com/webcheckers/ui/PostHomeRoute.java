@@ -71,15 +71,19 @@ public class PostHomeRoute implements Route {
         final String username = request.queryParams(USERNAME_PARAM);
         Authentication authResult = playerLobby.authenticateSignIn(username);
 
+        System.out.println("Above switch");
         switch (authResult) {
             case FAIL_INVALID_USERNAME:
+                System.out.println("Here1");
                 vm.put("title", "Welcome!");
                 vm.put("message", SIGNIN_FAILED_INVALID_MSG);
+                request.session().attribute("message", SIGNIN_FAILED_INVALID_MSG);
                 response.redirect("/signin");
                 return templateEngine.render(new ModelAndView(vm, "signin.ftl"));
             case FAIL_NAME_TAKEN:
                 vm.put("title", "Welcome!");
                 vm.put("message", SIGNIN_FAILED_NAME_TAKEN_MSG);
+                request.session().attribute("message", SIGNIN_FAILED_NAME_TAKEN_MSG);
                 response.redirect("/signin");
                 return templateEngine.render(new ModelAndView(vm, "singin.ftl"));
             case SUCCESS:
@@ -103,6 +107,8 @@ public class PostHomeRoute implements Route {
             default:
                 vm.put("title", "Welcome!");
                 vm.put("message", SIGNIN_FAILED_UNKNOWN_MSG);
+                request.session().attribute("message", SIGNIN_FAILED_UNKNOWN_MSG);
+                response.redirect("/signin");
                 return templateEngine.render(new ModelAndView(vm, GetHomeRoute.VIEW_NAME));
         }
 

@@ -26,6 +26,7 @@ public class GetSignInRoute implements Route {
   private final TemplateEngine templateEngine;
   private PlayerLobby playerLobby;
 
+
   /**
    * Create the Spark Route (UI controller) to handle all {@code GET /} HTTP requests.
    *
@@ -60,6 +61,12 @@ public class GetSignInRoute implements Route {
     final Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Sign-In Page!");
     vm.put("message", WELCOME_MSG);
+
+    Message msg = request.session().attribute("message");
+    if(msg != null)
+    {
+        vm.put("message", msg);
+    }
 
     // render the View
     return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
