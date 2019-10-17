@@ -86,11 +86,9 @@ public class GetHomeRoute implements Route {
       Message msg = request.session().attribute(ConstsUI.MESSAGE_PARAM);
       if(msg != null)
       {
-          //System.out.println("Made it back into home");
           vm.put(ConstsUI.MESSAGE_PARAM, msg);
-          return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
       }
-    else if (currentUser != null && !currentUser.isInGame()) { // current user is not in a game
+      if (currentUser != null && !currentUser.isInGame()) { // current user is not in a game
 
         // populate view model with current user's info
         vm.put(ConstsUI.CURRENT_USER_PARAM, currentUser);

@@ -149,16 +149,22 @@ public class GetGameRoute implements Route {
                     {
                         vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
                         vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
-
+                        response.redirect(ConstsUI.HOME_URL);
                         return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
                     }
                     else // The player is not in a game and therefore will start the game
                     {
                         opponent = player;
+                        if(opponent.isInGame()) // The player is in a game and we are sending an error message
+                        {
+                            vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
+                            vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
+                            response.redirect(ConstsUI.HOME_URL);
+                            return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
+                        }
                         opponent.putInGame(currentPlayer, Piece.Color.WHITE);
                         currentPlayer.putInGame(opponent, Piece.Color.RED);
                         request.session().attribute(PostPlayerRoute.OPPONENT_PARAM, opponent);
-                        opponent = player;
                     }
                 }
             }
