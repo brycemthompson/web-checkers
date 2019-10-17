@@ -20,19 +20,6 @@ public class GetGameRoute implements Route {
 
     private static final Message WELCOME_MSG = Message.info("Welcome to the game page.");
 
-    /*
-    private PlayerLobby players;
-
-    // These two need to be passed in forming their own "game"
-    private Player redPlayer = players.getPlayers().get(0);
-    private Player whitePlayer = players.getPlayers().get(1);
-
-    private String currentUser = redPlayer.toString();
-
-    private String activeColor = "RED";
-
-     */
-
     public static final String VIEW_NAME = "game.ftl";
 
     public static final String CURRENTPLAYERBOARD_PARAM = "currentPlayerBoard";
@@ -158,6 +145,7 @@ public class GetGameRoute implements Route {
             populateViewModelPlayerData(vm, currentPlayer, opponent);
             vm.put("board", currentPlayerBoard);
             vm.put(CURRENTPLAYERBOARD_PARAM, currentPlayerBoard);
+            response.redirect(ConstsUI.GAME_URL);
 
             return templateEngine.render(new ModelAndView(vm, "game.ftl"));
         } else if (currentPlayerBoard == null && currentPlayer.isInGame()){

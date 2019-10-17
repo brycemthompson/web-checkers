@@ -59,17 +59,18 @@ public class GetSignInRoute implements Route {
 
     // start building the view model
     final Map<String, Object> vm = new HashMap<>();
-    vm.put("title", "Sign-In Page!");
-    vm.put("message", WELCOME_MSG);
+    vm.put(ConstsUI.TITLE_PARAM, ConstsUI.SIGN_IN_TITLE_DEFAULT_VALUE);
+    vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.SIGN_IN_MSG);
 
-    Message msg = request.session().attribute("message");
+    // push any message (i.e. error message) to the sign in form to be displayed
+    Message msg = request.session().attribute(ConstsUI.MESSAGE_PARAM);
     if(msg != null)
     {
-        vm.put("message", msg);
+        vm.put(ConstsUI.MESSAGE_PARAM, msg);
     }
 
     // render the View
-    return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
+    return templateEngine.render(new ModelAndView(vm , ConstsUI.SIGNIN_URL));
 
   }
 }

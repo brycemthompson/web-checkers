@@ -48,31 +48,6 @@ public class WebServer {
   private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
 
   //
-  // Constants
-  //
-
-  /**
-   * The URL pattern to request the Home page.
-   */
-  public static final String HOME_URL = "/";
-
-  /**
-   * The URL pattern to request the Sign-In page.
-   */
-  public static final String SIGNIN_URL = "/signin";
-
-
-  /**
-   * The URL pattern to request the Sign-Out page.
-   */
-  public static final String SIGNOUT_URL = "/signout";
-
-  /**
-   * The URL pattern to request the Game page.
-   */
-
-  public static final String GAME_URL = "/game";
-  //
   // Attributes
   //
 
@@ -154,19 +129,19 @@ public class WebServer {
     //// code clean; using small classes.
 
     // Initializes the GetHomeRoute.
-    get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby));
+    get(ConstsUI.HOME_URL, new GetHomeRoute(templateEngine, playerLobby));
 
     // Initializes the PostHomeRoute.
-    post(HOME_URL, new PostHomeRoute(templateEngine, playerLobby));
+    post(ConstsUI.HOME_URL, new PostHomeRoute(templateEngine, playerLobby));
 
     // Initializes the GetSignInRoute.
-    get(SIGNIN_URL, new GetSignInRoute(templateEngine, playerLobby));
+    get(ConstsUI.SIGNIN_URL, new GetSignInRoute(templateEngine, playerLobby));
 
     // Initializes the PostSignOutRoute.
-    post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, playerLobby));
+    post(ConstsUI.SIGNOUT_URL, new PostSignOutRoute(templateEngine, playerLobby));
 
     // Initialize the GetGameRoute.
-    get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
+    get(ConstsUI.GAME_URL, new GetGameRoute(templateEngine, playerLobby));
 
 
     // Initialize the PostGameRoute

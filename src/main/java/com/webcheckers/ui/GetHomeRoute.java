@@ -26,8 +26,6 @@ public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   // Values used in the view-model map for rendering the home view.
-  static final String SIGNED_IN_PLAYER_ATTR = "username";
-  static final String PLAYERSIGNEDIN_PARAM = "playerIsSignedIn";
   public static final String PLAYERSPLAYING_PARAM = "amountOfPlayersPlaying";
   public static final String VIEW_NAME = "home.ftl";
 
@@ -73,54 +71,57 @@ public class GetHomeRoute implements Route {
 
     // start building the view model
     Map<String, Object> vm = new HashMap<>();
-    vm.put("title", "Welcome to Home Page!");
-    vm.put("message", WELCOME_MSG);
+    vm.put(ConstsUI.TITLE_PARAM, ConstsUI.HOME_TITLE_DEFAULT_VALUE);
+    vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.WELCOME_MSG);
 
     // get current user (null if none exists)
     Player currentUser = request.session().attribute(PostHomeRoute.CURRENTUSER_PARAM);
 
     /*
     There are three cases to consider.
-    1) There is no current user signed in.
-        => then we need to display the amount of players currently playing
-    2) There is a current user signed in and they are not in a game.
+    1) There is a current user signed in and they are not in a game.
         => then we need to display a list of currently signed in players
-    3) There is a current user signed in and they're in a game.
+    2) There is a current user signed in and they're in a game.
         => then we need to yeet them to the game view
+    3) There is no current user signed in.
+        => then we need to display the amount of players currently playing
      */
 
-    if (currentUser != null) {
-        System.out.println(currentUser.getName() + ": " + currentUser.isInGame());
-    }
+    if (currentUser != null && !currentUser.isInGame()) { // current user is not in a game
 
-    if (currentUser != null && !currentUser.isInGame()) {
-        // populate view model
+        // populate view model with current user's info
         vm.put(PostHomeRoute.CURRENTUSER_PARAM, currentUser);
         vm.put(PostHomeRoute.USERNAME_PARAM, currentUser.getName());
+
+        // populate view model with list of players that excludes the current player
         ArrayList<String> playerNames = playerLobby.getPlayerNames();
-        playerNames.remove(currentUser.getName()); // do not want to play the current user
+        playerNames.remove(currentUser.getName());
         vm.put(PostHomeRoute.PLAYERLIST_PARAM, playerNames);
-        System.out.println(playerLobby.size());
-        return templateEngine.render(new ModelAndView(vm, "home.ftl"));
-    } else if (currentUser != null && currentUser.isInGame()){
+
+        return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
+
+    } else if (currentUser != null){ // current user is supposed to be in a game
+
         // find the Player who challenged us
         Player opponent = currentUser.getOpponent();
+
         // create our Board
         Board currentUserBoard = new Board();
         GetGameRoute.drawBoard(currentUserBoard, currentUser.getColor(), opponent.getColor());
+
         // populate our view model
-        vm.put("title", WELCOME_MSG);
-        vm.put("currentUser", currentUser);
-        vm.put("viewMode", "PLAY");
+        vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
+        vm.put(ConstsUI.CURRENT_USER_PARAM, currentUser);
+        vm.put(ConstsUI.VIEW_MODE_PARAM, ConstsUI.VIEW_MODEL_DEFAULT_VALUE);
         GetGameRoute.populateViewModelPlayerData(vm, currentUser, opponent);
-        vm.put("board", currentUserBoard);
+        vm.put(ConstsUI.BOARD_PARAM, currentUserBoard);
         vm.put(GetGameRoute.CURRENTPLAYERBOARD_PARAM, currentUserBoard);
-        response.redirect(WebServer.GAME_URL);
-        return templateEngine.render(new ModelAndView(vm, "game.ftl"));
-    } else {
+
+        return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
+    } else { // there is no current user
         int amountOfPlayersPlaying = playerLobby.size();
         vm.put(PLAYERSPLAYING_PARAM, amountOfPlayersPlaying);
-        return templateEngine.render(new ModelAndView(vm, "home.ftl"));
+        return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
     }
 
     /*
