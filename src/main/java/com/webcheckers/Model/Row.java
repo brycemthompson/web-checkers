@@ -37,6 +37,13 @@ public class Row implements  Iterable<Space> {
         return this.index;
     }
 
+    /**
+     * Adds a given Piece to the Space with the given cellIdx.
+     */
+    public void addPieceToSpace(Piece piece, int cellIdx){
+        this.spaces.get(cellIdx).addPieceToSpace(piece);
+    }
+
     @Override
     public Iterator<Space> iterator() {
         Iterator<Space> it = new Iterator<Space>() {

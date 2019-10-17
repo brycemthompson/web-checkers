@@ -165,8 +165,8 @@ public class WebServer {
     // Initializes the PostSignOutRoute.
     post(SIGNOUT_URL, new PostSignOutRoute(templateEngine, playerLobby));
 
-    // Initialize the PostGameRoute.
-    post(GAME_URL, new PostGameRoute(templateEngine, playerLobby));
+    // Initialize the GetGameRoute.
+    get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
 
 
     // Initialize the PostGameRoute

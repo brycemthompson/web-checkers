@@ -39,6 +39,13 @@ public class Space {
         return this.piece;
     }
 
+    /**
+     * Adds a Piece to this Space.
+     */
+    public void addPieceToSpace(Piece piece){
+        this.piece = piece;
+    }
+
     public boolean isValid(){
         return ((cellIdx % 2 != cellIdy % 2) && this.piece == null);
     }

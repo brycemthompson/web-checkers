@@ -12,6 +12,12 @@ public class Player
     private String name;
     private boolean inGame;
 
+    // the current opponent for this Player
+    private Player opponent;
+
+    // the current color for this Player
+    private Piece.Color color;
+
     /**
      * Player Constructor
      * @param name : Username of a newly logged player
@@ -30,12 +36,31 @@ public class Player
     }
 
     /**
+     * @return opponent
+     */
+    public Player getOpponent() { return opponent; }
+
+    /**
+     * @return color
+     */
+    public Piece.Color getColor(){ return this.color; }
+
+    /**
      * Player accessor for their game availability status
      * @return this.inGame: boolean attribute for their availability status
      */
     public boolean isInGame()
     {
         return this.inGame;
+    }
+
+    /**
+     * Puts this Player into a game with a given opponent.
+     */
+    public void putInGame(Player opponent, Piece.Color color){
+        this.opponent = opponent;
+        this.color = color;
+        this.inGame = true;
     }
 
     /**
