@@ -128,6 +128,7 @@ public class GetGameRoute implements Route {
             // Finding the opponent in the playerList
             final String opponentUsername = request.queryParams("opponentUsername");
             Player opponent = null;
+            /*
             for(Player player: playerLobby.getPlayers())
             {
                 if(player.getName().equals(opponentUsername))
@@ -144,9 +145,13 @@ public class GetGameRoute implements Route {
                         opponent.putInGame(currentPlayer, Piece.Color.WHITE);
                         currentPlayer.putInGame(opponent, Piece.Color.RED);
                         request.session().attribute(PostPlayerRoute.OPPONENT_PARAM, opponent);
+                        opponent = player;
                     }
                 }
             }
+            */
+
+            opponent = playerLobby.getPlayer(opponentUsername);
 
             currentPlayerBoard = new Board();
             drawBoard(currentPlayerBoard, currentPlayer.getColor(), opponent.getColor());
@@ -162,6 +167,7 @@ public class GetGameRoute implements Route {
         } else if (currentPlayerBoard == null && currentPlayer.isInGame()){
             // find the Player who challenged us
             Player opponent = currentPlayer.getOpponent();
+            System.out.println("Opponent is in game: " + opponent.isInGame());
             // create our Board
             currentPlayerBoard = new Board();
             drawBoard(currentPlayerBoard, currentPlayer.getColor(), opponent.getColor());
