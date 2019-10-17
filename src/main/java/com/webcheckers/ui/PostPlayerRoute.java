@@ -63,15 +63,12 @@ public class PostPlayerRoute implements Route {
         final Map<String, Object> vm = new HashMap<>();
 
         // Get the current user and the opponent
-        // ** I am not completely sure if this is necessary because the session already holds the currentUser
-        //    in PostHomeRoute. **
-        final String currentUsername = request.queryParams(CURRENTUSER_PARAM);
-        Player currentPlayer = new Player(currentUsername);
-        request.session().attribute(CURRENTUSER_PARAM, currentPlayer);
+        Player currentPlayer = request.session().attribute(CURRENTUSER_PARAM);
 
         // Finding the opponent in the playerList
         final String opponentUsername = request.queryParams(PLAYER_PARAM);
         ArrayList<Player> players = playerLobby.getPlayers();
+        Player opponent = null;
         for(Player player: players)
         {
             if(player.getName().equals(opponentUsername))
@@ -84,11 +81,18 @@ public class PostPlayerRoute implements Route {
                 }
                 else // The player is not in a game and therefore will start the game
                 {
-                    Player opponent = player;
+                    opponent = player;
                     request.session().attribute(OPPONENT_PARAM, opponent);
                 }
             }
         }
+
+        vm.put("currentUser", currentPlayer);
+        vm.put("viewMode", "PLAY");
+        vm.put("message", WELCOME_MSG);
+        vm.put("redPlayer", currentPlayer);
+        vm.put("whitePlayer", opponent);
+        vm.put("activeColor", "red");
 
         return templateEngine.render(new ModelAndView(vm, "game.ftl"));
 

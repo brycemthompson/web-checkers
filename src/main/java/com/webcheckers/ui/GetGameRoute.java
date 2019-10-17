@@ -53,6 +53,7 @@ public class GetGameRoute implements Route {
         final Map<String, Object> vm = new HashMap<>();
         vm.put("title", "welcome");
 
+        /**
         //vm.put("currentUser", currentUser);
         Player clayton = new Player("Clayton");
         Player isaias = new Player("Isaias");
@@ -65,6 +66,7 @@ public class GetGameRoute implements Route {
         vm.put("whitePlayer", isaias);
         vm.put("activeColor", "red");
         // render the View
+         */
         return templateEngine.render(new ModelAndView(vm , VIEW_NAME));
 
     }
