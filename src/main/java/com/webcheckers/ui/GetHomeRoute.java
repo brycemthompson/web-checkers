@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.webcheckers.Model.Authentication;
+import com.webcheckers.Model.Board;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import spark.*;
@@ -78,7 +79,16 @@ public class GetHomeRoute implements Route {
     // get current user (null if none exists)
     Player currentUser = request.session().attribute(PostHomeRoute.CURRENTUSER_PARAM);
 
-    if (currentUser != null){
+    /*
+    There are three cases to consider.
+    1) There is no current user signed in.
+        => then we need to display the amount of players currently playing
+    2) There is a current user signed in and they are not in a game.
+        => then we need to display a list of currently signed in players
+    3) There is a current user signed in and they're in a game.
+        => then we need to yeet them to the game view
+     */
+    if (currentUser != null && !currentUser.isInGame()) {
         // populate view model
         vm.put(PostHomeRoute.CURRENTUSER_PARAM, currentUser);
         vm.put(PostHomeRoute.USERNAME_PARAM, currentUser.getName());
@@ -86,6 +96,21 @@ public class GetHomeRoute implements Route {
         playerNames.remove(currentUser.getName()); // do not want to play the current user
         vm.put(PostHomeRoute.PLAYERLIST_PARAM, playerNames);
         return templateEngine.render(new ModelAndView(vm, "home.ftl"));
+    } else if (currentUser != null && currentUser.isInGame()){
+        // find the Player who challenged us
+        Player opponent = currentUser.getOpponent();
+        // create our Board
+        Board currentUserBoard = new Board();
+        GetGameRoute.drawBoard(currentUserBoard, currentUser.getColor(), opponent.getColor());
+        // populate our view model
+        vm.put("title", WELCOME_MSG);
+        vm.put("currentUser", currentUser);
+        vm.put("viewMode", "PLAY");
+        GetGameRoute.populateViewModelPlayerData(vm, currentUser, opponent);
+        vm.put("board", currentUserBoard);
+        vm.put(GetGameRoute.CURRENTPLAYERBOARD_PARAM, currentUserBoard);
+        response.redirect(WebServer.GAME_URL);
+        return templateEngine.render(new ModelAndView(vm, "game.ftl"));
     } else {
         int amountOfPlayersPlaying = playerLobby.size();
         vm.put(PLAYERSPLAYING_PARAM, amountOfPlayersPlaying);

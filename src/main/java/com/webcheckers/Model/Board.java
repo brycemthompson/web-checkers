@@ -14,7 +14,7 @@ public class Board implements Iterable<Row> {
     ArrayList<Row> rows;
 
     // amount of rows in a board
-    int rowsPerBoard = 8;
+    public static int rowsPerBoard = 8;
 
     /**
      * Constructor. Automatically populates the board with 8 rows.
@@ -25,6 +25,13 @@ public class Board implements Iterable<Row> {
         for (int i = 0; i < rowsPerBoard; i++){
             rows.add(new Row(i));
         }
+    }
+
+    /**
+     * Adds the given Piece to the given coordinates.
+     */
+    public  void addPieceToSpace(Piece piece, int cellIdx, int cellIdy){
+        this.rows.get(cellIdy).addPieceToSpace(piece, cellIdx);
     }
 
     @Override
