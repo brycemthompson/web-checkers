@@ -106,7 +106,7 @@ public class GetGameRoute implements Route {
             vm.put("redPlayer", opponent);
             vm.put("whitePlayer", currentPlayer);
         }
-        vm.put("activeColor", "red");
+        vm.put("activeColor", Piece.Color.RED);
     }
 
     /**
@@ -136,7 +136,7 @@ public class GetGameRoute implements Route {
         3) There is a board.
             => This implies a game is already in progress.
          */
-        if (currentPlayerBoard == null && !currentPlayer.isInGame()){
+        if (currentPlayerBoard == null && !currentPlayer.isInGame()){ // current user is challenging a player
 
             // Finding the opponent in the playerList
             final String opponentUsername = request.queryParams("opponentUsername");
@@ -181,7 +181,7 @@ public class GetGameRoute implements Route {
             response.redirect(ConstsUI.GAME_URL);
 
             return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
-        } else if (currentPlayerBoard == null && currentPlayer.isInGame()){
+        } else if (currentPlayerBoard == null && currentPlayer.isInGame()){ // current user has been challenged
             // find the Player who challenged us
             Player opponent = currentPlayer.getOpponent();
             //System.out.println("Opponent is in game: " + opponent.isInGame());
@@ -197,7 +197,7 @@ public class GetGameRoute implements Route {
             vm.put(CURRENTPLAYERBOARD_PARAM, currentPlayerBoard);
 
             return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
-        } else {
+        } else { // the current user and their opponent have a game in progress
             // find the Player who challenged us
             Player opponent = currentPlayer.getOpponent();
             // populate the view model
