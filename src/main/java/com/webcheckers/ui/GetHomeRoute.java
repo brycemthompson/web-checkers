@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import com.webcheckers.Model.Authentication;
 import com.webcheckers.Model.Board;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
@@ -20,6 +19,7 @@ import com.webcheckers.util.Message;
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  * @contributor Bryce Thompson : bxt6698@rit.edu
  * @contributor Clayton Pruitt : chp4145@rit.edu
+ * @contributor Daniel Kitchen : djk9755@rit.edu
  */
 public class GetHomeRoute implements Route {
 
