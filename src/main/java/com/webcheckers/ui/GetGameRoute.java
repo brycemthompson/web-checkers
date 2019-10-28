@@ -1,6 +1,5 @@
 package com.webcheckers.ui;
 
-import com.sun.org.apache.bcel.internal.Const;
 import com.webcheckers.Model.Board;
 import com.webcheckers.Model.Piece;
 import com.webcheckers.Model.Player;
@@ -107,7 +106,7 @@ public class GetGameRoute implements Route {
             vm.put("redPlayer", opponent);
             vm.put("whitePlayer", currentPlayer);
         }
-        vm.put("activeColor", "red");
+        vm.put("activeColor", Piece.Color.RED);
     }
 
     /**
@@ -137,7 +136,7 @@ public class GetGameRoute implements Route {
         3) There is a board.
             => This implies a game is already in progress.
          */
-        if (currentPlayerBoard == null && !currentPlayer.isInGame()){
+        if (currentPlayerBoard == null && !currentPlayer.isInGame()){ // current user is challenging a player
 
             // Finding the opponent in the playerList
             final String opponentUsername = request.queryParams("opponentUsername");
@@ -146,21 +145,19 @@ public class GetGameRoute implements Route {
             {
                 if(player.getName().equals(opponentUsername))
                 {
-                    if(player.isInGame()) // The player is in a game and we are sending an error message
+                    opponent = player;
+
+                    if(opponent.isInGame()) // The player is in a game and we are sending an error message
                     {
                         vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
                         vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
-
+                        request.session().attribute(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
+                        response.redirect(ConstsUI.HOME_URL);
                         return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
                     }
-                    else // The player is not in a game and therefore will start the game
-                    {
-                        opponent = player;
-                        opponent.putInGame(currentPlayer, Piece.Color.WHITE);
-                        currentPlayer.putInGame(opponent, Piece.Color.RED);
-                        request.session().attribute(PostPlayerRoute.OPPONENT_PARAM, opponent);
-                        opponent = player;
-                    }
+                    opponent.putInGame(currentPlayer, Piece.Color.WHITE);
+                    currentPlayer.putInGame(opponent, Piece.Color.RED);
+                    request.session().attribute(PostPlayerRoute.OPPONENT_PARAM, opponent);
                 }
             }
 
@@ -176,7 +173,7 @@ public class GetGameRoute implements Route {
             response.redirect(ConstsUI.GAME_URL);
 
             return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
-        } else if (currentPlayerBoard == null && currentPlayer.isInGame()){
+        } else if (currentPlayerBoard == null && currentPlayer.isInGame()){ // current user has been challenged
             // find the Player who challenged us
             Player opponent = currentPlayer.getOpponent();
             //System.out.println("Opponent is in game: " + opponent.isInGame());
@@ -192,7 +189,7 @@ public class GetGameRoute implements Route {
             vm.put(CURRENTPLAYERBOARD_PARAM, currentPlayerBoard);
 
             return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
-        } else {
+        } else { // the current user and their opponent have a game in progress
             // find the Player who challenged us
             Player opponent = currentPlayer.getOpponent();
             // populate the view model

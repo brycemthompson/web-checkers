@@ -30,7 +30,7 @@
                 <#if currentUser??>
                     List of Users:
                     <#list allPlayers as player>
-                        <button name = "opponentUsername" type = "submit" value = ${player}>${player}</button>
+                        <button name = "opponentUsername" type = "submit" value ="${player}">${player}</button>
                     </#list>
                 </#if>
            </form>
