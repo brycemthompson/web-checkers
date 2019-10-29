@@ -36,4 +36,8 @@ public class Position {
         return this.cell;
     }
 
+    @Override
+    public String toString() {
+        return "(" + row + ", " + cell + ")";
+    }
 }
