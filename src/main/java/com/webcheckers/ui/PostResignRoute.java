@@ -2,11 +2,10 @@ package com.webcheckers.ui;
 
 import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.TemplateEngine;
+import spark.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -45,6 +44,16 @@ public class PostResignRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) throws Exception {
-        return null;
+        LOG.finer("PostResignRoute is invoked.");
+
+        final Map<String, Object> vm = new HashMap<>();
+
+
+        // re-render the default home page
+        vm.put(ConstsUI.TITLE_PARAM, "Welcome to Home Page!");
+        vm.put(ConstsUI.MESSAGE_PARAM, RESIGN_SUCCESSFUL);
+        int amountOfPlayersPlaying = playerLobby.size();
+        vm.put(GetHomeRoute.PLAYERSPLAYING_PARAM, amountOfPlayersPlaying);
+        return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
     }
 }
