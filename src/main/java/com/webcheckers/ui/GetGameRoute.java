@@ -7,7 +7,6 @@ import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
 import spark.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;

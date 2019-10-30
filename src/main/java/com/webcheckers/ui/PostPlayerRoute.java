@@ -1,8 +1,5 @@
 package com.webcheckers.ui;
 
-// THIS CLASS IS NOT COMPLETELY FUNCTION AND STILL NEEDS WORK
-// ERASE THIS MESSAGE BEFORE SUBMISSION
-
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
