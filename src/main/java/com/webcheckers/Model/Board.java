@@ -18,6 +18,10 @@ public class Board implements Iterable<Row> {
     // amount of rows in a board
     public static int rowsPerBoard = 8;
 
+    // players
+    private Player redPlayer;
+    private Player whitePlayer;
+
     /**
      * Constructor. Automatically populates the board with 8 rows.
      */
@@ -115,6 +119,36 @@ public class Board implements Iterable<Row> {
     public Move getBackupMove()
     {
         return this.backupMove;
+    }
+
+    /**
+     * Sets the red Player to be the given Player.
+     * @param player the Player with red pieces
+     */
+    public void setRedPlayer(Player player){
+        this.redPlayer = player;
+    }
+
+    /**
+     * Sets the white Player to be the given Player.
+     * @param player the Player with white pieces
+     */
+    public void setWhitePlayer(Player player){
+        this.whitePlayer = player;
+    }
+
+    /**
+     * @return redPlayer
+     */
+    public Player getRedPlayer(){
+        return this.redPlayer;
+    }
+
+    /**
+     * @return whitePlayer
+     */
+    public Player getWhitePlayer(){
+        return this.whitePlayer;
     }
 
     /**
