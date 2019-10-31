@@ -76,12 +76,18 @@ public class Player
      */
     @Override
     public boolean equals(Object o){
+        // A Player will always be equal to itself.
+        if (o == this){
+            return true;
+        }
+
+        // A Player can only be equal to another Player.
         if (!(o instanceof Player)){
             return false;
         }
 
+        // Two Players are equal if they have the same name.
         Player p = (Player) o;
-
         return this.getName().equals(p.getName());
     }
 
