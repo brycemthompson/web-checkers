@@ -1,13 +1,15 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
-import com.webcheckers.Model.PlayerLobby;
+import com.webcheckers.Model.*;
 import com.webcheckers.util.Message;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
 import spark.*;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -30,16 +32,16 @@ public class PostSubmitTurnRoute implements Route {
 
         //TODO: In Feature-SimpleMove, submitTurn will always be valid. Not the case for future branches!
 
-        // get Message to put in response
-        Message msg = Message.info("Good move!");
+        // get list of proposed move sequence as well as our board
+        ArrayList<Move> proposedMoves = request.session().attribute(ConstsUI.PROPOSED_MOVES_PARAM);
+        Board board = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
 
-        // if the turn is valid, re-request Game URL and return the success message
-        if (msg.getType() == Message.Type.INFO){
-            //TODO: redirect to game page
-            return new Gson().toJson(msg);
+        // as we are assuming all moves are currently valid, process them all
+        for (Move move : proposedMoves){
+            board.movePiece(move);
         }
 
-        return null;
+        return new Gson().toJson(Message.info("Turn submitted."));
 
         /*
         final Map<String, Object> vm = new HashMap<>();

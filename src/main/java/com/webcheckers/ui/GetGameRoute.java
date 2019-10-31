@@ -120,15 +120,42 @@ public class GetGameRoute implements Route {
         vm.put("activeColor", Piece.Color.RED);
     }
 
+    /**
+     * Swaps the active Player.
+     * @param vm HashMap
+     * @param currentPlayer currentPlayer's Player object
+     */
+    private static void switchActivePlayer(Map<String, Object> vm, Player currentPlayer){
+        if (currentPlayer.getColor() == Piece.Color.RED){
+            vm.put("activeColor", Piece.Color.WHITE);
+        } else {
+            vm.put("activeColor", Piece.Color.RED);
+        }
+    }
+
 
     /**
      * Given an HTTP request and a view-model, populate the view-model with the necessary data in order to
      * update the Game view.
-     * @param request an HTTP request
-     * @param vm a view-model map
      */
-    public static void updateGameViewModel(Request request, Map<String, Object> vm){
+    public static void updateGameViewModel(Player currentPlayer, Player opponentPlayer,
+                                           Board currentPlayerBoard,
+                                           Map<String, Object> vm){
+        vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
+        vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
+        vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
+        vm.put(ConstsUI.BOARD_PARAM, currentPlayerBoard);
+        vm.put(ConstsUI.CURRENT_USER_BOARD_PARAM, currentPlayerBoard);
 
+        if (currentPlayer.getColor() == Piece.Color.RED){
+            vm.put("redPlayer", currentPlayer);
+            vm.put("whitePlayer", opponentPlayer);
+        } else {
+            vm.put("redPlayer", opponentPlayer);
+            vm.put("whitePlayer", currentPlayer);
+        }
+
+        switchActivePlayer(vm, currentPlayer);
     }
 
     /**
@@ -141,9 +168,9 @@ public class GetGameRoute implements Route {
         vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
         vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
         vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
-        populateViewModelPlayerData(vm, currentPlayer, opponentPlayer);
         vm.put(ConstsUI.BOARD_PARAM, currentPlayerBoard);
-        vm.put(CURRENTPLAYERBOARD_PARAM, currentPlayerBoard);
+        vm.put(ConstsUI.CURRENT_USER_BOARD_PARAM, currentPlayerBoard);
+        populateViewModelPlayerData(vm, currentPlayer, opponentPlayer);
     }
 
     /**
@@ -249,6 +276,7 @@ public class GetGameRoute implements Route {
 
             drawBoard(newBoard, currentPlayer.getColor(), opponent.getColor());
 
+            /*
             // populate the view model
             buildGameViewModel(
                     currentPlayer,
@@ -256,6 +284,7 @@ public class GetGameRoute implements Route {
                     newBoard,
                     vm
             );
+             */
 
             return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
         }
