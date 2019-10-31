@@ -152,34 +152,6 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     * Two Boards equal each other if they have the same Players.
-     * NOTE: This equals() method would not make a lot of sense if we allowed Players to have multiple games. However,
-     *       as we are not doing that enhancement, this equals() should be fine as is.
-     * @param obj object to compare this Board to
-     */
-    @Override
-    public boolean equals(Object obj) {
-        // a Board is always equal to itself
-        if (obj == this){
-            return true;
-        }
-
-        // a Board can only be equal to other boards
-        if (!(obj instanceof Board)){
-            return false;
-        }
-
-        // a Board is equal to another if they have the same players
-        Board b = (Board) obj;
-
-        if (this.redPlayer == null || this.whitePlayer == null || b.redPlayer == null || b.whitePlayer == null){
-            return false;
-        }
-
-        return ((this.redPlayer.equals(b.redPlayer)) && (this.whitePlayer.equals(b.whitePlayer)));
-    }
-
-    /**
      * Override iterator function. Contains other functions for the iterator
      * @return it: The new iterator
      */

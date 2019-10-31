@@ -70,6 +70,14 @@ public class Player
     }
 
     /**
+     * toString override that returns Player's username.
+     */
+    @Override
+    public String toString() {
+        return ("Player(" + this.name + ")");
+    }
+
+    /**
      * Override for equals
      * @param o: Hopefully another Player object to compare to
      * @return boolean value based on the comparison

@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import com.webcheckers.Model.Board;
+import com.webcheckers.Model.Piece;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import spark.*;
@@ -115,23 +116,26 @@ public class GetHomeRoute implements Route {
 
     } else if (currentUser != null){ // current user is supposed to be in a game
 
-        // find the Player who challenged us
-        Player opponent = currentUser.getOpponent();
+          // find the Player who challenged us
+          Player opponent = currentUser.getOpponent();
 
-        // create our Board
-        Board currentUserBoard = new Board();
-        GetGameRoute.drawBoard(currentUserBoard, currentUser.getColor(), opponent.getColor());
-        request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, currentUserBoard);
+          // create our Board
+          Board currentUserBoard;
+          if (currentUser.getColor() == Piece.Color.RED){
+              currentUserBoard = playerLobby.getBoard(currentUser, opponent);
+          } else {
+              currentUserBoard = playerLobby.getBoard(opponent, currentUser);
+          }
+          request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+          GetGameRoute.drawBoard(currentUserBoard, currentUser.getColor(), opponent.getColor());
 
-        // populate our view model
-        vm.put(ConstsUI.TITLE_PARAM, ConstsUI.WELCOME_MSG);
-        vm.put(ConstsUI.CURRENT_USER_PARAM, currentUser);
-        vm.put(ConstsUI.VIEW_MODE_PARAM, ConstsUI.VIEW_MODEL_DEFAULT_VALUE);
-        GetGameRoute.populateViewModelPlayerData(vm, currentUser, opponent);
-        vm.put(ConstsUI.BOARD_PARAM, currentUserBoard);
-        vm.put(GetGameRoute.CURRENTPLAYERBOARD_PARAM, currentUserBoard);
+          // populate our view model
+          GetGameRoute.buildGameViewModel(currentUser,
+                  opponent,
+                  currentUserBoard,
+                  vm);
 
-        return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
+          return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
     } else { // there is no current user
         int amountOfPlayersPlaying = playerLobby.size();
         vm.put(PLAYERSPLAYING_PARAM, amountOfPlayersPlaying);

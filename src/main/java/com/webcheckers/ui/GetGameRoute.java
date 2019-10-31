@@ -85,8 +85,22 @@ public class GetGameRoute implements Route {
      * @param opponentColor: Color of the opponent's pieces
      */
     public static void drawBoard(Board board, Piece.Color currentUserColor, Piece.Color opponentColor){
+        System.out.println("board for drawing: " + board);
         drawOpponentPieces(board, opponentColor);
         drawCurrentUserPieces(board, currentUserColor);
+    }
+
+    /**
+     * Initializes a Board with the given red and white Players.
+     * @param redPlayer the Board's red Player
+     * @param whitePlayer the Board's white Player
+     * @return a Board with the given white and red Players
+     */
+    public static Board initializeBoard(Player redPlayer, Player whitePlayer){
+        Board b = new Board();
+        b.setRedPlayer(redPlayer);
+        b.setWhitePlayer(whitePlayer);
+        return b;
     }
 
     /**
@@ -184,14 +198,17 @@ public class GetGameRoute implements Route {
                 }
             }
 
-            currentPlayerBoard = new Board();
-            drawBoard(currentPlayerBoard, currentPlayer.getColor(), opponent.getColor());
-            request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, currentPlayerBoard);
+            System.out.println("CHALLENGER!");
+            Board newBoard = initializeBoard(currentPlayer, opponent);
+            request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, newBoard);
+            System.out.println("newBoard (challenger): " + newBoard);
+            drawBoard(newBoard, currentPlayer.getColor(), opponent.getColor());
+            playerLobby.addBoard(newBoard);
 
             buildGameViewModel(
                     currentPlayer,
                     opponent,
-                    currentPlayerBoard,
+                    newBoard,
                     vm
                     );
 
@@ -201,17 +218,19 @@ public class GetGameRoute implements Route {
         } else if (currentPlayerBoard == null && currentPlayer.isInGame()){ // current user has been challenged
             // find the Player who challenged us
             Player opponent = currentPlayer.getOpponent();
-            //System.out.println("Opponent is in game: " + opponent.isInGame());
-            // create our Board
-            currentPlayerBoard = new Board();
-            drawBoard(currentPlayerBoard, currentPlayer.getColor(), opponent.getColor());
-            request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, currentPlayerBoard);
+
+            // get our Board (note that challenging Player will always be red and challenged Player will always be white)
+            System.out.println("CHALLENGED!");
+            Board newBoard = playerLobby.getBoard(currentPlayer, opponent);
+            request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, newBoard);
+            System.out.println("newBoard (challenged): " + newBoard);
+            drawBoard(newBoard, currentPlayer.getColor(), opponent.getColor());
 
             // populate our view model
             buildGameViewModel(
                     currentPlayer,
                     opponent,
-                    currentPlayerBoard,
+                    newBoard,
                     vm
             );
 
@@ -219,11 +238,22 @@ public class GetGameRoute implements Route {
         } else { // the current user and their opponent have a game in progress
             // find the Player who challenged us
             Player opponent = currentPlayer.getOpponent();
+
+            // find our Board
+            Board newBoard;
+            if (currentPlayer.getColor() == Piece.Color.RED){
+                newBoard = playerLobby.getBoard(currentPlayer, opponent);
+            } else {
+                newBoard = playerLobby.getBoard(opponent, currentPlayer);
+            }
+
+            drawBoard(newBoard, currentPlayer.getColor(), opponent.getColor());
+
             // populate the view model
             buildGameViewModel(
                     currentPlayer,
                     opponent,
-                    currentPlayerBoard,
+                    newBoard,
                     vm
             );
 

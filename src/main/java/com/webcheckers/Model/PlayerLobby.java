@@ -94,6 +94,7 @@ public class PlayerLobby
      * @param board a new Board to track
      */
     public void addBoard(Board board){
+        System.out.println("Adding " + board + " to list of boards...");
         this.boards.add(board);
     }
 
@@ -104,17 +105,15 @@ public class PlayerLobby
      * @return the Board with both the given red and white Players
      */
     public Board getBoard(Player redPlayer, Player whitePlayer){
-        // create Board for comparing
-        Board b = new Board();
-        b.setRedPlayer(redPlayer);
-        b.setWhitePlayer(whitePlayer);
-        // find the Board we are looking for
-        for (Board board : boards){
-            if (board.equals(b)){
-                return board;
+        System.out.println("All boards in PlayerLobby: " + boards);
+        System.out.println("\tChecking if there is a Board w/ RED: " + redPlayer + " and WHITE: " + whitePlayer);
+        for (Board b : boards){
+            System.out.println("\t\tFound Board w/ RED: " + b.getRedPlayer() + " and WHITE: " + b.getWhitePlayer());
+            if (b.getRedPlayer().equals(redPlayer) && b.getWhitePlayer().equals(whitePlayer)) {
+                System.out.println("\t\tBoard match found!");
+                return b;
             }
         }
-        // no Board found
         return null;
     }
 
