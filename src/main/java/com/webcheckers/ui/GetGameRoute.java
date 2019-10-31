@@ -113,8 +113,23 @@ public class GetGameRoute implements Route {
      * @param request an HTTP request
      * @param vm a view-model map
      */
-    public static void updateGameView(Request request, Map<String, Object> vm){
+    public static void updateGameViewModel(Request request, Map<String, Object> vm){
 
+    }
+
+    /**
+     * Build the given view-model to reflect Game View.
+     * @param vm view-model to build
+     */
+    public static void buildGameViewModel(Player currentPlayer, Player opponentPlayer,
+                                          Board currentPlayerBoard,
+                                          Map<String, Object> vm){
+        vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
+        vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
+        vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
+        populateViewModelPlayerData(vm, currentPlayer, opponentPlayer);
+        vm.put(ConstsUI.BOARD_PARAM, currentPlayerBoard);
+        vm.put(CURRENTPLAYERBOARD_PARAM, currentPlayerBoard);
     }
 
     /**
@@ -173,12 +188,13 @@ public class GetGameRoute implements Route {
             drawBoard(currentPlayerBoard, currentPlayer.getColor(), opponent.getColor());
             request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, currentPlayerBoard);
 
-            vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
-            vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
-            vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
-            populateViewModelPlayerData(vm, currentPlayer, opponent);
-            vm.put(ConstsUI.BOARD_PARAM, currentPlayerBoard);
-            vm.put(CURRENTPLAYERBOARD_PARAM, currentPlayerBoard);
+            buildGameViewModel(
+                    currentPlayer,
+                    opponent,
+                    currentPlayerBoard,
+                    vm
+                    );
+
             response.redirect(ConstsUI.GAME_URL);
 
             return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
@@ -192,24 +208,24 @@ public class GetGameRoute implements Route {
             request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, currentPlayerBoard);
 
             // populate our view model
-            vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
-            vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
-            vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
-            populateViewModelPlayerData(vm, currentPlayer, opponent);
-            vm.put(ConstsUI.BOARD_PARAM, currentPlayerBoard);
-            vm.put(CURRENTPLAYERBOARD_PARAM, currentPlayerBoard);
+            buildGameViewModel(
+                    currentPlayer,
+                    opponent,
+                    currentPlayerBoard,
+                    vm
+            );
 
             return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
         } else { // the current user and their opponent have a game in progress
             // find the Player who challenged us
             Player opponent = currentPlayer.getOpponent();
             // populate the view model
-            vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
-            vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
-            vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
-            populateViewModelPlayerData(vm, currentPlayer, opponent);
-            vm.put(ConstsUI.BOARD_PARAM, currentPlayerBoard);
-            vm.put(CURRENTPLAYERBOARD_PARAM, currentPlayerBoard);
+            buildGameViewModel(
+                    currentPlayer,
+                    opponent,
+                    currentPlayerBoard,
+                    vm
+            );
 
             return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
         }
