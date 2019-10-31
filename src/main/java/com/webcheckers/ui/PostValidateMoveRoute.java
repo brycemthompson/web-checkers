@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.webcheckers.Model.*;
 import com.webcheckers.util.Message;
 import spark.Request;
@@ -38,11 +39,19 @@ public class PostValidateMoveRoute implements Route {
         // get list of valid moves
         ArrayList<Move> validMoves = currentBoard.getAllValidMoves(currentPlayerColor);
 
-        // check if the Move given is in the list of valid moves and give the appropriate validation message
+        // check if the Move given is in the list of valid moves
         Message validationMessage = null;
         if (validMoves.contains(move)){
+            // if a move is valid, add it to the list of proposed moves
+            ArrayList<Move> proposedMoves = request.session().attribute(ConstsUI.PROPOSED_MOVES_PARAM);
+            if (proposedMoves == null){
+                proposedMoves = new ArrayList<Move>();
+            }
+            proposedMoves.add(move);
+            request.session().attribute(ConstsUI.PROPOSED_MOVES_PARAM, proposedMoves);
+
+            // set validation message
             validationMessage = Message.info("Good move!");
-            currentBoard.movePiece(move);
         } else {
             validationMessage = Message.error("Piece has been moved too far.");
         }

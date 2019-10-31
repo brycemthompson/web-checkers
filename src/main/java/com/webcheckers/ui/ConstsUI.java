@@ -23,6 +23,7 @@ public final class ConstsUI {
     public static final String ACTION_DATA_PARAM = "actionData";
     public static final String CURRENTUSER_PARAM = "currentUser";
     public static final String OPPONENT_PARAM = "opponent";
+    public static final String PROPOSED_MOVES_PARAM = "proposedMoves";
 
     /**
      * Default Values
