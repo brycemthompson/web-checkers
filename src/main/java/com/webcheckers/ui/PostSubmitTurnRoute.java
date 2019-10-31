@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.google.gson.Gson;
 import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
 import spark.Request;
@@ -27,6 +28,20 @@ public class PostSubmitTurnRoute implements Route {
     public Object handle(Request request, Response response) throws Exception {
         LOG.finer("PostSubmitTurnRoute invoked");
 
+        //TODO: In Feature-SimpleMove, submitTurn will always be valid. Not the case for future branches!
+
+        // get Message to put in response
+        Message msg = Message.info("Good move!");
+
+        // if the turn is valid, re-request Game URL and return the success message
+        if (msg.getType() == Message.Type.INFO){
+            //TODO: redirect to game page
+            return new Gson().toJson(msg);
+        }
+
+        return null;
+
+        /*
         final Map<String, Object> vm = new HashMap<>();
         vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
 
@@ -48,5 +63,6 @@ public class PostSubmitTurnRoute implements Route {
         }
 
         return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
+         */
     }
 }
