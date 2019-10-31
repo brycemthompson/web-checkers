@@ -55,4 +55,17 @@ public class Piece {
         return this.color;
     }
 
+    /**
+     * Returns the Color opposite of what was given.
+     * @param color a given Color
+     * @return the Color opposite the given Color
+     */
+    public static Color getOtherColor(Color color) {
+        if (color == Color.RED){
+            return Color.WHITE;
+        } else {
+            return Color.RED;
+        }
+    }
+
 }

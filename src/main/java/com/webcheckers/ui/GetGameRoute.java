@@ -163,6 +163,7 @@ public class GetGameRoute implements Route {
 
             currentPlayerBoard = new Board();
             drawBoard(currentPlayerBoard, currentPlayer.getColor(), opponent.getColor());
+            request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, currentPlayerBoard);
 
             vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
             vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
@@ -180,6 +181,8 @@ public class GetGameRoute implements Route {
             // create our Board
             currentPlayerBoard = new Board();
             drawBoard(currentPlayerBoard, currentPlayer.getColor(), opponent.getColor());
+            request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, currentPlayerBoard);
+
             // populate our view model
             vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
             vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);

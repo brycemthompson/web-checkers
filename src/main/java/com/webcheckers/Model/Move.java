@@ -67,6 +67,24 @@ public class Move {
 
     @Override
     public String toString() {
-        return start.toString() + ", " + end.toString();
+        return start.toString() + " -> " + end.toString();
+    }
+
+    // Overriding equals() to check if two Moves are equal by checking if their starting and ending positions are the same.
+    @Override
+    public boolean equals(Object obj) {
+        // this Move equals itself
+        if (obj == this){
+            return true;
+        }
+
+        // this Move cannot equal an object that is not a Move
+        if (!(obj instanceof Move)){
+            return false;
+        }
+
+        // two Move are equal if their starting and ending positions are the same
+        Move m = (Move) obj;
+        return (this.start.equals(m.start) && this.end.equals(m.end));
     }
 }

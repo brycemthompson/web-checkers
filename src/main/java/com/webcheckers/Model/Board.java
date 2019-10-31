@@ -47,26 +47,55 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     * Calculates all possible and valid Moves that can be made between both Players.
+     * Calculates all possible and valid Moves that can be made for the given Player.
+     * @param player the Piece Color for the player
      * @return array list containing all valid Moves
      */
-    public ArrayList<Move> getAllValidMoves(){
+    public ArrayList<Move> getAllValidMoves(Piece.Color player){
 
-        // scan each row and collect all spaces with pieces
+        // get opponent color
+        Piece.Color opponent = Piece.getOtherColor(player);
+
+        // scan each row and collect all spaces with pieces with the matching color
         ArrayList<Space> allStartingSpaces = new ArrayList<Space>();
         for (Row row : rows){
             for (Space space : row){
-                if (space.hasPiece()){
+                if (space.hasPiece(player)){
                     allStartingSpaces.add(space);
                 }
             }
         }
 
-        // for all valid starting spaces, find all valid end spaces
+        // generate all valid Moves with the given start spaces
+        ArrayList<Move> allValidMoves = new ArrayList<Move>();
+        for (Space start : allStartingSpaces){
+            // scan for valid spaces or spaces with pieces that can be jumped
+            System.out.println("For " + start + "...");
+            for (int r = -1; r <= 1; r++){
+                for (int c = -1; c <= 1; c++){
+                    Space cur = null;
+                    try {
+                        cur = getSpace(start.getCellIdy() + r, start.getCellIdx() + c);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        continue;
+                    } catch (IndexOutOfBoundsException e) {
+                        continue;
+                    }
 
-        
+                    if (cur.isValid()){
+                        // space is a valid space to move to
+                        System.out.println("\t" + cur + " is valid to move to.");
+                        allValidMoves.add(new Move(start.getPosition(), cur.getPosition()));
+                    } else if (cur.hasPiece(opponent)){
+                        // space has an opponent piece => check if it can be jumped
+                        // TODO
+                    }
+                }
+            }
+        }
 
-        return null;
+        // return list of valid moves
+        return allValidMoves;
     }
 
     /**

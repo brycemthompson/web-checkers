@@ -148,7 +148,7 @@ public class WebServer {
     get(ConstsUI.GAME_URL, new GetGameRoute(templateEngine, playerLobby));
 
     // Initialize the PostValidateMoveRoute.
-    post(ConstsUI.VALIDATEMOVE_URL, new PostValidateMoveRoute(templateEngine));
+    post(ConstsUI.VALIDATEMOVE_URL, new PostValidateMoveRoute(templateEngine, playerLobby));
 
     // Initialize the PostGameRoute
 //    post(GAME_URL, new PostGameRoute(templateEngine));

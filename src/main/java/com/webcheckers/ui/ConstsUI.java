@@ -13,6 +13,7 @@ public final class ConstsUI {
      */
     public static final String BOARD_PARAM = "board";
     public static final String CURRENT_USER_PARAM = "currentUser";
+    public static final String CURRENT_USER_BOARD_PARAM = "currentUserBoard";
     public static final String MESSAGE_PARAM = "message";
     public static final String PLAYER_LIST_PARAM = "allPlayers";
     public static final String TITLE_PARAM = "title";
@@ -20,6 +21,8 @@ public final class ConstsUI {
     public static final String VIEW_MODE_PARAM = "viewMode";
     public static final String DISPLAYING_ERROR_PARAM = "displayingError";
     public static final String ACTION_DATA_PARAM = "actionData";
+    public static final String CURRENTUSER_PARAM = "currentUser";
+    public static final String OPPONENT_PARAM = "opponent";
 
     /**
      * Default Values

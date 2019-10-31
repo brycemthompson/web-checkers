@@ -38,6 +38,12 @@ public class Space {
     }
 
     /**
+     * Getter for the cellIdy.
+     * @return cellIdy
+     */
+    public int getCellIdy() { return cellIdy; }
+
+    /**
      * Getter for Piece
      * @return this.piece
      */
@@ -52,11 +58,27 @@ public class Space {
     public boolean hasPiece(){ return this.piece != null; }
 
     /**
+     * Checkers whether or not this Space has a Piece with the given color.
+     * @return true if this Space has a Piece with the given color, false otherwise
+     */
+    public boolean hasPiece(Piece.Color color){
+        if (this.piece == null) {
+            return false;
+        } else {
+            return this.piece.getColor() == color;
+        }
+    }
+
+    /**
      * Adds a Piece to this space
      * @param piece: The Piece to add
      */
     public void addPieceToSpace(Piece piece){
         this.piece = piece;
+    }
+
+    public Position getPosition(){
+        return new Position(this.cellIdy, this.cellIdx);
     }
 
     /**
@@ -65,5 +87,10 @@ public class Space {
      */
     public boolean isValid(){
         return ((cellIdx % 2 != cellIdy % 2) && this.piece == null);
+    }
+
+    @Override
+    public String toString() {
+        return new Position(cellIdy, cellIdx).toString();
     }
 }

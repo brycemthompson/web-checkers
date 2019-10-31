@@ -121,6 +121,7 @@ public class GetHomeRoute implements Route {
         // create our Board
         Board currentUserBoard = new Board();
         GetGameRoute.drawBoard(currentUserBoard, currentUser.getColor(), opponent.getColor());
+        request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, currentUserBoard);
 
         // populate our view model
         vm.put(ConstsUI.TITLE_PARAM, ConstsUI.WELCOME_MSG);
