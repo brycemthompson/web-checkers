@@ -106,6 +106,17 @@ public class GetGameRoute implements Route {
         vm.put("activeColor", Piece.Color.RED);
     }
 
+
+    /**
+     * Given an HTTP request and a view-model, populate the view-model with the necessary data in order to
+     * update the Game view.
+     * @param request an HTTP request
+     * @param vm a view-model map
+     */
+    public static void updateGameView(Request request, Map<String, Object> vm){
+
+    }
+
     /**
      * Handles all the happenings of GetGameRoute
      * @param request
