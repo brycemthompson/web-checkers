@@ -13,6 +13,7 @@ public class Board implements Iterable<Row> {
 
     // all rows in the board
     ArrayList<Row> rows;
+    private Move backupMove;
 
     // amount of rows in a board
     public static int rowsPerBoard = 8;
@@ -66,6 +67,25 @@ public class Board implements Iterable<Row> {
         
 
         return null;
+    }
+
+    /**
+     * Setter for the creation of a backup move for the purposes of undoing a move before a submission
+     * @param move: The move to put in backupMove
+     */
+    public void setBackupMove(Move move)
+    {
+        this.backupMove = move;
+    }
+
+    /**
+     * Getter for the backupMove to return the backupMove for the purpose to returning the moved piece to the original
+     * location
+     * @return backupMove: The Move to move the Piece back to before a submission is sent
+     */
+    public Move getBackupMove()
+    {
+        return this.backupMove;
     }
 
     /**
