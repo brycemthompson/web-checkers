@@ -36,8 +36,24 @@ public class Board implements Iterable<Row> {
     /**
      * Adds the given Piece to the given coordinates.
      */
-    public  void addPieceToSpace(Piece piece, int cellIdx, int cellIdy){
+    public void addPieceToSpace(Piece piece, int cellIdx, int cellIdy){
         this.rows.get(cellIdy).addPieceToSpace(piece, cellIdx);
+    }
+
+    /**
+     * Moves a Piece.
+     * @param move the Move object type containing the start and end
+     */
+    public void movePiece(Move move){
+        // get all necessary coordinates
+        int start_row = move.getStart().getRow();
+        int start_cell = move.getStart().getCell();
+        int end_row = move.getEnd().getRow();
+        int end_cell = move.getEnd().getCell();
+        // move the piece
+        Piece p = rows.get(start_row).getSpace(start_cell).getPiece();
+        rows.get(end_row).getSpace(end_cell).addPieceToSpace(p);
+        rows.get(start_row).getSpace(start_cell).removePieceFromSpace();
     }
 
     /**

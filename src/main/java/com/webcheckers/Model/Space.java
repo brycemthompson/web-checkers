@@ -77,6 +77,11 @@ public class Space {
         this.piece = piece;
     }
 
+    /**
+     * Removes a Piece from this space.
+     */
+    public void removePieceFromSpace() { this.piece = null; }
+
     public Position getPosition(){
         return new Position(this.cellIdy, this.cellIdx);
     }

@@ -42,6 +42,7 @@ public class PostValidateMoveRoute implements Route {
         Message validationMessage = null;
         if (validMoves.contains(move)){
             validationMessage = Message.info("Good move!");
+            currentBoard.movePiece(move);
         } else {
             validationMessage = Message.error("Piece has been moved too far.");
         }
