@@ -19,6 +19,7 @@ public final class ConstsUI {
     public static final String USERNAME_PARAM = "username";
     public static final String VIEW_MODE_PARAM = "viewMode";
     public static final String DISPLAYING_ERROR_PARAM = "displayingError";
+    public static final String ACTION_DATA_PARAM = "actionData";
 
     /**
      * Default Values
@@ -50,4 +51,5 @@ public final class ConstsUI {
     public static final String HOME_URL = "/";
     public static final String SIGNIN_URL = "/signin";
     public static final String SIGNOUT_URL = "/signout";
+    public static final String VALIDATEMOVE_URL = "/validateMove";
 }

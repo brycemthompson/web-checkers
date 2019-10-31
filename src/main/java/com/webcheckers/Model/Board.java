@@ -36,6 +36,39 @@ public class Board implements Iterable<Row> {
     }
 
     /**
+     * Gets the Space with the given coordinates.
+     * @param row the row the Space is in
+     * @param cell the cell the Space is in
+     * @return Space instance
+     */
+    public Space getSpace(int row, int cell){
+        return this.rows.get(row).getSpace(cell);
+    }
+
+    /**
+     * Calculates all possible and valid Moves that can be made between both Players.
+     * @return array list containing all valid Moves
+     */
+    public ArrayList<Move> getAllValidMoves(){
+
+        // scan each row and collect all spaces with pieces
+        ArrayList<Space> allStartingSpaces = new ArrayList<Space>();
+        for (Row row : rows){
+            for (Space space : row){
+                if (space.hasPiece()){
+                    allStartingSpaces.add(space);
+                }
+            }
+        }
+
+        // for all valid starting spaces, find all valid end spaces
+
+        
+
+        return null;
+    }
+
+    /**
      * Override iterator function. Contains other functions for the iterator
      * @return it: The new iterator
      */

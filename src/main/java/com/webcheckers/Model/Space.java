@@ -46,6 +46,12 @@ public class Space {
     }
 
     /**
+     * Checks whether or not this Space has a Piece.
+     * @return true if this Space has a piece, false otherwise
+     */
+    public boolean hasPiece(){ return this.piece != null; }
+
+    /**
      * Adds a Piece to this space
      * @param piece: The Piece to add
      */
