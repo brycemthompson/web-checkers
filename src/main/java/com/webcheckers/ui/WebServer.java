@@ -150,6 +150,9 @@ public class WebServer {
     // Initialize the PostValidateMoveRoute.
     post(ConstsUI.VALIDATEMOVE_URL, new PostValidateMoveRoute(templateEngine, playerLobby));
 
+    // Initialize the PostSubmitTurnRoute
+    post(ConstsUI.SUBMITTURN_URL, new PostSubmitTurnRoute(templateEngine, playerLobby));
+
     // Initialize the PostGameRoute
 //    post(GAME_URL, new PostGameRoute(templateEngine));
 

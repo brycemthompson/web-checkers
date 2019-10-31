@@ -22,9 +22,6 @@ public class GetGameRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
 
-    // Messages
-    private static final Message WELCOME_MSG = Message.info("Welcome to the game page.");
-
     // Constants for the ViewModel
     public static final String VIEW_NAME = "game.ftl";
     public static final String CURRENTPLAYERBOARD_PARAM = "currentPlayerBoard";
@@ -149,7 +146,7 @@ public class GetGameRoute implements Route {
 
                     if(opponent.isInGame()) // The player is in a game and we are sending an error message
                     {
-                        vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
+                        vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
                         vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
                         request.session().attribute(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
                         response.redirect(ConstsUI.HOME_URL);
@@ -165,7 +162,7 @@ public class GetGameRoute implements Route {
             drawBoard(currentPlayerBoard, currentPlayer.getColor(), opponent.getColor());
             request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, currentPlayerBoard);
 
-            vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
+            vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
             vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
             vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
             populateViewModelPlayerData(vm, currentPlayer, opponent);
@@ -184,7 +181,7 @@ public class GetGameRoute implements Route {
             request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, currentPlayerBoard);
 
             // populate our view model
-            vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
+            vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
             vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
             vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
             populateViewModelPlayerData(vm, currentPlayer, opponent);
@@ -196,7 +193,7 @@ public class GetGameRoute implements Route {
             // find the Player who challenged us
             Player opponent = currentPlayer.getOpponent();
             // populate the view model
-            vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
+            vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
             vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
             vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
             populateViewModelPlayerData(vm, currentPlayer, opponent);
