@@ -1,4 +1,4 @@
-package com.webcheckers.model;
+package model;
 
 /**
  * PlayerTest: Unit Test for Player Class

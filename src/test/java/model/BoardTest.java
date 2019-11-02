@@ -1,16 +1,15 @@
-package com.webcheckers.model;
+package model;
 
 import com.webcheckers.Model.Piece;
 import com.webcheckers.Model.Row;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@Tag("Model-Tier")
 public class BoardTest implements Iterable<Row> {
 
         ArrayList<Row> rows;
