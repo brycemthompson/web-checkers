@@ -39,8 +39,10 @@ public final class ConstsUI {
     public static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
     public static final Message GAME_WELCOME_MSG = Message.info("Welcome to the game page!");
     public static final Message SIGN_IN_MSG = Message.info("Sign in to play!");
-    public static final Message PLAYER_IN_GAME_ERROR_MSG = Message.error("The chosen player is already in a game.");
     public static final Message SUBMIT_SUCCESSFUL_MSG = Message.info("Submission Successful!");
+    public static final Message BACKUPMOVE_SUCCESSFUL_MSG = Message.info("The move has been reversed.");
+    public static final Message PLAYER_IN_GAME_ERROR_MSG = Message.error("The chosen player is already in a game.");
+    public static final Message BACKUPMOVE_FAIL_ERROR_MSG = Message.error("The backup move failed.");
     public static final Message JUMP_REQUIRED_ERROR_MSG = Message.error("Invalid Turn. Jump move available.");
 
     /**
@@ -60,4 +62,5 @@ public final class ConstsUI {
     public static final String SIGNOUT_URL = "/signout";
     public static final String VALIDATEMOVE_URL = "/validateMove";
     public static final String SUBMITTURN_URL = "/submitTurn";
+    public static final String BACKUPMOVE_URL = "/backupMove";
 }

@@ -153,6 +153,9 @@ public class WebServer {
     // Initialize the PostSubmitTurnRoute
     post(ConstsUI.SUBMITTURN_URL, new PostSubmitTurnRoute(templateEngine, playerLobby));
 
+    // Initialize the PostBackupMoveRoute
+      post(ConstsUI.BACKUPMOVE_URL, new PostBackupMoveRoute(templateEngine, playerLobby));
+
     // Initialize the PostGameRoute
 //    post(GAME_URL, new PostGameRoute(templateEngine));
 
