@@ -32,14 +32,14 @@ public class PostSubmitTurnRoute implements Route {
 
         //TODO: In Feature-SimpleMove, submitTurn will always be valid. Not the case for future branches!
 
-        // get list of proposed move sequence as well as our board
+        /*// get list of proposed move sequence as well as our board
         ArrayList<Move> proposedMoves = request.session().attribute(ConstsUI.PROPOSED_MOVES_PARAM);
         Board board = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
 
         // as we are assuming all moves are currently valid, process them all
         for (Move move : proposedMoves){
             board.movePiece(move);
-        }
+        }*/
 
         return new Gson().toJson(Message.info("Turn submitted."));
 

@@ -46,6 +46,7 @@ public class PostBackupMoveRoute implements Route {
         else // Otherwise, reverse the move and send the success message
         {
             backupMoveMessage = ConstsUI.BACKUPMOVE_SUCCESSFUL_MSG;
+            request.session().attribute(ConstsUI.BACKUP_MOVE_PARAM, backupMove);
             currentBoard.movePiece(backupMove);
         }
 

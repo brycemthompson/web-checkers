@@ -52,6 +52,12 @@ public class PostValidateMoveRoute implements Route {
 
             // set validation message
             validationMessage = Message.info("Good move!");
+
+            // get list of proposed move sequence as well as our board
+            Board board = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+
+            // Move the piece here so we can backup if requested
+            board.movePiece(move);
         } else {
             validationMessage = Message.error("Piece has been moved too far.");
         }
