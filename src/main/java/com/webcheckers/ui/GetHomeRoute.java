@@ -104,15 +104,15 @@ public class GetHomeRoute implements Route {
       if (currentUser != null && !currentUser.isInGame()) { // current user is not in a game
 
         // populate view model with current user's info
-        vm.put(ConstsUI.CURRENT_USER_PARAM, currentUser);
-        vm.put(ConstsUI.USERNAME_PARAM, currentUser.getName());
+          vm.put(ConstsUI.CURRENT_USER_PARAM, currentUser);
+          vm.put(ConstsUI.USERNAME_PARAM, currentUser.getName());
 
-        // populate view model with list of players that excludes the current player
-        ArrayList<String> playerNames = playerLobby.getPlayerNames();
-        playerNames.remove(currentUser.getName());
-        vm.put(ConstsUI.PLAYER_LIST_PARAM, playerNames);
+          // populate view model with list of players that excludes the current player
+          ArrayList<String> playerNames = playerLobby.getPlayerNames();
+          playerNames.remove(currentUser.getName());
+          vm.put(ConstsUI.PLAYER_LIST_PARAM, playerNames);
 
-        return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
+          return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
 
     } else if (currentUser != null){ // current user is supposed to be in a game
 

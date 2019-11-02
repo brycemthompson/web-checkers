@@ -16,7 +16,7 @@ public class Player
     private Player opponent;
 
     // the current color for this Player
-    private Piece.Color color;
+    public Piece.Color color;
 
     /**
      * Player Constructor
