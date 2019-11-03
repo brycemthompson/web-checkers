@@ -54,7 +54,7 @@ public class GetGameRoute implements Route {
     private GameState determineGameState(Player currentPlayer, Board currentPlayerBoard){
         if ((currentPlayerBoard == null) && !currentPlayer.isInGame()){
             return GameState.CHALLENGING;
-        } else if ((currentPlayerBoard == null) && currentPlayer.isInGame()){
+        } else if ((currentPlayerBoard == null)){
             return GameState.CHALLENGED;
         } else {
             return GameState.INGAME;
@@ -144,7 +144,7 @@ public class GetGameRoute implements Route {
         // get the current user
         Player currentPlayer = request.session().attribute(ConstsUI.CURRENTUSER_PARAM);
         // check if a board currently exists for this user
-        Board currentPlayerBoard = request.session().attribute(CURRENTPLAYERBOARD_PARAM);
+        Board currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
         // declare opponent user
         Player opponent = null;
 
