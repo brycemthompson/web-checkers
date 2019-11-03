@@ -68,17 +68,13 @@ public class Board implements Iterable<Row> {
         int end_row = move.getEnd().getRow();
         int end_cell = move.getEnd().getCell();
 
-        // creating the backup move
-        Position backupPos1 = rows.get(start_row).getSpace(start_cell).getPosition();
-        Position backupPos2 = rows.get(end_row).getSpace(end_cell).getPosition();
-
-        // setting Pos2 as the first Position in order to have the Move go from current Pos to original Pos
-        backupMove = new Move(backupPos1, backupPos2);
-
         // move the piece
         Piece p = rows.get(start_row).getSpace(start_cell).getPiece();
         rows.get(end_row).getSpace(end_cell).addPieceToSpace(p);
         rows.get(start_row).getSpace(start_cell).removePieceFromSpace();
+
+        // set the backup move for this Board
+        this.backupMove = new Move(move.getEnd(), move.getStart());
     }
 
     /**

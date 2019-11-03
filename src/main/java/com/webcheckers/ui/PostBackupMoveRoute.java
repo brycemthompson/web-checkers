@@ -26,16 +26,12 @@ public class PostBackupMoveRoute implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
 
-        // get the Move to validate from the Request
-        String json = request.queryParams(ConstsUI.ACTION_DATA_PARAM);
-        Move move = new Gson().fromJson(json, Move.class);
-        System.out.println("The move: " + move);
-
-        // get current user's board and color
+        // get current user's board
         Board currentBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
 
         // Backing up the move
         Move backupMove = currentBoard.getBackupMove();
+        System.out.println("backup move: " + backupMove);
         Message backupMoveMessage;
 
         // Checking if the backup move exists
