@@ -229,7 +229,6 @@ public class GetGameRoute implements Route {
             Board newBoard = initializeBoard(currentPlayer, opponent);
             request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, newBoard);
             System.out.println("newBoard (challenger): " + newBoard);
-            drawBoard(newBoard, currentPlayer.getColor(), opponent.getColor());
             playerLobby.addBoard(newBoard);
 
             buildGameViewModel(
@@ -251,7 +250,6 @@ public class GetGameRoute implements Route {
             Board newBoard = playerLobby.getBoard(currentPlayer, opponent);
             request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, newBoard);
             System.out.println("newBoard (challenged): " + newBoard);
-            drawBoard(newBoard, currentPlayer.getColor(), opponent.getColor());
 
             // populate our view model
             buildGameViewModel(
@@ -273,8 +271,6 @@ public class GetGameRoute implements Route {
             } else {
                 newBoard = playerLobby.getBoard(opponent, currentPlayer);
             }
-
-            drawBoard(newBoard, currentPlayer.getColor(), opponent.getColor());
 
             /*
             // populate the view model

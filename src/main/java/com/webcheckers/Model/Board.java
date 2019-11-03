@@ -23,7 +23,7 @@ public class Board implements Iterable<Row> {
     private Player whitePlayer;
 
     /**
-     * Constructor. Automatically populates the board with 8 rows.
+     * Constructor. Automatically populates the board with the starting pieces.
      */
     public Board(){
         // populate board with rows
@@ -31,13 +31,29 @@ public class Board implements Iterable<Row> {
         for (int i = 0; i < rowsPerBoard; i++){
             rows.add(new Row(i));
         }
+
+        // populate board with checkers in starting positions
+
+        // white
+        for (int r = 0; r < 3; r += 1){
+            for (int c = (r + 1) % 2; c < rowsPerBoard; c += 2){
+                addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), c, r);
+            }
+        }
+
+        // red
+        for (int r = rowsPerBoard - 3; r < rowsPerBoard; r += 1){
+            for (int c = (r + 1) % 2; c < rowsPerBoard; c += 2){
+                addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.RED), c, r);
+            }
+        }
     }
 
     /**
      * Adds the given Piece to the given coordinates.
      */
-    public void addPieceToSpace(Piece piece, int cellIdx, int cellIdy){
-        this.rows.get(cellIdy).addPieceToSpace(piece, cellIdx);
+    public void addPieceToSpace(Piece piece, int col, int row){
+        this.rows.get(row).addPieceToSpace(piece, col);
     }
 
     /**
