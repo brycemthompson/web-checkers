@@ -40,7 +40,7 @@ public class GetSignInRouteTest
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
         CuT.handle(request, response);
-        templateEngineTester.assertViewModelAttribute("title", "Sign in to play!");
+        templateEngineTester.assertViewModelAttribute("title", ConstsUI.SIGN_IN_TITLE_DEFAULT_VALUE);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class GetSignInRouteTest
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
         CuT.handle(request, response);
-        templateEngineTester.assertViewModelAttribute(ConstsUI.MESSAGE_PARAM, ConstsUI.WELCOME_MSG);
+        templateEngineTester.assertViewModelAttribute(ConstsUI.MESSAGE_PARAM, ConstsUI.SIGN_IN_MSG);
 
 
     }
