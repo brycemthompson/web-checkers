@@ -25,6 +25,7 @@ public class GameView {
         Board b = new Board();
         b.setRedPlayer(redPlayer);
         b.setWhitePlayer(whitePlayer);
+        b.setActiveColor(Piece.Color.RED);
         return b;
     }
 
@@ -42,7 +43,6 @@ public class GameView {
             vm.put("redPlayer", opponent);
             vm.put("whitePlayer", currentPlayer);
         }
-        vm.put("activeColor", Piece.Color.RED);
     }
 
     /**
@@ -57,6 +57,7 @@ public class GameView {
         vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
         vm.put(ConstsUI.BOARD_PARAM, currentPlayerBoard);
         vm.put(ConstsUI.CURRENT_USER_BOARD_PARAM, currentPlayerBoard);
+        vm.put("activeColor", currentPlayerBoard.getActiveColor());
         populateViewModelPlayerData(vm, currentPlayer, opponentPlayer);
     }
 
@@ -64,7 +65,6 @@ public class GameView {
         vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
         vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
         request.session().attribute(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
-        response.redirect(ConstsUI.HOME_URL);
     }
 
 }

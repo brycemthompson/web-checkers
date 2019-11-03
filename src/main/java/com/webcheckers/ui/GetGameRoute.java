@@ -111,12 +111,12 @@ public class GetGameRoute implements Route {
     }
 
     /**
-     * Returns to an ongoing game that the current user is supposed to be in.
+     * Refreshes the view for an ongoing game between the current user and opponent user.
      * @param request an HTTP request that the game will be stored in
      * @param currentUser the current user who should currently be in a game
      * @param opponentUser the opponent to the current user
      */
-    private void returnToGame(Request request, Player currentUser, Player opponentUser){
+    private void refreshGame(Request request, Player currentUser, Player opponentUser){
         // find our Board
         Board board;
         if (currentUser.getColor() == Piece.Color.RED){
@@ -165,6 +165,7 @@ public class GetGameRoute implements Route {
                 if(opponent.isInGame())
                 {
                     GameView.buildOpponentInGameErrorView(request, response, vm);
+                    response.redirect(ConstsUI.HOME_URL);
                     return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
                 }
 
@@ -204,11 +205,11 @@ public class GetGameRoute implements Route {
 
                 return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
             case INGAME:
-                // find the Player who challenged us
+                // find the Player who we are in a game with
                 opponent = currentPlayer.getOpponent();
 
-                // return to the game
-                returnToGame(request,
+                // refresh the game
+                refreshGame(request,
                         currentPlayer,
                         opponent);
 

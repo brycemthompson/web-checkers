@@ -21,6 +21,7 @@ public class Board implements Iterable<Row> {
     // players
     private Player redPlayer;
     private Player whitePlayer;
+    private Piece.Color activeColor;
 
     /**
      * Constructor. Automatically populates the board with the starting pieces.
@@ -178,6 +179,21 @@ public class Board implements Iterable<Row> {
     }
 
     /**
+     * Sets the active color.
+     * @param activeColor color to be active
+     */
+    public void setActiveColor(Piece.Color activeColor){
+        this.activeColor = activeColor;
+    }
+
+    /**
+     * Flips the active color of this Boardd.
+     */
+    public void flipActiveColor(){
+        this.activeColor = Piece.getOtherColor(this.activeColor);
+    }
+
+    /**
      * @return redPlayer
      */
     public Player getRedPlayer(){
@@ -189,6 +205,13 @@ public class Board implements Iterable<Row> {
      */
     public Player getWhitePlayer(){
         return this.whitePlayer;
+    }
+
+    /**
+     * @return activeColor
+     */
+    public Piece.Color getActiveColor(){
+        return this.activeColor;
     }
 
     /**
