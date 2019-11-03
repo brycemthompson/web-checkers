@@ -119,17 +119,15 @@ public class GetHomeRoute implements Route {
           // find the Player who challenged us
           Player opponent = currentUser.getOpponent();
 
-          // create our Board
-          Board currentUserBoard;
-          if (currentUser.getColor() == Piece.Color.RED){
-              currentUserBoard = playerLobby.getBoard(currentUser, opponent);
-          } else {
-              currentUserBoard = playerLobby.getBoard(opponent, currentUser);
-          }
-          request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+          // build our game
+          GetGameRoute.startNewGameFromHome(request,
+                  playerLobby,
+                  currentUser,
+                  opponent);
 
           // populate our view model
-          GetGameRoute.buildGameViewModel(currentUser,
+          Board currentUserBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+          GameView.buildGameViewModel(currentUser,
                   opponent,
                   currentUserBoard,
                   vm);
