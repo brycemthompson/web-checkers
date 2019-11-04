@@ -143,6 +143,13 @@ public class Board implements Iterable<Row> {
      * @return array list containing all valid simple jump moves
      */
     private ArrayList<Move> getAllSimpleJumpMoves(Piece.Color player){
+        /*
+        ALGORITHM:
+        1. Check for any space that has a Piece belonging to the opponent.
+        2. Check if the opponent's Piece is neighbored by any of our pieces.
+            a) For every neighboring Piece, see if there is an empty space diagonally across the opponent's piece.
+               If so, create a Move and add it to the list of valid Moves.
+         */
         return null;
     }
 
