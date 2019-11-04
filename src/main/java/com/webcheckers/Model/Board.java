@@ -138,9 +138,18 @@ public class Board implements Iterable<Row> {
     }
 
     /**
+     * Helper function for getAllValidMoves that gets all simple jump moves.
+     * @param player the Piece Color for the player
+     * @return array list containing all valid simple jump moves
+     */
+    private ArrayList<Move> getAllSimpleJumpMoves(Piece.Color player){
+        return null;
+    }
+
+    /**
      * Calculates all possible and valid Moves that can be made for the given Player.
      * @param player the Piece Color for the player
-     * @return array list containing all valid Moves
+     * @return array list containing all valid moves
      */
     public ArrayList<Move> getAllValidMoves(Piece.Color player){
 
