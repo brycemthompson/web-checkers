@@ -147,11 +147,9 @@ public class WebServer {
     // Initialize the GetGameRoute.
     get(ConstsUI.GAME_URL, new GetGameRoute(templateEngine, playerLobby));
 
+    // Initialize the PostSigninRoute.
+    post(ConstsUI.RESIGN_URL, new PostResignRoute(gson, playerLobby));
 
-    // Initialize the PostGameRoute
-//    post(GAME_URL, new PostGameRoute(templateEngine));
-
-    //
     LOG.config("WebServer is initialized.");
   }
 

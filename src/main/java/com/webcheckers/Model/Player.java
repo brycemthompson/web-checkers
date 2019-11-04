@@ -4,6 +4,7 @@ package com.webcheckers.Model;
  * The Player Model of a newly logged in User
  * @author Bryce Thompson : bxt6698@rit.edu
  * @contributor Clayton Pruitt : chp4145@rit.edu
+ * @contributor Daniel Kitchen : djk9755@rit.edu
  */
 public class Player
 {
@@ -67,6 +68,12 @@ public class Player
         this.opponent = opponent;
         this.color = color;
         this.inGame = true;
+    }
+
+    public void removeFromGame(){
+        this.opponent = null;
+        this.inGame = false;
+        this.color = null;
     }
 
     /**

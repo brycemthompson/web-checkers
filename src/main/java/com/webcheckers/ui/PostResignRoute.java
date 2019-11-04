@@ -1,11 +1,12 @@
 package com.webcheckers.ui;
 
+import com.google.gson.Gson;
+import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
 import spark.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -22,12 +23,12 @@ public class PostResignRoute implements Route {
     private static final Message RESIGN_UNSUCCESSFUL = Message.info("Resign Unsuccessful.  Either backup from your " +
             "move or wait until your next turn and try again.");
 
-    private final TemplateEngine templateEngine;
+    private final Gson gson;
     private PlayerLobby playerLobby;
 
-    PostResignRoute(TemplateEngine templateEngine, PlayerLobby playerLobby)
+    PostResignRoute(Gson gson, PlayerLobby playerLobby)
     {
-        this.templateEngine = templateEngine;
+        this.gson = gson;
         this.playerLobby = playerLobby;
     }
 
@@ -43,17 +44,35 @@ public class PostResignRoute implements Route {
      *   the rendered HTML for the Sign In page
      */
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) throws Exception
+    {
         LOG.finer("PostResignRoute is invoked.");
 
-        final Map<String, Object> vm = new HashMap<>();
 
+        // Get the current user and the opponent
+        Player currentPlayer = request.session().attribute(PostPlayerRoute.CURRENTUSER_PARAM);
 
-        // re-render the default home page
-        vm.put(ConstsUI.TITLE_PARAM, "Welcome to Home Page!");
-        vm.put(ConstsUI.MESSAGE_PARAM, RESIGN_SUCCESSFUL);
-        int amountOfPlayersPlaying = playerLobby.size();
-        vm.put(GetHomeRoute.PLAYERSPLAYING_PARAM, amountOfPlayersPlaying);
-        return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
+        // Finding the opponent in the playerList
+        final String opponentUsername = request.queryParams("opponentUsername");
+
+        ArrayList<Player> players = playerLobby.getPlayers();
+
+        for(Player player: players)
+        {
+            System.out.println(opponentUsername);
+            System.out.println(currentPlayer);
+            if(player.getName().equals(opponentUsername))
+            {
+                player.removeFromGame();
+                System.out.println("Got Here");
+            }
+            else if(player.getName().equals(currentPlayer.getName()))
+            {
+                player.removeFromGame();
+                System.out.println("Got here too");
+            }
+        }
+
+        return gson.toJson(RESIGN_SUCCESSFUL);
     }
 }
