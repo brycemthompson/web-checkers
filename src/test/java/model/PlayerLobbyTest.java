@@ -102,8 +102,8 @@ public class PlayerLobbyTest {
     //THIS TEST IS FAILING FIX LATER
     @Test
     public void size_test(){
-        ArrayList<Player> mockArrayList = new ArrayList<>();
-        mockArrayList.add(new Player("Isaias"));
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(new Player("Isaias"));
         assertEquals(1, players.size());
     }
 
