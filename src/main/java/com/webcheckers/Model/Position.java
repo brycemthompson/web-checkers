@@ -36,4 +36,26 @@ public class Position {
         return this.cell;
     }
 
+    // Overriding equals() to compare if two Positions are equal by checking their coordinates.
+    @Override
+    public boolean equals(Object obj) {
+        // this Position equals itself
+        if (obj == this){
+            return true;
+        }
+
+        // this Position cannot equal an object that is not a Position
+        if (!(obj instanceof Position)){
+            return false;
+        }
+
+        // two Positions are equal if their coordinates are equal
+        Position p = (Position) obj;
+        return (this.cell == p.cell && this.row == p.row);
+    }
+
+    @Override
+    public String toString() {
+        return "(" + row + ", " + cell + ")";
+    }
 }

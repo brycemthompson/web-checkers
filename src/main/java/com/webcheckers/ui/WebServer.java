@@ -149,6 +149,17 @@ public class WebServer {
 
     // Initialize the PostSigninRoute.
     post(ConstsUI.RESIGN_URL, new PostResignRoute(gson, playerLobby));
+    // Initialize the PostValidateMoveRoute.
+    post(ConstsUI.VALIDATEMOVE_URL, new PostValidateMoveRoute(templateEngine, playerLobby));
+
+    // Initialize the PostSubmitTurnRoute
+    post(ConstsUI.SUBMITTURN_URL, new PostSubmitTurnRoute(templateEngine, playerLobby));
+
+    // Initialize the PostBackupMoveRoute
+    post(ConstsUI.BACKUPMOVE_URL, new PostBackupMoveRoute(templateEngine, playerLobby));
+
+    // Initialize the PostCheckTurnRoute.
+    post(ConstsUI.CHECKTURN_URL, new PostCheckTurnRoute(templateEngine, playerLobby));
 
     LOG.config("WebServer is initialized.");
   }
