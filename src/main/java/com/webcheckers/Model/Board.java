@@ -1,7 +1,12 @@
 package com.webcheckers.Model;
 
+import javafx.geometry.Pos;
+
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import static java.lang.Math.abs;
 
 /**
  * Java class object representing the board.
@@ -110,7 +115,7 @@ public class Board implements Iterable<Row> {
         ArrayList<Move> allValidMoves = new ArrayList<Move>();
         for (Space start : allStartingSpaces){
             // scan for valid spaces or spaces with pieces that can be jumped
-            System.out.println("For " + start + "...");
+            //System.out.println("For " + start + "...");
             for (int r = -1; r <= 1; r++){
                 for (int c = -1; c <= 1; c++){
                     Space cur = null;
@@ -124,7 +129,7 @@ public class Board implements Iterable<Row> {
 
                     if (cur.isValid()){
                         // space is a valid space to move to
-                        System.out.println("\t" + cur + " is valid to move to.");
+                        //System.out.println("\t" + cur + " is valid to move to.");
                         allValidMoves.add(new Move(start.getPosition(), cur.getPosition()));
                     } else if (cur.hasPiece(opponent)){
                         // space has an opponent piece => check if it can be jumped
@@ -150,7 +155,83 @@ public class Board implements Iterable<Row> {
             a) For every neighboring Piece, see if there is an empty space diagonally across the opponent's piece.
                If so, create a Move and add it to the list of valid Moves.
          */
-        return null;
+
+        ArrayList<Move> allValidMoves = new ArrayList<>();
+
+        // scan the board, adding the Positions of the Opponent's pieces to a list
+        ArrayList<Position> opponentPiecePositions = new ArrayList<>();
+        for (int r = 0; r < rowsPerBoard; r++){
+            for (int c = 0; c < rowsPerBoard; c++){
+                if (getSpace(r, c).hasPiece(Piece.getOtherColor(player))){
+                    System.out.println("Opponent piece at " + new Position(r, c));
+                    opponentPiecePositions.add(new Position(r, c));
+                }
+            }
+        }
+
+        // scan each opponent Piece to see if a jump move is possible
+        for (int i = 0; i < opponentPiecePositions.size(); i++) {
+
+            // get the Position of the opponent Piece that we are currently scanning
+            Position cur = opponentPiecePositions.get(i);
+            System.out.println("==CURRENTLY EXAMINING " + cur + "==");
+            // track any empty Space around this opponent's Piece in case we need them to make a Move
+            ArrayList<Position> emptySpaces = new ArrayList<>();
+            // also track any of our Pieces around this opponent's Piece
+            ArrayList<Position> ourPieces = new ArrayList<>();
+
+            for (int r = -1; r <= 1; r += 2) {
+                for (int c = -1; c <= 1; c += 2) {
+                    // get Space to scan
+                    int scan_row = cur.getRow() + r;
+                    int scan_col = cur.getCell() + c;
+                    Space scan;
+                    try{
+                        scan = getSpace(scan_row, scan_col);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        continue;
+                    } catch (IndexOutOfBoundsException e) {
+                        continue;
+                    }
+                    // check if Space is empty or has one of our Pieces
+                    Position pos = new Position(scan_row, scan_col);
+                    if (!scan.hasPiece()){
+                        emptySpaces.add(pos);
+                        System.out.println("Neighboring empty space found at " + new Position(scan_row, scan_col));
+                        System.out.println("emptySpaces: " + emptySpaces);
+                    } else if (scan.hasPiece(player)){
+                        ourPieces.add(pos);
+                        System.out.println("Neighboring player piece found at " + new Position(scan_row, scan_col));
+                    }
+
+                }
+            }
+
+            // check any of our Pieces to see if a jump can be made
+            for (int j = 0; j < ourPieces.size(); j++){
+                System.out.println("Comparing " + ourPieces.get(j) + " to...");
+                System.out.println("(size of emptySpaces: " + emptySpaces.size() + ")");
+                for (int k = 0; k < emptySpaces.size(); k++){
+                    /*
+                    An empty Space is valid to move to if the magnitude of the differences between ours and its rows
+                    and column coordinates are both two.
+                     */
+
+                    Position possible_start = ourPieces.get(j);
+                    Position possible_end = emptySpaces.get(k);
+
+                    System.out.println("\t..." + possible_end);
+
+                    if (abs(possible_start.getRow() - possible_end.getRow()) == 2 &&
+                    abs(possible_start.getCell() - possible_end.getCell()) == 2){
+                        allValidMoves.add(new Move(possible_start, possible_end));
+                        System.out.println("**Valid move: " + new Move(possible_start, possible_end));
+                    }
+                }
+            }
+        }
+
+        return allValidMoves;
     }
 
     /**
@@ -160,10 +241,15 @@ public class Board implements Iterable<Row> {
      */
     public ArrayList<Move> getAllValidMoves(Piece.Color player){
 
-        ArrayList<Move> allValidMoves = getAllSimpleMoves(player);
+        ArrayList<Move> allSimpleMoves = getAllSimpleMoves(player);
+        ArrayList<Move> allSimpleJumpMoves = getAllSimpleJumpMoves(player);
 
-        // return list of valid moves
-        return allValidMoves;
+        // if there are jump moves present, they must be made
+        if (allSimpleJumpMoves.size() != 0){
+            return allSimpleJumpMoves;
+        } else {
+            return allSimpleMoves;
+        }
     }
 
     /**
