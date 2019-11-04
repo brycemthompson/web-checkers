@@ -97,7 +97,7 @@ public class Board implements Iterable<Row> {
      * @param player the Piece Color for the player
      * @return array list containing all simple moves
      */
-    private ArrayList<Move> getAllSimpleMoves(Piece.Color player){
+    private ArrayList<MovePacket> getAllSimpleMoves(Piece.Color player){
         // get opponent color
         Piece.Color opponent = Piece.getOtherColor(player);
 
@@ -112,7 +112,7 @@ public class Board implements Iterable<Row> {
         }
 
         // generate all valid Moves with the given start spaces
-        ArrayList<Move> allValidMoves = new ArrayList<Move>();
+        ArrayList<MovePacket> allValidMoves = new ArrayList<>();
         for (Space start : allStartingSpaces){
             // scan for valid spaces or spaces with pieces that can be jumped
             //System.out.println("For " + start + "...");
@@ -130,7 +130,9 @@ public class Board implements Iterable<Row> {
                     if (cur.isValid()){
                         // space is a valid space to move to
                         //System.out.println("\t" + cur + " is valid to move to.");
-                        allValidMoves.add(new Move(start.getPosition(), cur.getPosition()));
+                        Move move = new Move(start.getPosition(), cur.getPosition());
+                        MovePacket mp = new MovePacket(move, MovePacket.Type.SIMPLE);
+                        allValidMoves.add(mp);
                     } else if (cur.hasPiece(opponent)){
                         // space has an opponent piece => check if it can be jumped
                         // TODO
@@ -147,7 +149,7 @@ public class Board implements Iterable<Row> {
      * @param player the Piece Color for the player
      * @return array list containing all valid simple jump moves
      */
-    private ArrayList<Move> getAllSimpleJumpMoves(Piece.Color player){
+    private ArrayList<MovePacket> getAllSimpleJumpMoves(Piece.Color player){
         /*
         ALGORITHM:
         1. Check for any space that has a Piece belonging to the opponent.
@@ -156,7 +158,7 @@ public class Board implements Iterable<Row> {
                If so, create a Move and add it to the list of valid Moves.
          */
 
-        ArrayList<Move> allValidMoves = new ArrayList<>();
+        ArrayList<MovePacket> allValidMoves = new ArrayList<>();
 
         // scan the board, adding the Positions of the Opponent's pieces to a list
         ArrayList<Position> opponentPiecePositions = new ArrayList<>();
@@ -224,7 +226,9 @@ public class Board implements Iterable<Row> {
 
                     if (abs(possible_start.getRow() - possible_end.getRow()) == 2 &&
                     abs(possible_start.getCell() - possible_end.getCell()) == 2){
-                        allValidMoves.add(new Move(possible_start, possible_end));
+                        Move move = new Move(possible_start, possible_end);
+                        MovePacket mp = new MovePacket(move, MovePacket.Type.SIMPLE_JUMP, cur);
+                        allValidMoves.add(mp);
                         System.out.println("**Valid move: " + new Move(possible_start, possible_end));
                     }
                 }
@@ -239,10 +243,10 @@ public class Board implements Iterable<Row> {
      * @param player the Piece Color for the player
      * @return array list containing all valid moves
      */
-    public ArrayList<Move> getAllValidMoves(Piece.Color player){
+    public ArrayList<MovePacket> getAllValidMoves(Piece.Color player){
 
-        ArrayList<Move> allSimpleMoves = getAllSimpleMoves(player);
-        ArrayList<Move> allSimpleJumpMoves = getAllSimpleJumpMoves(player);
+        ArrayList<MovePacket> allSimpleMoves = getAllSimpleMoves(player);
+        ArrayList<MovePacket> allSimpleJumpMoves = getAllSimpleJumpMoves(player);
 
         // if there are jump moves present, they must be made
         if (allSimpleJumpMoves.size() != 0){

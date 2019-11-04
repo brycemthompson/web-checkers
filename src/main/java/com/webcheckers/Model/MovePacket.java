@@ -18,14 +18,14 @@ public class MovePacket {
     private Type type;
     private Position jumpedPiece;
 
-    private MovePacket(Move move, Type type, Position jumpedPiece){
+    public MovePacket(Move move, Type type, Position jumpedPiece){
         this.move = move;
         this.type = type;
         this.jumpedPiece = jumpedPiece;
     }
 
 
-    private MovePacket(Move move, Type type){
+    public MovePacket(Move move, Type type){
         this(move, type, null);
     }
 
