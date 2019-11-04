@@ -60,6 +60,11 @@ public class PostValidateMoveRoute implements Route {
         }
 
         currentBoard.movePiece(movePacket.getMove());
+        if (movePacket.getJumpedPiece() != null){
+            Position jumpedPiecePosition = movePacket.getJumpedPiece();
+            System.out.println("Removing " + jumpedPiecePosition);
+            currentBoard.removePieceFromSpace(jumpedPiecePosition.getCell(), jumpedPiecePosition.getRow());
+        }
 
         /*
         // check if the Move given is in the list of valid moves

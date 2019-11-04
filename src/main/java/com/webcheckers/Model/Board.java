@@ -63,6 +63,13 @@ public class Board implements Iterable<Row> {
     }
 
     /**
+     * Removes a Piece from the Space with the given coordinates.
+     */
+    public void removePieceFromSpace(int col, int row){
+        getSpace(row, col).removePieceFromSpace();
+    }
+
+    /**
      * Moves a Piece.
      * @param move the Move object type containing the start and end
      */
