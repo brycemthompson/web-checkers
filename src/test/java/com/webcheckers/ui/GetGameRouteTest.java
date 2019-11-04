@@ -49,13 +49,7 @@ public class GetGameRouteTest {
         playerLobby.addBoard(newBoard);
     }
 
-    /**
-     * Starts a new game between the current user and opponent user from the Home view.
-     * @param request an HTTP request
-     * @param lobby the PlayerLobby both Players belong to
-     * @param currentUser the current user for whom the game is being started for
-     * @param opponentUser the opponent user who challenged the current user
-     */
+
     public static void startNewGameFromHome(Request request, PlayerLobby lobby, Player currentUser, Player opponentUser){
         // create our Board
         Board board;
@@ -67,24 +61,12 @@ public class GetGameRouteTest {
         request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, board);
     }
 
-    /**
-     * Fetches an ongoing game between the current user and opponent user then stores the game data in the current
-     * user's session.
-     * @param request an HTTP request
-     * @param currentUser the current user for whom the game is being fetched
-     * @param opponentUser the opponent to the current user
-     */
     private void fetchGame(Request request, Player currentUser, Player opponentUser){
         Board board = playerLobby.getBoard(currentUser, opponentUser);
         request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, board);
     }
 
-    /**
-     * Refreshes the view for an ongoing game between the current user and opponent user.
-     * @param request an HTTP request that the game will be stored in
-     * @param currentUser the current user who should currently be in a game
-     * @param opponentUser the opponent to the current user
-     */
+
     private void refreshGame(Request request, Player currentUser, Player opponentUser){
         // find our Board
         Board board;
@@ -117,24 +99,26 @@ public class GetGameRouteTest {
 
         Map<String, Object> vm = new HashMap<>();
 
-        Player player = new Player("Isaias");
-        Board currentPlayerBoard = new Board();
+        Player player = new Player("P1");
+        Board currentPlayerBoard = null;
 
         when(session.attribute(ConstsUI.CURRENTUSER_PARAM)).thenReturn(player);
 
         when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentPlayerBoard);
 
-        Player opponent = null;
+        Player opponent = new Player("P2");
+
+        Player player3 = new Player("P3");
+        player3.putInGame(opponent, Piece.Color.RED);
+        playerLobby.addPlayer(player);
+        playerLobby.addPlayer(opponent);
+        playerLobby.addPlayer(player3);
 
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
+        when(request.queryParams("opponentUsername")).thenReturn("P3");
 
         CuT.handle(request, response);
 
-        opponent = playerLobby.getPlayer(request.queryParams("opponentUsername"));
-
-        //assuming test goes in isInGame() method
-        GameView.buildOpponentInGameErrorView(request, response, vm);
-        response.redirect("/");
         templateEngineTester.assertViewName("home.ftl");
 
         //Something is missing here idk David will help probably

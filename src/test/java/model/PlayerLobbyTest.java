@@ -99,19 +99,14 @@ public class PlayerLobbyTest {
 
     }
 
-    /**
-     * Gets the amount of players in the lobby.
-     * @return size of players
-     */
+    //THIS TEST IS FAILING FIX LATER
     @Test
     public void size_test(){
+        ArrayList<Player> mockArrayList = new ArrayList<>();
+        mockArrayList.add(new Player("Isaias"));
         assertEquals(1, players.size());
     }
 
-    /**
-     * Authenticates a player's sign-in to the application.
-     * @return Authentication enum for result of the authentication
-     */
     @Test
     public void authenticateSignIn_test(){
         String username = "Test1";
