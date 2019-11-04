@@ -88,12 +88,11 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     * Calculates all possible and valid Moves that can be made for the given Player.
+     * Helper function for getAllValidMoves that gets all simple moves.
      * @param player the Piece Color for the player
-     * @return array list containing all valid Moves
+     * @return array list containing all simple moves
      */
-    public ArrayList<Move> getAllValidMoves(Piece.Color player){
-
+    private ArrayList<Move> getAllSimpleMoves(Piece.Color player){
         // get opponent color
         Piece.Color opponent = Piece.getOtherColor(player);
 
@@ -134,6 +133,18 @@ public class Board implements Iterable<Row> {
                 }
             }
         }
+
+        return allValidMoves;
+    }
+
+    /**
+     * Calculates all possible and valid Moves that can be made for the given Player.
+     * @param player the Piece Color for the player
+     * @return array list containing all valid Moves
+     */
+    public ArrayList<Move> getAllValidMoves(Piece.Color player){
+
+        ArrayList<Move> allValidMoves = getAllSimpleMoves(player);
 
         // return list of valid moves
         return allValidMoves;
