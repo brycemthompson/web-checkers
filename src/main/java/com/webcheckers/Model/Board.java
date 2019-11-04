@@ -18,7 +18,7 @@ public class Board implements Iterable<Row> {
 
     // all rows in the board
     ArrayList<Row> rows;
-    private Move backupMove;
+    private MovePacket backupMove;
 
     // amount of rows in a board
     public static int rowsPerBoard = 8;
@@ -71,9 +71,10 @@ public class Board implements Iterable<Row> {
 
     /**
      * Moves a Piece.
-     * @param move the Move object type containing the start and end
+     * @param mp an Object containing the Move and other useful information
      */
-    public void movePiece(Move move){
+    public void movePiece(MovePacket mp){
+        Move move = mp.getMove();
         // get all necessary coordinates
         int start_row = move.getStart().getRow();
         int start_cell = move.getStart().getCell();
@@ -85,8 +86,9 @@ public class Board implements Iterable<Row> {
         rows.get(end_row).getSpace(end_cell).addPieceToSpace(p);
         rows.get(start_row).getSpace(start_cell).removePieceFromSpace();
 
-        // set the backup move for this Board
-        this.backupMove = new Move(move.getEnd(), move.getStart());
+        // set the backup move packet for this Board
+        Move bmove = new Move(move.getEnd(), move.getStart());
+        this.backupMove = new MovePacket(bmove, mp.getType(), mp.getJumpedPiece(), mp.getJumpedPiecePosition());
     }
 
     /**
@@ -169,11 +171,13 @@ public class Board implements Iterable<Row> {
 
         // scan the board, adding the Positions of the Opponent's pieces to a list
         ArrayList<Position> opponentPiecePositions = new ArrayList<>();
+        ArrayList<Piece> opponentPieces = new ArrayList<>();
         for (int r = 0; r < rowsPerBoard; r++){
             for (int c = 0; c < rowsPerBoard; c++){
                 if (getSpace(r, c).hasPiece(Piece.getOtherColor(player))){
                     System.out.println("Opponent piece at " + new Position(r, c));
                     opponentPiecePositions.add(new Position(r, c));
+                    opponentPieces.add(getSpace(r, c).getPiece());
                 }
             }
         }
@@ -183,6 +187,7 @@ public class Board implements Iterable<Row> {
 
             // get the Position of the opponent Piece that we are currently scanning
             Position cur = opponentPiecePositions.get(i);
+            Piece aaa = opponentPieces.get(i);
             System.out.println("==CURRENTLY EXAMINING " + cur + "==");
             // track any empty Space around this opponent's Piece in case we need them to make a Move
             ArrayList<Position> emptySpaces = new ArrayList<>();
@@ -234,7 +239,7 @@ public class Board implements Iterable<Row> {
                     if (abs(possible_start.getRow() - possible_end.getRow()) == 2 &&
                     abs(possible_start.getCell() - possible_end.getCell()) == 2){
                         Move move = new Move(possible_start, possible_end);
-                        MovePacket mp = new MovePacket(move, MovePacket.Type.SIMPLE_JUMP, cur);
+                        MovePacket mp = new MovePacket(move, MovePacket.Type.SIMPLE_JUMP, aaa, cur);
                         allValidMoves.add(mp);
                         System.out.println("**Valid move: " + new Move(possible_start, possible_end));
                     }
@@ -264,20 +269,11 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     * Setter for the creation of a backup move for the purposes of undoing a move before a submission
-     * @param move: The move to put in backupMove
-     */
-    public void setBackupMove(Move move)
-    {
-        this.backupMove = move;
-    }
-
-    /**
      * Getter for the backupMove to return the backupMove for the purpose to returning the moved piece to the original
      * location
-     * @return backupMove: The Move to move the Piece back to before a submission is sent
+     * @return backupMove: The MovePacket that contains the move to move the Piece back to before a submission is sent
      */
-    public Move getBackupMove()
+    public MovePacket getBackupMove()
     {
         return this.backupMove;
     }

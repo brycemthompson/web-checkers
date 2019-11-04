@@ -16,17 +16,19 @@ public class MovePacket {
     // private fields
     private Move move;
     private Type type;
-    private Position jumpedPiece;
+    private Piece jumpedPiece;
+    private Position jumpedPiecePosition;
 
-    public MovePacket(Move move, Type type, Position jumpedPiece){
+    public MovePacket(Move move, Type type, Piece jumpedPiece, Position jumpedPiecePosition){
         this.move = move;
         this.type = type;
         this.jumpedPiece = jumpedPiece;
+        this.jumpedPiecePosition = jumpedPiecePosition;
     }
 
 
     public MovePacket(Move move, Type type){
-        this(move, type, null);
+        this(move, type, null, null);
     }
 
 
@@ -40,9 +42,11 @@ public class MovePacket {
     }
 
 
-    public Position getJumpedPiece(){
+    public Piece getJumpedPiece(){
         return this.jumpedPiece;
     }
+
+    public Position getJumpedPiecePosition() { return this.jumpedPiecePosition; }
 
 
 }

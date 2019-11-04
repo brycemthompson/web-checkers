@@ -59,9 +59,9 @@ public class PostValidateMoveRoute implements Route {
             return new Gson().toJson(validationMessage);
         }
 
-        currentBoard.movePiece(movePacket.getMove());
+        currentBoard.movePiece(movePacket);
         if (movePacket.getJumpedPiece() != null){
-            Position jumpedPiecePosition = movePacket.getJumpedPiece();
+            Position jumpedPiecePosition = movePacket.getJumpedPiecePosition();
             System.out.println("Removing " + jumpedPiecePosition);
             currentBoard.removePieceFromSpace(jumpedPiecePosition.getCell(), jumpedPiecePosition.getRow());
         }
