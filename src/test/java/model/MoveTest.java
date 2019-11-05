@@ -1,5 +1,6 @@
 package model;
 
+import com.webcheckers.Model.Move;
 import com.webcheckers.Model.Position;
 import com.webcheckers.util.Message;
 import org.junit.jupiter.api.Tag;
@@ -17,20 +18,6 @@ public class MoveTest {
 
     // what is defined as "too far" for a move
     private static int tooFarThreshold = 2;
-
-    public MoveTest(Position start, Position end){
-        this.start = start;
-        this.end = end;
-    }
-
-    public Position getStart(){
-        return this.start;
-    }
-
-
-    public Position getEnd(){
-        return this.end;
-    }
 
 
     public boolean isMoveTooLarge(){
@@ -51,32 +38,32 @@ public class MoveTest {
 
     @Test
     public void test_is_move_too_large_valid(){
-        Position start = new Position(1,1);
-        Position end = new Position(2,2);
-        MoveTest newMove = new MoveTest(start, end);
-        boolean isTooLarge = newMove.isMoveTooLarge();
+        this.start = new Position(1,1);
+        this.end = new Position(2,2);
+        Move newMove = new Move(start, end);
+        boolean isTooLarge = isMoveTooLarge();
         assertEquals(false, isTooLarge);
 
     }
 
     @Test
     public void test_is_move_too_large_not_valid(){
-        Position start = new Position(1,1);
-        Position end = new Position(4,4);
-        MoveTest newMove = new MoveTest(start, end);
-        boolean isTooLarge = newMove.isMoveTooLarge();
+        this.start = new Position(1,1);
+        this.end = new Position(4,4);
+        Move newMove = new Move(start, end);
+        boolean isTooLarge = isMoveTooLarge();
         assertEquals(true, isTooLarge);
 
     }
 
     @Test
     public void validity_message_test_too_large(){
-        Position start = new Position(1,1);
-        Position end = new Position(4,4);
-        MoveTest newMove = new MoveTest(start, end);
+        start = new Position(1,1);
+        end = new Position(4,4);
+        Move newMove = new Move(start, end);
 
         //The move is too large and it should be display an error message;
-        assertEquals("Piece has been moved too far.", newMove.validityMessage());
+        assertEquals("{Msg ERROR 'Piece has been moved too far.'}", newMove.validityMessage().toString());
 
     }
 
@@ -84,9 +71,9 @@ public class MoveTest {
     public void validity_message_test_is_not_too_large(){
         Position start = new Position(1,1);
         Position end = new Position(2,2);
-        MoveTest newMove = new MoveTest(start, end);
+        Move newMove = new Move(start, end);
         //The move is too large and it should be display an valid move message;
-        assertEquals("Good move!", newMove.validityMessage());
+        assertEquals("{Msg INFO 'Good move!'}", newMove.validityMessage().toString());
 
     }
 

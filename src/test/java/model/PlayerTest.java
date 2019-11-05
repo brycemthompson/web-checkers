@@ -46,7 +46,7 @@ public class PlayerTest
     @Test
     public void testGetOpponent()
     {
-        final Player CuT = opponent;
+        Player CuT = opponent;
         assertEquals(opponent, CuT.getOpponent());
     }
 
@@ -57,7 +57,8 @@ public class PlayerTest
     public void testGetColor()
     {
         final Player CuT = new Player(name);
-        assertEquals(color, CuT.getColor());
+//        CuT.color.RED;
+        assertEquals(color.RED.toString(), CuT.getColor());
     }
 
     /**
