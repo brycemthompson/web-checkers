@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
+import com.webcheckers.Model.Board;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
@@ -25,11 +26,14 @@ public class PostResignRoute implements Route {
 
     private final Gson gson;
     private PlayerLobby playerLobby;
+    private boolean p1Game, p2Game;
 
     PostResignRoute(Gson gson, PlayerLobby playerLobby)
     {
         this.gson = gson;
         this.playerLobby = playerLobby;
+        this.p1Game = false;
+        this.p2Game = false;
     }
 
     /**
@@ -53,26 +57,38 @@ public class PostResignRoute implements Route {
         Player currentPlayer = request.session().attribute(PostPlayerRoute.CURRENTUSER_PARAM);
 
         // Finding the opponent in the playerList
-        final String opponentUsername = request.queryParams("opponentUsername");
+        Player opponent = request.session().attribute(PostPlayerRoute.OPPONENT_PARAM);
 
         ArrayList<Player> players = playerLobby.getPlayers();
+        //System.out.println(playerLobby.boards);
+        Board currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
 
+        //System.out.println(playerLobby.boards);
         for(Player player: players)
         {
-            System.out.println(opponentUsername);
-            System.out.println(currentPlayer);
-            if(player.getName().equals(opponentUsername))
+            if(player.getName().equals(opponent.getName()))
             {
                 player.removeFromGame();
-                System.out.println("Got Here");
+                p2Game = true;
             }
             else if(player.getName().equals(currentPlayer.getName()))
             {
                 player.removeFromGame();
-                System.out.println("Got here too");
+                p1Game = true;
             }
         }
 
-        return gson.toJson(RESIGN_SUCCESSFUL);
+        currentPlayerBoard.flipActiveColor();
+        playerLobby.removeBoard(currentPlayerBoard);
+
+        if (p1Game && p2Game){
+            System.out.println("succ");
+            return gson.toJson(RESIGN_SUCCESSFUL);
+        }
+        else{
+            System.out.println("fucc");
+            return gson.toJson(RESIGN_UNSUCCESSFUL);
+        }
+
     }
 }

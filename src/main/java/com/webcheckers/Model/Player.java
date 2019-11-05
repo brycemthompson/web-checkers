@@ -76,7 +76,11 @@ public class Player
         this.inGame = true;
     }
 
+    /**
+     * Removes the player from the game for ending the game or resigning from the game.
+     */
     public void removeFromGame(){
+        System.out.println(this.name + " has been removed from the game");
         this.opponent = null;
         this.inGame = false;
         this.color = null;

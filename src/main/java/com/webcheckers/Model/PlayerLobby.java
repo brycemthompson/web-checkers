@@ -72,6 +72,14 @@ public class PlayerLobby
     }
 
     /**
+     * Removes a board from the lobby
+     * @param board : Board to be removed
+     */
+    public void removeBoard(Board board){
+        boards.remove(board);
+    }
+
+    /**
      * Getter for Players
      * @return players: Players in the PlayerLobby
      */
