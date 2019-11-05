@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.google.gson.Gson;
 import com.webcheckers.Model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -8,12 +9,15 @@ import spark.Request;
 import spark.Response;
 import spark.Session;
 import spark.TemplateEngine;
+
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @Tag("UI-Tier")
-public class PostBackupMoveRouteTest {
+public class PostValidateMoveRouteTest {
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -36,23 +40,31 @@ public class PostBackupMoveRouteTest {
     }
 
     @Test
-    public void test_backup_move()
+    public void test_valid_moves()
     {
-        Board currentBoard = new Board();
-        when(request.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentBoard);
+        String json = new String();
+        when(request.queryParams(ConstsUI.ACTION_DATA_PARAM)).thenReturn(json);
 
-        Player currentUser = new Player("p1");
-        when(request.attribute(ConstsUI.CURRENT_USER_PARAM)).thenReturn(currentUser);
+        Move move = new Gson().fromJson(json, Move.class);
 
-        Player opponent = new Player("p2");
-        when(session.attribute(ConstsUI.OPPONENT_PARAM)).thenReturn(opponent);
+        Board currentUserBoard = new Board();
+        when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentUserBoard);
 
-        Move backupMove = currentBoard.getBackupMove();
-        assertNull(backupMove);
+        Player currentPlayer = new Player("p1");
+        when(session.attribute(ConstsUI.CURRENT_USER_PARAM)).thenReturn(currentPlayer);
 
-        currentBoard.movePiece(new Move(new Position(1, 2), new Position(2, 2)));
-        backupMove = currentBoard.getBackupMove();
-        assertNotNull(backupMove);
-        when(request.attribute(ConstsUI.BACKUP_MOVE_PARAM)).thenReturn(backupMove);
+        Piece.Color currentPlayerColor = currentPlayer.getColor();
+        ArrayList<Move> validMoves = currentUserBoard.getAllValidMoves(currentPlayerColor);
+
+        assertFalse(validMoves.contains(move));
+
+        ArrayList<Move> proposedMoves = null;
+        when(session.attribute(ConstsUI.PROPOSED_MOVES_PARAM)).thenReturn(proposedMoves);
+        assertNull(proposedMoves);
+
+        proposedMoves = new ArrayList<>();
+        proposedMoves.add(move);
+        when(session.attribute(ConstsUI.PROPOSED_MOVES_PARAM)).thenReturn(proposedMoves);
+
     }
 }

@@ -5,16 +5,16 @@ import com.webcheckers.Model.Piece;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.Request;
 import spark.Response;
 import spark.Session;
 import spark.TemplateEngine;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@Tag("UI-Tier")
 public class PostSubmitTurnRouteTest {
 
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();

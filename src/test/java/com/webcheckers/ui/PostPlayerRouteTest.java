@@ -5,6 +5,7 @@ import com.webcheckers.Model.Piece;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
@@ -13,6 +14,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@Tag("UI-Tier")
 public class PostPlayerRouteTest {
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
