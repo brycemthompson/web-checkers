@@ -20,10 +20,11 @@ import java.util.logging.Logger;
 
 public class GetGameRoute implements Route {
 
-    private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
+    private enum GameState {
+        CHALLENGING, CHALLENGED, INGAME;
+    }
 
-    // Messages
-    private static final Message WELCOME_MSG = Message.info("Welcome to the game page.");
+    private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
 
     // Constants for the ViewModel
     public static final String VIEW_NAME = "game.ftl";
@@ -45,69 +46,87 @@ public class GetGameRoute implements Route {
     }
 
     /**
-     * Creates a new Board
-     * @return new Board
+     * Determines the state of the current Player's game.
+     * @param currentPlayer the Player for whom to the determine the game state
+     * @param currentPlayerBoard the Board of the Player for whom to determine the game state
+     * @return current state of the game (CHALLENGING, CHALLENGED, INGAME)
      */
-    private Board createBoard(){
-        return new Board();
-    }
-
-    /**
-     * Draws the Pieces belonging to the opponent on the given Board.
-     * @param board: The Board to be drawn on
-     * @param color: Color of the opponent's pieces
-     */
-    public static void drawOpponentPieces(Board board, Piece.Color color){
-        for (int r = 0; r < 3; r++){
-            for (int c = (r+1)%2; c < Board.rowsPerBoard; c += 2){
-                Piece piece = new Piece(Piece.Type.SINGLE, color);
-                board.addPieceToSpace(piece, c, r);
-            }
-        }
-    }
-
-    /**
-     * Draws the Pieces belonging to the current user on the given Board.
-     * @param board: The Board to be drawn on
-     * @param color: Color of the current user's pieces
-     */
-    public static void drawCurrentUserPieces(Board board, Piece.Color color){
-        for (int r = Board.rowsPerBoard - 3; r < Board.rowsPerBoard; r++){
-            for (int c = (r+1)%2; c < Board.rowsPerBoard; c += 2){
-                Piece piece = new Piece(Piece.Type.SINGLE, color);
-                board.addPieceToSpace(piece, c, r);
-            }
-        }
-    }
-
-    /**
-     * Draws the board so that the current user's Pieces are on the bottom and the opponent's are on the top on the
-     * given Board.
-     * @param board: The Board to be drawn on
-     * @param currentUserColor: Color of the current user's pieces
-     * @param opponentColor: Color of the opponent's pieces
-     */
-    public static void drawBoard(Board board, Piece.Color currentUserColor, Piece.Color opponentColor){
-        drawOpponentPieces(board, opponentColor);
-        drawCurrentUserPieces(board, currentUserColor);
-    }
-
-    /**
-     * Appropriately populates the view model's player data given the current Player and their opponent.
-     * @param vm: HashMap
-     * @param currentPlayer: currentPlayer's Player object
-     * @param opponent: opponent's Player object
-     */
-    public static void populateViewModelPlayerData(Map<String, Object> vm, Player currentPlayer, Player opponent){
-        if (currentPlayer.getColor() == Piece.Color.RED){
-            vm.put("redPlayer", currentPlayer);
-            vm.put("whitePlayer", opponent);
+    private GameState determineGameState(Player currentPlayer, Board currentPlayerBoard){
+        if ((currentPlayerBoard == null) && !currentPlayer.isInGame()){
+            return GameState.CHALLENGING;
+        } else if ((currentPlayerBoard == null)){
+            return GameState.CHALLENGED;
         } else {
-            vm.put("redPlayer", opponent);
-            vm.put("whitePlayer", currentPlayer);
+            return GameState.INGAME;
         }
-        vm.put("activeColor", Piece.Color.RED);
     }
+
+    /**
+     * Starts a new game between the current user and opponent user then stores the game data in the current user's
+     * session.
+     * @param request an HTTP request
+     * @param currentUser the current user for whom the game is being built
+     * @param opponentUser the opponent to the current user
+     */
+    private void startNewGame(Request request, Player currentUser, Player opponentUser){
+        // set up players
+        opponentUser.putInGame(currentUser, Piece.Color.WHITE);
+        currentUser.putInGame(opponentUser, Piece.Color.RED);
+        request.session().attribute(ConstsUI.OPPONENT_PARAM, opponentUser);
+
+        // set up board
+        Board newBoard = GameView.initializeBoard(currentUser, opponentUser);
+        request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, newBoard);
+        playerLobby.addBoard(newBoard);
+    }
+
+    /**
+     * Starts a new game between the current user and opponent user from the Home view.
+     * @param request an HTTP request
+     * @param lobby the PlayerLobby both Players belong to
+     * @param currentUser the current user for whom the game is being started for
+     * @param opponentUser the opponent user who challenged the current user
+     */
+    public static void startNewGameFromHome(Request request, PlayerLobby lobby, Player currentUser, Player opponentUser){
+        // create our Board
+        Board board;
+        if (currentUser.getColor() == Piece.Color.RED){
+            board = lobby.getBoard(currentUser, opponentUser);
+        } else {
+            board = lobby.getBoard(opponentUser, currentUser);
+        }
+        request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, board);
+    }
+
+    /**
+     * Fetches an ongoing game between the current user and opponent user then stores the game data in the current
+     * user's session.
+     * @param request an HTTP request
+     * @param currentUser the current user for whom the game is being fetched
+     * @param opponentUser the opponent to the current user
+     */
+    private void fetchGame(Request request, Player currentUser, Player opponentUser){
+        Board board = playerLobby.getBoard(currentUser, opponentUser);
+        request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, board);
+    }
+
+    /**
+     * Refreshes the view for an ongoing game between the current user and opponent user.
+     * @param request an HTTP request that the game will be stored in
+     * @param currentUser the current user who should currently be in a game
+     * @param opponentUser the opponent to the current user
+     */
+    private void refreshGame(Request request, Player currentUser, Player opponentUser){
+        // find our Board
+        Board board;
+        if (currentUser.getColor() == Piece.Color.RED){
+            board = playerLobby.getBoard(currentUser, opponentUser);
+        } else {
+            board = playerLobby.getBoard(opponentUser, currentUser);
+        }
+        request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, board);
+    }
+
 
     /**
      * Handles all the happenings of GetGameRoute
@@ -123,9 +142,11 @@ public class GetGameRoute implements Route {
         final Map<String, Object> vm = new HashMap<>();
 
         // get the current user
-        Player currentPlayer = request.session().attribute(PostPlayerRoute.CURRENTUSER_PARAM);
+        Player currentPlayer = request.session().attribute(ConstsUI.CURRENTUSER_PARAM);
         // check if a board currently exists for this user
-        Board currentPlayerBoard = request.session().attribute(CURRENTPLAYERBOARD_PARAM);
+        Board currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+        // declare opponent user
+        Player opponent = null;
 
         /*
         There are three cases to consider.
@@ -136,72 +157,76 @@ public class GetGameRoute implements Route {
         3) There is a board.
             => This implies a game is already in progress.
          */
-        if (currentPlayerBoard == null && !currentPlayer.isInGame()){ // current user is challenging a player
-
-            // Finding the opponent in the playerList
-            final String opponentUsername = request.queryParams("opponentUsername");
-            Player opponent = null;
-            for(Player player: playerLobby.getPlayers())
-            {
-                if(player.getName().equals(opponentUsername))
+        switch(determineGameState(currentPlayer, currentPlayerBoard)){
+            case CHALLENGING:
+                // Find the opponent in the PlayerLobby
+                opponent = playerLobby.getPlayer(request.queryParams("opponentUsername"));
+                // return an error message if the opponent is already in a game
+                if(opponent.isInGame())
                 {
-                    opponent = player;
-
-                    if(opponent.isInGame()) // The player is in a game and we are sending an error message
-                    {
-                        vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
-                        vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
-                        request.session().attribute(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
-                        response.redirect(ConstsUI.HOME_URL);
-                        return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
-                    }
-                    opponent.putInGame(currentPlayer, Piece.Color.WHITE);
-                    currentPlayer.putInGame(opponent, Piece.Color.RED);
-                    request.session().attribute(PostPlayerRoute.OPPONENT_PARAM, opponent);
+                    GameView.buildOpponentInGameErrorView(request, response, vm);
+                    response.redirect(ConstsUI.HOME_URL);
+                    return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
                 }
-            }
 
-            currentPlayerBoard = new Board();
-            drawBoard(currentPlayerBoard, currentPlayer.getColor(), opponent.getColor());
+                // start a new game
+               startNewGame(request,
+                       currentPlayer,
+                       opponent);
 
-            vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
-            vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
-            vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
-            populateViewModelPlayerData(vm, currentPlayer, opponent);
-            vm.put(ConstsUI.BOARD_PARAM, currentPlayerBoard);
-            vm.put(CURRENTPLAYERBOARD_PARAM, currentPlayerBoard);
-            response.redirect(ConstsUI.GAME_URL);
+                // build the game view
+                currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+                GameView.buildGameViewModel(
+                        currentPlayer,
+                        opponent,
+                        currentPlayerBoard,
+                        vm
+                );
 
-            return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
-        } else if (currentPlayerBoard == null && currentPlayer.isInGame()){ // current user has been challenged
-            // find the Player who challenged us
-            Player opponent = currentPlayer.getOpponent();
-            //System.out.println("Opponent is in game: " + opponent.isInGame());
-            // create our Board
-            currentPlayerBoard = new Board();
-            drawBoard(currentPlayerBoard, currentPlayer.getColor(), opponent.getColor());
-            // populate our view model
-            vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
-            vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
-            vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
-            populateViewModelPlayerData(vm, currentPlayer, opponent);
-            vm.put(ConstsUI.BOARD_PARAM, currentPlayerBoard);
-            vm.put(CURRENTPLAYERBOARD_PARAM, currentPlayerBoard);
+                return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
 
-            return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
-        } else { // the current user and their opponent have a game in progress
-            // find the Player who challenged us
-            Player opponent = currentPlayer.getOpponent();
-            // populate the view model
-            vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
-            vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
-            vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
-            populateViewModelPlayerData(vm, currentPlayer, opponent);
-            vm.put(ConstsUI.BOARD_PARAM, currentPlayerBoard);
-            vm.put(CURRENTPLAYERBOARD_PARAM, currentPlayerBoard);
+            case CHALLENGED:
+                // find the Player who challenged us
+                opponent = currentPlayer.getOpponent();
 
-            return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
+                // fetch the game between us and our opponent
+                fetchGame(request,
+                        currentPlayer,
+                        opponent);
+
+                // build the game view
+                currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+                GameView.buildGameViewModel(
+                        currentPlayer,
+                        opponent,
+                        currentPlayerBoard,
+                        vm
+                );
+
+                return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
+            case INGAME:
+                // find the Player who we are in a game with
+                opponent = currentPlayer.getOpponent();
+
+                // refresh the game
+                refreshGame(request,
+                        currentPlayer,
+                        opponent);
+
+                // populate our view model
+                currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+                GameView.buildGameViewModel(
+                        currentPlayer,
+                        opponent,
+                        currentPlayerBoard,
+                        vm
+                );
+
+                return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
+
         }
+
+        return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
     }
 
 

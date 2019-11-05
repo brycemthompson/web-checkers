@@ -147,6 +147,17 @@ public class WebServer {
     // Initialize the GetGameRoute.
     get(ConstsUI.GAME_URL, new GetGameRoute(templateEngine, playerLobby));
 
+    // Initialize the PostValidateMoveRoute.
+    post(ConstsUI.VALIDATEMOVE_URL, new PostValidateMoveRoute(templateEngine, playerLobby));
+
+    // Initialize the PostSubmitTurnRoute
+    post(ConstsUI.SUBMITTURN_URL, new PostSubmitTurnRoute(templateEngine, playerLobby));
+
+    // Initialize the PostBackupMoveRoute
+    post(ConstsUI.BACKUPMOVE_URL, new PostBackupMoveRoute(templateEngine, playerLobby));
+
+    // Initialize the PostCheckTurnRoute.
+    post(ConstsUI.CHECKTURN_URL, new PostCheckTurnRoute(templateEngine, playerLobby));
 
     // Initialize the PostGameRoute
 //    post(GAME_URL, new PostGameRoute(templateEngine));

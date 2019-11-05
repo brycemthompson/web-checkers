@@ -38,11 +38,35 @@ public class Space {
     }
 
     /**
+     * Getter for the cellIdy.
+     * @return cellIdy
+     */
+    public int getCellIdy() { return cellIdy; }
+
+    /**
      * Getter for Piece
      * @return this.piece
      */
     public Piece getPiece(){
         return this.piece;
+    }
+
+    /**
+     * Checks whether or not this Space has a Piece.
+     * @return true if this Space has a piece, false otherwise
+     */
+    public boolean hasPiece(){ return this.piece != null; }
+
+    /**
+     * Checkers whether or not this Space has a Piece with the given color.
+     * @return true if this Space has a Piece with the given color, false otherwise
+     */
+    public boolean hasPiece(Piece.Color color){
+        if (this.piece == null) {
+            return false;
+        } else {
+            return this.piece.getColor() == color;
+        }
     }
 
     /**
@@ -54,10 +78,24 @@ public class Space {
     }
 
     /**
+     * Removes a Piece from this space.
+     */
+    public void removePieceFromSpace() { this.piece = null; }
+
+    public Position getPosition(){
+        return new Position(this.cellIdy, this.cellIdx);
+    }
+
+    /**
      * Function to check validity of the Space
      * @return boolean value based on validity
      */
     public boolean isValid(){
         return ((cellIdx % 2 != cellIdy % 2) && this.piece == null);
+    }
+
+    @Override
+    public String toString() {
+        return new Position(cellIdy, cellIdx).toString();
     }
 }

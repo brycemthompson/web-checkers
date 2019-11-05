@@ -30,9 +30,6 @@ public class PostPlayerRoute implements Route {
     static final String CURRENTUSER_PARAM = "currentUser";
     static final String OPPONENT_PARAM = "opponent";
 
-    // Messages
-    static final Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
-
     // Various objects the route needs to track.
     private final TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -77,7 +74,7 @@ public class PostPlayerRoute implements Route {
                 if(player.isInGame()) // The player is in a game and we are sending an error message
                 {
                     System.out.println("Player found in game. Trying to go home.");
-                    vm.put(ConstsUI.TITLE_PARAM, WELCOME_MSG);
+                    vm.put(ConstsUI.TITLE_PARAM, ConstsUI.WELCOME_MSG);
                     vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
                     request.session().attribute(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);
                     response.redirect(ConstsUI.HOME_URL);
@@ -93,7 +90,7 @@ public class PostPlayerRoute implements Route {
 
         vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
         vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
-        vm.put(ConstsUI.MESSAGE_PARAM, WELCOME_MSG);
+        vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.WELCOME_MSG);
         vm.put("redPlayer", currentPlayer);
         vm.put("whitePlayer", opponent);
         vm.put("activeColor", "red");
