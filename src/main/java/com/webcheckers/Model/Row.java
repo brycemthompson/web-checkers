@@ -41,6 +41,13 @@ public class Row implements  Iterable<Space> {
     }
 
     /**
+     * Gets the Space with the given cell coordinate.
+     * @param space the cell coordinate of the requested Space
+     * @return Space object
+     */
+    public Space getSpace(int space) { return this.spaces.get(space); }
+
+    /**
      * Adds a given Piece to the Space with the given cellIdx.
      * @param piece: The Piece to be added to the Space
      * @param cellIdx: The cellIdx

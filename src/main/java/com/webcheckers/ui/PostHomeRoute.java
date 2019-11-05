@@ -26,11 +26,6 @@ public class PostHomeRoute implements Route {
 
     private static final Logger LOG = Logger.getLogger(PostHomeRoute.class.getName());
 
-    // Messages
-    private static final Message SIGNIN_FAILED_INVALID_MSG = Message.info("Username must contain only alphanumeric character.");
-    private static final Message SIGNIN_FAILED_NAME_TAKEN_MSG = Message.info("Username taken. Please enter a unique username.");
-    private static final Message SIGNIN_FAILED_UNKNOWN_MSG = Message.info("Unknown error. Please try another username.");
-
     // Various objects the route needs to track.
     private final TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -67,14 +62,14 @@ public class PostHomeRoute implements Route {
         switch (authResult) {
             case FAIL_INVALID_USERNAME:
                 vm.put(ConstsUI.TITLE_PARAM, ConstsUI.DEFAULT_WELCOME_FOR_TITLE);
-                vm.put(ConstsUI.MESSAGE_PARAM, SIGNIN_FAILED_INVALID_MSG);
-                request.session().attribute(ConstsUI.MESSAGE_PARAM, SIGNIN_FAILED_INVALID_MSG);
+                vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.SIGNIN_FAILED_INVALID_MSG);
+                request.session().attribute(ConstsUI.MESSAGE_PARAM, ConstsUI.SIGNIN_FAILED_INVALID_MSG);
                 response.redirect(ConstsUI.SIGNIN_URL);
                 return templateEngine.render(new ModelAndView(vm, ConstsUI.SIGNIN_VIEW));
             case FAIL_NAME_TAKEN:
                 vm.put(ConstsUI.TITLE_PARAM, ConstsUI.DEFAULT_WELCOME_FOR_TITLE);
-                vm.put(ConstsUI.MESSAGE_PARAM, SIGNIN_FAILED_NAME_TAKEN_MSG);
-                request.session().attribute(ConstsUI.MESSAGE_PARAM, SIGNIN_FAILED_NAME_TAKEN_MSG);
+                vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.SIGNIN_FAILED_NAME_TAKEN_MSG);
+                request.session().attribute(ConstsUI.MESSAGE_PARAM, ConstsUI.SIGNIN_FAILED_NAME_TAKEN_MSG);
                 response.redirect(ConstsUI.SIGNIN_URL);
                 return templateEngine.render(new ModelAndView(vm, ConstsUI.SIGNIN_VIEW));
             case SUCCESS:
@@ -98,8 +93,8 @@ public class PostHomeRoute implements Route {
                 return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
             default:
                 vm.put(ConstsUI.TITLE_PARAM, ConstsUI.WELCOME_MSG);
-                vm.put(ConstsUI.MESSAGE_PARAM, SIGNIN_FAILED_UNKNOWN_MSG);
-                request.session().attribute(ConstsUI.MESSAGE_PARAM, SIGNIN_FAILED_UNKNOWN_MSG);
+                vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.SIGNIN_FAILED_UNKNOWN_MSG);
+                request.session().attribute(ConstsUI.MESSAGE_PARAM, ConstsUI.SIGNIN_FAILED_UNKNOWN_MSG);
                 response.redirect(ConstsUI.SIGNIN_URL);
                 return templateEngine.render(new ModelAndView(vm, ConstsUI.SIGNIN_VIEW));
         }

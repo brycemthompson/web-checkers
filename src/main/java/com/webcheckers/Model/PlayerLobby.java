@@ -11,8 +11,11 @@ import java.util.ArrayList;
  */
 public class PlayerLobby
 {
-    // Player Lobby Fields
+    // all players in this lobby
     ArrayList<Player> players;
+
+    // all boards initialized in this lobby
+    ArrayList<Board> boards;
 
     // key for player lobby in the Session HashMap
     public static final String PLAYERLOBBY_KEY = "playerLobby";
@@ -24,6 +27,7 @@ public class PlayerLobby
     public PlayerLobby()
     {
         players = new ArrayList<>();
+        boards = new ArrayList<>();
     }
 
     /**
@@ -83,6 +87,29 @@ public class PlayerLobby
             names.add(player.getName());
         }
         return names;
+    }
+
+    /**
+     * Adds a given Board to the list of Boars tracked by this PlayerLobby.
+     * @param board a new Board to track
+     */
+    public void addBoard(Board board){
+        this.boards.add(board);
+    }
+
+    /**
+     * Finds the Board with the given Players and returns it.
+     * @param redPlayer the Board's red Player
+     * @param whitePlayer the Board's white Player
+     * @return the Board with both the given red and white Players
+     */
+    public Board getBoard(Player redPlayer, Player whitePlayer){
+        for (Board b : boards){
+            if (b.getRedPlayer().equals(redPlayer) && b.getWhitePlayer().equals(whitePlayer)) {
+                return b;
+            }
+        }
+        return null;
     }
 
     /**

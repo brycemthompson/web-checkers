@@ -16,7 +16,7 @@ public class Player
     private Player opponent;
 
     // the current color for this Player
-    private Piece.Color color;
+    public Piece.Color color;
 
     /**
      * Player Constructor
@@ -49,6 +49,12 @@ public class Player
     public Piece.Color getColor(){ return this.color; }
 
     /**
+     * Checks whether this Player is RED. Used primarily in game.ftl for determining orientation of the board.
+     * @return true if Player is RED, false otherwise
+     */
+    public boolean getIsRed(){ return (this.color == Piece.Color.RED); }
+
+    /**
      * Player accessor for their game availability status
      * @return this.inGame: boolean attribute for their availability status
      */
@@ -70,18 +76,32 @@ public class Player
     }
 
     /**
+     * toString override that returns Player's username.
+     */
+    @Override
+    public String toString() {
+        return ("Player(" + this.name + ")");
+    }
+
+    /**
      * Override for equals
      * @param o: Hopefully another Player object to compare to
      * @return boolean value based on the comparison
      */
     @Override
     public boolean equals(Object o){
+        // A Player will always be equal to itself.
+        if (o == this){
+            return true;
+        }
+
+        // A Player can only be equal to another Player.
         if (!(o instanceof Player)){
             return false;
         }
 
+        // Two Players are equal if they have the same name.
         Player p = (Player) o;
-
         return this.getName().equals(p.getName());
     }
 
