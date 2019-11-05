@@ -156,6 +156,7 @@ public class GetGameRoute implements Route {
         3) There is a board.
             => This implies a game is already in progress.
          */
+        //TODO: check if the opponent is still in the game or not
         switch(determineGameState(currentPlayer, currentPlayerBoard)){
             case CHALLENGING:
                 // Find the opponent in the PlayerLobby
@@ -167,7 +168,6 @@ public class GetGameRoute implements Route {
                     response.redirect(ConstsUI.HOME_URL);
                     return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
                 }
-
                 // start a new game
                startNewGame(request,
                        currentPlayer,
@@ -207,6 +207,11 @@ public class GetGameRoute implements Route {
                 // find the Player who we are in a game with
                 opponent = currentPlayer.getOpponent();
 
+                if(!opponent.isInGame()){
+                    GameView.buildOpponentInGameErrorView(request, response, vm);
+                    response.redirect(ConstsUI.HOME_URL);
+                    return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
+                }
                 // refresh the game
                 refreshGame(request,
                         currentPlayer,

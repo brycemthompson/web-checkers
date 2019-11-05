@@ -65,11 +65,20 @@ public class PostResignRoute implements Route {
 
         // Get the current user and resign them from the game
         Player currentPlayer = request.session().attribute(ConstsUI.CURRENT_USER_PARAM);
-        resignPlayer(currentPlayer, playerLobby);
+        Player opponent = request.session().attribute(ConstsUI.OPPONENT_PARAM);
 
         // Flip the active user on the board
         Board board = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
         board.flipActiveColor();
+        System.out.println("test: " + opponent);
+        resignPlayer(currentPlayer, playerLobby);
+        opponent.removeFromGame();
+
+
+        //opponent.removeFromGame();
+        //playerLobby.removeBoard(board);
+
+
 
         // Return a successful resignation message.
         return gson.toJson(RESIGN_SUCCESSFUL);
