@@ -44,7 +44,7 @@ public class PostGameRouteTest {
     }
 
     @Test
-    public void test(){
+    public void test_same_person(){
         final Map<String, Object> vm = new HashMap<>();
         Player currentPlayer = new Player("Killian");
         currentPlayer.color = Piece.Color.RED;
