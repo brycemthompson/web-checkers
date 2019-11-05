@@ -1,27 +1,24 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.Model.PlayerLobby;
-import com.webcheckers.util.Message;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import spark.*;
+import spark.Request;
+import spark.Response;
+import spark.Session;
+import spark.TemplateEngine;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@Tag("UI-Tier")
-public class GetSignInRouteTest {
+public class PostGameRouteTest {
 
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
     private Request request;
-    private GetSignInRoute CuT;
+    private PostGameRoute CuT;
     private Response response;
     private Session session;
-
 
     @BeforeEach
     public void setup() {
@@ -33,19 +30,7 @@ public class GetSignInRouteTest {
         when(request.session()).thenReturn(session);
 
         playerLobby = new PlayerLobby();
-        CuT = new GetSignInRoute(templateEngine, playerLobby);
+        CuT = new PostGameRoute(templateEngine, playerLobby);
         templateEngineTester = new TemplateEngineTester();
-    }
-
-    @Test
-    public void message_is_not_null_test(){
-        when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
-
-        Message msg = new Message("I wanna die", Message.Type.INFO);
-        when(session.attribute(ConstsUI.MESSAGE_PARAM)).thenReturn(msg);
-
-        CuT.handle(request,response);
-        templateEngineTester.assertViewModelAttribute(ConstsUI.MESSAGE_PARAM, msg);
-
     }
 }

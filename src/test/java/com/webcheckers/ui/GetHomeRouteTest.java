@@ -6,6 +6,7 @@ import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
 
@@ -15,6 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
 
+@Tag("UI-Tier")
 public class GetHomeRouteTest {
 
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
@@ -39,6 +41,8 @@ public class GetHomeRouteTest {
         templateEngineTester = new TemplateEngineTester();
     }
 
+
+    //I need to rename these tests !!!!!
     @Test
      public void test_something(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
@@ -105,7 +109,7 @@ public class GetHomeRouteTest {
 
         when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentUserBoard);
 
-        GetGameRoute.drawBoard(currentUserBoard, pl.getColor(), opponent.getColor());
+//        GetGameRoute.drawBoard(currentUserBoard, pl.getColor(), opponent.getColor());
 
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 

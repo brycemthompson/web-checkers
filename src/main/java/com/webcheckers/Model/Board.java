@@ -21,9 +21,10 @@ public class Board implements Iterable<Row> {
     // players
     private Player redPlayer;
     private Player whitePlayer;
+    private Piece.Color activeColor;
 
     /**
-     * Constructor. Automatically populates the board with 8 rows.
+     * Constructor. Automatically populates the board with the starting pieces.
      */
     public Board(){
         // populate board with rows
@@ -31,13 +32,29 @@ public class Board implements Iterable<Row> {
         for (int i = 0; i < rowsPerBoard; i++){
             rows.add(new Row(i));
         }
+
+        // populate board with checkers in starting positions
+
+        // white
+        for (int r = 0; r < 3; r += 1){
+            for (int c = (r + 1) % 2; c < rowsPerBoard; c += 2){
+                addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), c, r);
+            }
+        }
+
+        // red
+        for (int r = rowsPerBoard - 3; r < rowsPerBoard; r += 1){
+            for (int c = (r + 1) % 2; c < rowsPerBoard; c += 2){
+                addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.RED), c, r);
+            }
+        }
     }
 
     /**
      * Adds the given Piece to the given coordinates.
      */
-    public void addPieceToSpace(Piece piece, int cellIdx, int cellIdy){
-        this.rows.get(cellIdy).addPieceToSpace(piece, cellIdx);
+    public void addPieceToSpace(Piece piece, int col, int row){
+        this.rows.get(row).addPieceToSpace(piece, col);
     }
 
     /**
@@ -51,17 +68,13 @@ public class Board implements Iterable<Row> {
         int end_row = move.getEnd().getRow();
         int end_cell = move.getEnd().getCell();
 
-        // creating the backup move
-        Position backupPos1 = rows.get(start_row).getSpace(start_cell).getPosition();
-        Position backupPos2 = rows.get(end_row).getSpace(end_cell).getPosition();
-
-        // setting Pos2 as the first Position in order to have the Move go from current Pos to original Pos
-        backupMove = new Move(backupPos1, backupPos2);
-
         // move the piece
         Piece p = rows.get(start_row).getSpace(start_cell).getPiece();
         rows.get(end_row).getSpace(end_cell).addPieceToSpace(p);
         rows.get(start_row).getSpace(start_cell).removePieceFromSpace();
+
+        // set the backup move for this Board
+        this.backupMove = new Move(move.getEnd(), move.getStart());
     }
 
     /**
@@ -162,6 +175,21 @@ public class Board implements Iterable<Row> {
     }
 
     /**
+     * Sets the active color.
+     * @param activeColor color to be active
+     */
+    public void setActiveColor(Piece.Color activeColor){
+        this.activeColor = activeColor;
+    }
+
+    /**
+     * Flips the active color of this Boardd.
+     */
+    public void flipActiveColor(){
+        this.activeColor = Piece.getOtherColor(this.activeColor);
+    }
+
+    /**
      * @return redPlayer
      */
     public Player getRedPlayer(){
@@ -173,6 +201,13 @@ public class Board implements Iterable<Row> {
      */
     public Player getWhitePlayer(){
         return this.whitePlayer;
+    }
+
+    /**
+     * @return activeColor
+     */
+    public Piece.Color getActiveColor(){
+        return this.activeColor;
     }
 
     /**

@@ -49,6 +49,12 @@ public class Player
     public Piece.Color getColor(){ return this.color; }
 
     /**
+     * Checks whether this Player is RED. Used primarily in game.ftl for determining orientation of the board.
+     * @return true if Player is RED, false otherwise
+     */
+    public boolean getIsRed(){ return (this.color == Piece.Color.RED); }
+
+    /**
      * Player accessor for their game availability status
      * @return this.inGame: boolean attribute for their availability status
      */

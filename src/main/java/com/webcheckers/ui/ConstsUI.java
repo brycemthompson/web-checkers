@@ -63,5 +63,6 @@ public final class ConstsUI {
     public static final String SIGNOUT_URL = "/signout";
     public static final String VALIDATEMOVE_URL = "/validateMove";
     public static final String SUBMITTURN_URL = "/submitTurn";
+    public static final String CHECKTURN_URL = "/checkTurn";
     public static final String BACKUPMOVE_URL = "/backupMove";
 }
