@@ -148,7 +148,7 @@ public class WebServer {
     get(ConstsUI.GAME_URL, new GetGameRoute(templateEngine, playerLobby));
 
     // Initialize the PostSigninRoute.
-    post(ConstsUI.RESIGN_URL, new PostResignRoute(gson, playerLobby));
+    post(ConstsUI.RESIGN_URL, new PostResignRoute(templateEngine, playerLobby));
     // Initialize the PostValidateMoveRoute.
     post(ConstsUI.VALIDATEMOVE_URL, new PostValidateMoveRoute(templateEngine, playerLobby));
 

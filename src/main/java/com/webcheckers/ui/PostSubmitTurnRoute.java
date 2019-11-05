@@ -33,6 +33,7 @@ public class PostSubmitTurnRoute implements Route {
         //TODO: In Feature-SimpleMove, submitTurn will always be valid. Not the case for future branches!
         Board currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
         currentPlayerBoard.flipActiveColor();
+
         return new Gson().toJson(Message.info("Turn submitted."));
 
         /*

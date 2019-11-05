@@ -18,22 +18,17 @@ import java.util.logging.Logger;
 public class PostResignRoute implements Route {
     private static final Logger LOG = Logger.getLogger(PostResignRoute.class.getName());
 
-    //messages
-    private static final Message RESIGN_SUCCESSFUL = Message.info("Resigned Successfully!");
-    private static final Message OTHER_PLAYER_RESIGNED = Message.info("Other player resigned from the game!");
-    private static final Message RESIGN_UNSUCCESSFUL = Message.info("Resign Unsuccessful.  Either backup from your " +
-            "move or wait until your next turn and try again.");
-
-    private final Gson gson;
     private PlayerLobby playerLobby;
+    private final TemplateEngine templateEngine;
     private boolean p1Game, p2Game;
 
-    PostResignRoute(Gson gson, PlayerLobby playerLobby)
+
+    PostResignRoute(TemplateEngine templateEngine, PlayerLobby playerLobby)
     {
-        this.gson = gson;
         this.playerLobby = playerLobby;
         this.p1Game = false;
         this.p2Game = false;
+        this.templateEngine = templateEngine;
     }
 
     /**
@@ -79,9 +74,8 @@ public class PostResignRoute implements Route {
         //playerLobby.removeBoard(board);
 
 
-
         // Return a successful resignation message.
-        return gson.toJson(RESIGN_SUCCESSFUL);
+        return new Gson().toJson(ConstsUI.RESIGN_SUCCESSFUL);
 
         /*
         //System.out.println(playerLobby.boards);

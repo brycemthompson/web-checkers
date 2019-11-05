@@ -45,6 +45,10 @@ public final class ConstsUI {
     public static final Message PLAYER_IN_GAME_ERROR_MSG = Message.error("The chosen player is already in a game.");
     public static final Message BACKUPMOVE_FAIL_ERROR_MSG = Message.error("The backup move failed.");
     public static final Message JUMP_REQUIRED_ERROR_MSG = Message.error("Invalid Turn. Jump move available.");
+    public static final Message RESIGN_SUCCESSFUL = Message.info("Resigned Successfully!");
+    public static final Message OTHER_PLAYER_RESIGNED = Message.info("Other player resigned from the game!");
+    public static final Message RESIGN_UNSUCCESSFUL = Message.info("Resign Unsuccessful.  Either backup from your " +
+            "move or wait until your next turn and try again.");
 
     /**
      * VIEWS
