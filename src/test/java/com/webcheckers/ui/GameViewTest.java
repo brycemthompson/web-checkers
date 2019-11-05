@@ -105,7 +105,7 @@ public class GameViewTest {
 
         populateViewModelPlayerData(vm, redPlayer, whitePlayer);
 
-        templateEngineTester.assertViewModelAttribute();
+//        templateEngineTester.assertViewModelAttribute();
 
 //        redPlayer.color, board.getActiveColor());
     }
