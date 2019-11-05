@@ -42,7 +42,6 @@ public class GetHomeRouteTest {
     }
 
 
-    //I need to rename these tests !!!!!
     @Test
      public void test_view(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
