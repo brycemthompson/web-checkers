@@ -106,6 +106,28 @@ public class PlayerLobby
     }
 
     /**
+     * Removes the Board with the given Player. (NOTE: This only works because a Player can only be in one game.)
+     * @param player Player that is in the Board we are looking to remove.
+     */
+    public void removeBoard(Player player){
+
+        // iterate through all Boards
+        int i = 0;
+        while (i < boards.size()){
+
+            Board b = boards.get(i);
+
+            if (b.getWhitePlayer().equals(player) || b.getRedPlayer().equals(player)){
+                break;
+            }
+
+            i++;
+        }
+
+        boards.remove(i);
+    }
+
+    /**
      * Finds the Board with the given Players and returns it.
      * @param redPlayer the Board's red Player
      * @param whitePlayer the Board's white Player

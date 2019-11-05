@@ -37,6 +37,15 @@ public class PostResignRoute implements Route {
     }
 
     /**
+     * Helper function that resigns the given Player from a game.
+     * @param player Player
+     */
+    public static void resignPlayer(Player player, PlayerLobby playerLobby){
+        player.removeFromGame();
+        playerLobby.removeBoard(player);
+    }
+
+    /**
      * Handle the Resign button request and try to send the player back to home.
      *
      * @param request
@@ -52,17 +61,20 @@ public class PostResignRoute implements Route {
     {
         LOG.finer("PostResignRoute is invoked.");
 
+        //TODO: Resignation right now is, theoretically, always successful. When is it supposed to fail?
 
-        // Get the current user and the opponent
-        Player currentPlayer = request.session().attribute(PostPlayerRoute.CURRENTUSER_PARAM);
+        // Get the current user and resign them from the game
+        Player currentPlayer = request.session().attribute(ConstsUI.CURRENT_USER_PARAM);
+        resignPlayer(currentPlayer, playerLobby);
 
-        // Finding the opponent in the playerList
-        Player opponent = request.session().attribute(PostPlayerRoute.OPPONENT_PARAM);
+        // Flip the active user on the board
+        Board board = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+        board.flipActiveColor();
 
-        ArrayList<Player> players = playerLobby.getPlayers();
-        //System.out.println(playerLobby.boards);
-        Board currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+        // Return a successful resignation message.
+        return gson.toJson(RESIGN_SUCCESSFUL);
 
+        /*
         //System.out.println(playerLobby.boards);
         for(Player player: players)
         {
@@ -89,6 +101,7 @@ public class PostResignRoute implements Route {
             System.out.println("fucc");
             return gson.toJson(RESIGN_UNSUCCESSFUL);
         }
+         */
 
     }
 }
