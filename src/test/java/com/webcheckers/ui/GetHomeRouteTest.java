@@ -44,7 +44,7 @@ public class GetHomeRouteTest {
 
     //I need to rename these tests !!!!!
     @Test
-     public void test_something(){
+     public void test_view(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
         Object something  = CuT.handle(request, response);
@@ -52,7 +52,7 @@ public class GetHomeRouteTest {
     }
 
     @Test
-    public void test_something2(){
+    public void test_correct_message(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
         Message msg = new Message("Test1", Message.Type.INFO);
@@ -65,7 +65,7 @@ public class GetHomeRouteTest {
     }
 
     @Test
-    public void test_something3(){
+    public void test_welcome_message(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
         CuT.handle(request, response);
@@ -75,7 +75,7 @@ public class GetHomeRouteTest {
     }
 
     @Test
-    public void test_something4(){
+    public void test_username_currentUser_playerList(){
         Player pl = new Player("David");
         playerLobby.addPlayer(pl);
         ArrayList<String> playerNames = playerLobby.getPlayerNames();
@@ -94,12 +94,10 @@ public class GetHomeRouteTest {
     }
 
     @Test
-    public void test_something_5(){
+    public void test_board(){
         Player pl = new Player("David2");
         playerLobby.addPlayer(pl);
         ArrayList<String> playerNames = playerLobby.getPlayerNames();
-
-//        when(session.attribute(ConstsUI.CURRENT_USER_PARAM)).thenReturn(pl);
 
         Board currentUserBoard ;
         Player opponent = pl.getOpponent();
@@ -109,10 +107,7 @@ public class GetHomeRouteTest {
 
         when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentUserBoard);
 
-//        GetGameRoute.drawBoard(currentUserBoard, pl.getColor(), opponent.getColor());
-
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
-
 
         CuT.handle(request, response);
         templateEngineTester.assertViewModelAttribute(ConstsUI.CURRENT_USER_PARAM, pl);
@@ -121,7 +116,7 @@ public class GetHomeRouteTest {
     }
 
     @Test
-    public void test_something_6(){
+    public void test_player_lobby_size(){
 
         Player pl = null;
         String PLAYERSPLAYING_PARAM = "amountOfPlayersPlaying";
