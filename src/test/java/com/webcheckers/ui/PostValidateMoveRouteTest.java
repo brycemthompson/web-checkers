@@ -22,7 +22,7 @@ public class PostValidateMoveRouteTest {
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
     private Request request;
-    private PostPlayerRoute CuT;
+    private PostValidateMoveRoute CuT;
     private Response response;
     private Session session;
 
@@ -35,7 +35,7 @@ public class PostValidateMoveRouteTest {
         when(request.session()).thenReturn(session);
 
         playerLobby = new PlayerLobby();
-        CuT = new PostPlayerRoute(templateEngine, playerLobby);
+        CuT = new PostValidateMoveRoute(templateEngine, playerLobby);
         templateEngineTester = new TemplateEngineTester();
     }
 

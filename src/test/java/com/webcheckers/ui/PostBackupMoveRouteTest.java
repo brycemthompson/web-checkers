@@ -18,7 +18,7 @@ public class PostBackupMoveRouteTest {
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
     private Request request;
-    private PostPlayerRoute CuT;
+    private PostBackupMoveRoute CuT;
     private Response response;
     private Session session;
 
@@ -31,7 +31,7 @@ public class PostBackupMoveRouteTest {
         when(request.session()).thenReturn(session);
 
         playerLobby = new PlayerLobby();
-        CuT = new PostPlayerRoute(templateEngine, playerLobby);
+        CuT = new PostBackupMoveRoute(templateEngine, playerLobby);
         templateEngineTester = new TemplateEngineTester();
     }
 
