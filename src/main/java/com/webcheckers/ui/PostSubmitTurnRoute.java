@@ -30,7 +30,7 @@ public class PostSubmitTurnRoute implements Route {
     public Object handle(Request request, Response response) throws Exception {
         LOG.finer("PostSubmitTurnRoute invoked");
 
-        //TODO: In Feature-SimpleMove, submitTurn will always be valid. Not the case for future branches!
+        //TODO: A turn will only fail to submit if a multiple jump move still needs to be completed. Future worries.
         Board currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
         currentPlayerBoard.flipActiveColor();
         return new Gson().toJson(Message.info("Turn submitted."));
