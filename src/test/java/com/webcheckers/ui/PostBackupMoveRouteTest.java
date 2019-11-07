@@ -47,10 +47,12 @@ public class PostBackupMoveRouteTest {
         Player opponent = new Player("p2");
         when(session.attribute(ConstsUI.OPPONENT_PARAM)).thenReturn(opponent);
 
-        Move backupMove = currentBoard.getBackupMove();
+        MovePacket backupMove = currentBoard.getBackupMove();
         assertNull(backupMove);
 
-        currentBoard.movePiece(new Move(new Position(1, 2), new Position(2, 2)));
+        Move move = new Move(new Position(1,2), new Position(2,2));
+
+        currentBoard.movePiece(new MovePacket(move, MovePacket.Type.SIMPLE));
         backupMove = currentBoard.getBackupMove();
         assertNotNull(backupMove);
         when(request.attribute(ConstsUI.BACKUP_MOVE_PARAM)).thenReturn(backupMove);

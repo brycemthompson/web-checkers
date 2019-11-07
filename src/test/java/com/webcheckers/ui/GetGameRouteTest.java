@@ -124,54 +124,40 @@ public class GetGameRouteTest {
         //Something is missing here idk David will help probably
     }
 
-    @Test
-    public void challengingGameState_test_2() {
-
-        Map<String, Object> vm = new HashMap<>();
-
-        Player currentPlayer = new Player("Isaias");
-        Board currentPlayerBoard = new Board();
-
-        when(session.attribute(ConstsUI.CURRENTUSER_PARAM)).thenReturn(currentPlayer);
-
-        when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentPlayerBoard);
-
-        Player opponent = null;
-
-        when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
-
-        CuT.handle(request, response);
-
-        opponent = playerLobby.getPlayer(request.queryParams("opponentUsername"));
-        // start a new game
-        startNewGame(request,
-                currentPlayer,
-                opponent);
-
-       when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentPlayerBoard);
-
-       GameView.buildGameViewModel(
-               currentPlayer,
-               opponent,
-               currentPlayerBoard,
-               vm
-       );
-        templateEngineTester.assertViewName("game.ftl");
-
-    }
-
-    @Test
-    public void test2(){
-
-    }
-
-    @Test
-    public void test3(){
-
-    }
-
-    @Test
-    public void test4(){
-
-    }
+//    @Test
+//    public void challengingGameState_test_2() {
+//
+//        Map<String, Object> vm = new HashMap<>();
+//
+//        Player currentPlayer = new Player("Isaias");
+//        Board currentPlayerBoard = new Board();
+//
+//        when(session.attribute(ConstsUI.CURRENTUSER_PARAM)).thenReturn(currentPlayer);
+//
+//        when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentPlayerBoard);
+//
+//        Player opponent = null;
+//
+//        when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
+//
+//        CuT.handle(request, response);
+//
+//        opponent = playerLobby.getPlayer(request.queryParams("opponentUsername"));
+//        // start a new game
+//        startNewGame(request,
+//                currentPlayer,
+//                opponent);
+//
+//       when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentPlayerBoard);
+//
+//       GameView.buildGameViewModel(
+//               currentPlayer,
+//               opponent,
+//               currentPlayerBoard,
+//               vm
+//       );
+//        templateEngineTester.assertViewName("game.ftl");
+//
+//    }
+//
 }

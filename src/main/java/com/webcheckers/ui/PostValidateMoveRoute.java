@@ -37,8 +37,36 @@ public class PostValidateMoveRoute implements Route {
         Piece.Color currentPlayerColor = currentPlayer.getColor();
 
         // get list of valid moves
-        ArrayList<Move> validMoves = currentBoard.getAllValidMoves(currentPlayerColor);
+        ArrayList<MovePacket> validMoves = currentBoard.getAllValidMoves(currentPlayerColor);
 
+        // find the move in the move packets
+        Message validationMessage = null;
+        MovePacket movePacket = null;
+        for (MovePacket mp : validMoves){
+            if (mp.getMove().equals(move)){
+                movePacket = mp;
+                validationMessage = Message.info("Move successful.");
+            }
+        }
+
+        // if validationMessage is null, the move is invalid
+        if (validationMessage == null){
+            if (validMoves.get(0).getType() == MovePacket.Type.SIMPLE_JUMP){
+                validationMessage = Message.error("You must make a jump move.");
+            } else {
+                validationMessage = Message.error("Move is too far.");
+            }
+            return new Gson().toJson(validationMessage);
+        }
+
+        currentBoard.movePiece(movePacket);
+        if (movePacket.getJumpedPiece() != null){
+            Position jumpedPiecePosition = movePacket.getJumpedPiecePosition();
+            System.out.println("Removing " + jumpedPiecePosition);
+            currentBoard.removePieceFromSpace(jumpedPiecePosition.getCell(), jumpedPiecePosition.getRow());
+        }
+
+        /*
         // check if the Move given is in the list of valid moves
         Message validationMessage = null;
         if (validMoves.contains(move)){
@@ -61,6 +89,7 @@ public class PostValidateMoveRoute implements Route {
         } else {
             validationMessage = Message.error("Piece has been moved too far.");
         }
+         */
 
         return new Gson().toJson(validationMessage);
     }

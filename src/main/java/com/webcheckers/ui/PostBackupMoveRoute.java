@@ -30,7 +30,7 @@ public class PostBackupMoveRoute implements Route {
         Board currentBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
 
         // Backing up the move
-        Move backupMove = currentBoard.getBackupMove();
+        MovePacket backupMove = currentBoard.getBackupMove();
         System.out.println("backup move: " + backupMove);
         Message backupMoveMessage;
 
@@ -44,6 +44,12 @@ public class PostBackupMoveRoute implements Route {
             backupMoveMessage = ConstsUI.BACKUPMOVE_SUCCESSFUL_MSG;
             request.session().attribute(ConstsUI.BACKUP_MOVE_PARAM, backupMove);
             currentBoard.movePiece(backupMove);
+            // if a Piece was jumped, add it back
+            if (backupMove.getJumpedPiece() != null){
+                Piece jumpedPiece = backupMove.getJumpedPiece();
+                Position jumpedPiecePosition = backupMove.getJumpedPiecePosition();
+                currentBoard.addPieceToSpace(jumpedPiece, jumpedPiecePosition.getCell(), jumpedPiecePosition.getRow());
+            }
         }
 
         return new Gson().toJson(backupMoveMessage);
