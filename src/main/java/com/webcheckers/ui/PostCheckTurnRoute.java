@@ -12,11 +12,15 @@ import spark.TemplateEngine;
 
 public class PostCheckTurnRoute implements Route {
 
-    // Various objects the route needs to track.
+    /**
+     * Private fields
+     */
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
 
-    // Messages
+    /**
+     * Messages
+     */
     public final Message COLOR_MATCH_MESSAGE = Message.info("true");
     public final Message FAIL_COLOR_MATCH = Message.info("false");
 
