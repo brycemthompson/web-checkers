@@ -120,7 +120,7 @@ public final class Application {
   // Constructor
   //
 
-  private Application(final WebServer webServer) {
+  public Application(final WebServer webServer) {
     // validation
     Objects.requireNonNull(webServer, "webServer must not be null");
     //
@@ -131,7 +131,7 @@ public final class Application {
   // Private methods
   //
 
-  private void initialize() {
+  public void initialize() {
     LOG.config("WebCheckers is initializing.");
 
     // configure Spark and startup the Jetty web server

@@ -1,8 +1,6 @@
 package com.webcheckers.Model;
 
-import javafx.geometry.Pos;
 
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.Iterator;
 

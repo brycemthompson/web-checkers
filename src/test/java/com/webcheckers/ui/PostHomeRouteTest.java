@@ -19,6 +19,7 @@ import static org.mockito.Mockito.when;
 
 @Tag("UI-Tier")
 public class PostHomeRouteTest {
+
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -27,13 +28,12 @@ public class PostHomeRouteTest {
     private Response response;
     private Session session;
 
-
     @BeforeEach
-    public void setup() {
+    public void setup(){
 
         request = mock(Request.class);
         response = mock(Response.class);
-        templateEngine = mock(TemplateEngine.class);
+        templateEngine  = mock(TemplateEngine.class);
         session = mock(Session.class);
         when(request.session()).thenReturn(session);
 
@@ -43,11 +43,14 @@ public class PostHomeRouteTest {
     }
 
     @Test
-    public void test_view(){
+    public void test_default_view(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
+        final String username = "Test";
+        playerLobby.addPlayer(username);
+        when(session.attribute(ConstsUI.CURRENT_USER_PARAM)).thenReturn(username);
 
-        Object something  = CuT.handle(request, response);
-        templateEngineTester.assertViewModelAttribute("title", "Welcome to Home Page!");
+        CuT.handle(request, response);
+        templateEngineTester.assertViewName("signin.ftl");
     }
 
     @Test
@@ -58,8 +61,9 @@ public class PostHomeRouteTest {
         final String username = "_122g";
         playerLobby.addPlayer(username);
         Authentication authResult = playerLobby.authenticateSignIn(username);
+        when(request.queryParams(ConstsUI.CURRENT_USER_PARAM)).thenReturn(username);
 
-        assertEquals(authResult, Authentication.FAIL_INVALID_USERNAME);
+//        assertEquals(authResult, Authentication.FAIL_INVALID_USERNAME);
 
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
         CuT.handle(request, response);
