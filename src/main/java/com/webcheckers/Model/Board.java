@@ -87,8 +87,17 @@ public class Board implements Iterable<Row> {
         rows.get(start_row).getSpace(start_cell).removePieceFromSpace();
 
         // set the backup move packet for this Board
-        Move bmove = new Move(move.getEnd(), move.getStart());
-        this.backupMove = new MovePacket(bmove, mp.getType(), mp.getJumpedPiece(), mp.getJumpedPiecePosition());
+        switch (mp.getType()){
+            case SIMPLE:
+                this.backupMove = new MovePacket(
+                        Move.reverse(mp.getMove()));
+                break;
+            case SIMPLE_JUMP:
+                this.backupMove = new MovePacket(
+                        Move.reverse(mp.getMove()),
+                        mp.getJumpedPiece());
+                break;
+        }
     }
 
     /**
@@ -124,7 +133,7 @@ public class Board implements Iterable<Row> {
         ArrayList<MovePacket> allValidMoves = new ArrayList<>();
         for (Space start : allStartingSpaces){
             // scan for valid spaces or spaces with pieces that can be jumped
-            //System.out.println("For " + start + "...");
+            System.out.println("For " + start + "...");
             for (int r = -1; r <= 1; r++){
                 for (int c = -1; c <= 1; c++){
                     Space cur = null;
@@ -138,9 +147,9 @@ public class Board implements Iterable<Row> {
 
                     if (cur.isValid()){
                         // space is a valid space to move to
-                        //System.out.println("\t" + cur + " is valid to move to.");
+                        System.out.println("\t" + cur + " is valid to move to.");
                         Move move = new Move(start.getPosition(), cur.getPosition());
-                        MovePacket mp = new MovePacket(move, MovePacket.Type.SIMPLE);
+                        MovePacket mp = new MovePacket(move);
                         allValidMoves.add(mp);
                     } else if (cur.hasPiece(opponent)){
                         // space has an opponent piece => check if it can be jumped
@@ -175,7 +184,7 @@ public class Board implements Iterable<Row> {
         for (int r = 0; r < rowsPerBoard; r++){
             for (int c = 0; c < rowsPerBoard; c++){
                 if (getSpace(r, c).hasPiece(Piece.getOtherColor(player))){
-                    System.out.println("Opponent piece at " + new Position(r, c));
+                    //System.out.println("Opponent piece at " + new Position(r, c));
                     opponentPiecePositions.add(new Position(r, c));
                     opponentPieces.add(getSpace(r, c).getPiece());
                 }
@@ -188,7 +197,7 @@ public class Board implements Iterable<Row> {
             // get the Position of the opponent Piece that we are currently scanning
             Position cur = opponentPiecePositions.get(i);
             Piece aaa = opponentPieces.get(i);
-            System.out.println("==CURRENTLY EXAMINING " + cur + "==");
+            //System.out.println("==CURRENTLY EXAMINING " + cur + "==");
             // track any empty Space around this opponent's Piece in case we need them to make a Move
             ArrayList<Position> emptySpaces = new ArrayList<>();
             // also track any of our Pieces around this opponent's Piece
@@ -211,11 +220,11 @@ public class Board implements Iterable<Row> {
                     Position pos = new Position(scan_row, scan_col);
                     if (!scan.hasPiece()){
                         emptySpaces.add(pos);
-                        System.out.println("Neighboring empty space found at " + new Position(scan_row, scan_col));
-                        System.out.println("emptySpaces: " + emptySpaces);
+                        //System.out.println("Neighboring empty space found at " + new Position(scan_row, scan_col));
+                        //System.out.println("emptySpaces: " + emptySpaces);
                     } else if (scan.hasPiece(player)){
                         ourPieces.add(pos);
-                        System.out.println("Neighboring player piece found at " + new Position(scan_row, scan_col));
+                        //System.out.println("Neighboring player piece found at " + new Position(scan_row, scan_col));
                     }
 
                 }
@@ -223,8 +232,8 @@ public class Board implements Iterable<Row> {
 
             // check any of our Pieces to see if a jump can be made
             for (int j = 0; j < ourPieces.size(); j++){
-                System.out.println("Comparing " + ourPieces.get(j) + " to...");
-                System.out.println("(size of emptySpaces: " + emptySpaces.size() + ")");
+                //System.out.println("Comparing " + ourPieces.get(j) + " to...");
+                //System.out.println("(size of emptySpaces: " + emptySpaces.size() + ")");
                 for (int k = 0; k < emptySpaces.size(); k++){
                     /*
                     An empty Space is valid to move to if the magnitude of the differences between ours and its rows
@@ -234,14 +243,14 @@ public class Board implements Iterable<Row> {
                     Position possible_start = ourPieces.get(j);
                     Position possible_end = emptySpaces.get(k);
 
-                    System.out.println("\t..." + possible_end);
+                    //System.out.println("\t..." + possible_end);
 
                     if (abs(possible_start.getRow() - possible_end.getRow()) == 2 &&
                     abs(possible_start.getCell() - possible_end.getCell()) == 2){
                         Move move = new Move(possible_start, possible_end);
-                        MovePacket mp = new MovePacket(move, MovePacket.Type.SIMPLE_JUMP, aaa, cur);
+                        MovePacket mp = new MovePacket(move, new PieceWithPosition(aaa, cur));
                         allValidMoves.add(mp);
-                        System.out.println("**Valid move: " + new Move(possible_start, possible_end));
+                        //System.out.println("**Valid move: " + new Move(possible_start, possible_end));
                     }
                 }
             }
@@ -256,6 +265,12 @@ public class Board implements Iterable<Row> {
      * @return array list containing all valid multiple jump moves
      */
     public ArrayList<MovePacket> getAllMultipleJumpMoves(Piece.Color player){
+        /*
+        ALGORITHM:
+        1. Check for any Spaces which contain Pieces belonging to the Opponent.
+        2.
+         */
+
         return null;
     }
 

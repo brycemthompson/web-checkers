@@ -104,7 +104,11 @@ public class MovePacket {
      * Get the first jumped Piece contained in the jumped Pieces list for this MovePacket. Used for simple jumps.
      * @return a PieceWithPosition object
      */
-    public PieceWithPosition getJumpedPiece(){
+    public PieceWithPosition getJumpedPiece()
+    {
+        if (this.jumpedPieces == null){
+            return null;
+        }
         return this.jumpedPieces.get(0);
     }
 

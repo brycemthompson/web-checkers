@@ -61,7 +61,7 @@ public class PostValidateMoveRoute implements Route {
 
         currentBoard.movePiece(movePacket);
         if (movePacket.getJumpedPiece() != null){
-            Position jumpedPiecePosition = movePacket.getJumpedPiecePosition();
+            Position jumpedPiecePosition = movePacket.getJumpedPiece().getPosition();
             System.out.println("Removing " + jumpedPiecePosition);
             currentBoard.removePieceFromSpace(jumpedPiecePosition.getCell(), jumpedPiecePosition.getRow());
         }

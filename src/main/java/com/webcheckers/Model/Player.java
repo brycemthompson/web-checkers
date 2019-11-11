@@ -63,6 +63,7 @@ public class Player
         return this.inGame;
     }
 
+
     /**
      * Puts this Player into a game with a given opponent.
      * @param opponent: The current Player's opponent

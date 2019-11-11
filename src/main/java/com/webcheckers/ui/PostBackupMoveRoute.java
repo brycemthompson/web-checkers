@@ -46,8 +46,8 @@ public class PostBackupMoveRoute implements Route {
             currentBoard.movePiece(backupMove);
             // if a Piece was jumped, add it back
             if (backupMove.getJumpedPiece() != null){
-                Piece jumpedPiece = backupMove.getJumpedPiece();
-                Position jumpedPiecePosition = backupMove.getJumpedPiecePosition();
+                Piece jumpedPiece = backupMove.getJumpedPiece().getPiece();
+                Position jumpedPiecePosition = backupMove.getJumpedPiece().getPosition();
                 currentBoard.addPieceToSpace(jumpedPiece, jumpedPiecePosition.getCell(), jumpedPiecePosition.getRow());
             }
         }
