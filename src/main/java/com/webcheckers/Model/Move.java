@@ -30,6 +30,15 @@ public class Move {
     }
 
     /**
+     * Static function which reverses the given move.
+     * @param move a Move to reverse
+     * @return a new Move with the start and end flipped compared to the given Move
+     */
+    public static Move reverse(Move move){
+        return new Move(move.getEnd(), move.getStart());
+    }
+
+    /**
      * Getter for start.
      */
     public Position getStart(){
