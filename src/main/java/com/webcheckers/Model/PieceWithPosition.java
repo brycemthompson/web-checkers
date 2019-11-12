@@ -37,4 +37,16 @@ public class PieceWithPosition {
         return this.position;
     }
 
+    /**
+     * Gets the row of the Position.
+     * @return the row as an int
+     */
+    public int getRow() { return this.position.getRow(); }
+
+    /**
+     * Gets the cell of the Position.
+     * @return the cell as an int
+     */
+    public int getCell() { return this.position.getCell(); }
+
 }
