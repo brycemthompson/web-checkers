@@ -20,11 +20,11 @@ public class MovePacket {
     Private fields.
      */
 
-    // the type of the Moves contained in this MovePacket
+    // the type of the Move contained in this MovePacket
     private Type type;
 
-    // list of all Moves contained in this packet
-    private List<Move> moves;
+    // the Move contained in this MovePacket
+    private Move move;
 
     // list of all Pieces jumped in this MovePacket (if any)
     private List<PieceWithPosition> jumpedPieces;
@@ -32,11 +32,11 @@ public class MovePacket {
 
     /**
      * Constructor for a multiple jump move.
-     * @param moves all Moves being made in this multiple jump move sequence
+     * @param move the Move being made
      * @param jumpedPieces all jumped Pieces and their associated Positions
      */
-    public MovePacket(List<Move> moves, List<PieceWithPosition> jumpedPieces){
-        this.moves = moves;
+    public MovePacket(Move move, List<PieceWithPosition> jumpedPieces){
+        this.move = move;
         this.jumpedPieces = jumpedPieces;
         this.type = Type.MULTIPLE_JUMP;
     }
@@ -49,8 +49,7 @@ public class MovePacket {
      */
     public MovePacket(Move move, PieceWithPosition jumpedPiece){
 
-        this.moves = new ArrayList<Move>();
-        this.moves.add(move);
+        this.move = move;
 
         this.jumpedPieces = new ArrayList<PieceWithPosition>();
         this.jumpedPieces.add(jumpedPiece);
@@ -66,8 +65,7 @@ public class MovePacket {
      */
     public MovePacket(Move move){
 
-        this.moves = new ArrayList<Move>();
-        moves.add(move);
+        this.move = move;
 
         this.jumpedPieces = null;
 
@@ -76,21 +74,13 @@ public class MovePacket {
     }
 
     /**
-     * Get the first Move contained in the Move list for this MovePacket. Used for simple Moves.
+     * Get the Move contained in this MovePacket.
      * @return a Move object
      */
     public Move getMove(){
-        return this.moves.get(0);
+        return this.move;
     }
 
-
-    /**
-     * Get the list of Moves contained within this MovePacket.
-     * @return List of Moves
-     */
-    public List<Move> getMoves(){
-        return this.moves;
-    }
 
     /**
      * Get the Type of this MovePacket.
