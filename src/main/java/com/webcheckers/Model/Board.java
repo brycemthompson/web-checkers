@@ -115,18 +115,19 @@ public class Board implements Iterable<Row> {
      * @param position the Position to find neighboring Pieces around
      * @return an ArrayList of all Pieces adjacent to the given Position
      */
-    public ArrayList<Piece> getNeighboringPieces(Position position){
+    public ArrayList<PieceWithPosition> getNeighboringPieces(Position position){
 
         int row = position.getRow();
         int col = position.getCell();
-        ArrayList<Piece> pieces = new ArrayList<>();
+        ArrayList<PieceWithPosition> pieces = new ArrayList<>();
 
         for (int r = -1; r < 2; r += 2){
             for (int c = -1; c < 2; c += 2){
                 Space space = getSpace(row + r, col + c);
                 Piece piece = space.getPiece();
                 if (piece != null){
-                    pieces.add(piece);
+                    Position piecePosition = new Position(row + r, col + c);
+                    pieces.add(new PieceWithPosition(piece, piecePosition));
                 }
             }
         }
@@ -296,9 +297,57 @@ public class Board implements Iterable<Row> {
                                                                  Position currentPosition,
                                                                  ArrayList<PieceWithPosition> jumpedPieces)
     {
-        ArrayList <MovePacket> allValidMoves = new ArrayList<>();
-        //TODO
-        return null;
+
+        ArrayList<MovePacket> allValidMoves = new ArrayList<>();
+
+        // find all diagonally adjacent unjumped opponent Pieces to the current Position
+        ArrayList<PieceWithPosition> neighboringPieces = getNeighboringPieces(startingPosition);
+        neighboringPieces.removeAll(jumpedPieces);
+        //TODO: I think this finds all adjacent pieces regardless of owner. Need to fix.
+
+
+        /*
+        If there are diagonally adjacent unjumped opponent Pieces, recursively run this method until we find one
+        that cannot be jumped.
+        If there are no diagonally adjacent unjumped opponent Pieces, then there are no more Pieces to jump over.
+         */
+        if (neighboringPieces.size() != 0){
+            for (PieceWithPosition neighboringPiece : neighboringPieces){
+
+                // find the diagonal this neighboring Piece is along relative to our current Position
+                int diagonalRowDifference = neighboringPiece.getRow() - currentPosition.getRow();
+                int diagonalCellDifference = neighboringPiece.getCell() - currentPosition.getCell();
+
+                // check if the next Space along the diagonal is empty
+                int nextSpaceRow = neighboringPiece.getRow() + diagonalRowDifference;
+                int nextSpaceCell = neighboringPiece.getCell() + diagonalCellDifference;
+                Space nextSpaceAlongDiagonal = getSpace(nextSpaceRow, nextSpaceCell);
+                boolean spaceIsEmpty = !nextSpaceAlongDiagonal.hasPiece();
+
+                // if there is an empty Space along the diagonal then calculate the next jump; otherwise end this jump.
+                if (spaceIsEmpty){
+                    jumpedPieces.add(neighboringPiece);
+                    ArrayList<MovePacket> newValidMoves = findAllMultiJumpMovesForAPiece(startingPosition,
+                            new Position(nextSpaceRow, nextSpaceCell),
+                            jumpedPieces);
+                    allValidMoves.addAll(newValidMoves);
+                } else {
+                    Position endingPosition = currentPosition;
+                    Move move = new Move(startingPosition, endingPosition);
+                    MovePacket mp = new MovePacket(move, jumpedPieces);
+                    allValidMoves.add(mp);
+                }
+
+            }
+        } else {
+            // there is no more opponent Pieces to jump
+            Position endingPosition = currentPosition;
+            Move move = new Move(startingPosition, endingPosition);
+            MovePacket mp = new MovePacket(move, jumpedPieces);
+            allValidMoves.add(mp);
+        }
+
+        return allValidMoves;
     }
 
     /**
@@ -330,9 +379,7 @@ public class Board implements Iterable<Row> {
                     );
 
                     // collect all found moves into our list of valid moves
-                    if (allMultiJumps != null){
-                        allValidMoves.addAll(allMultiJumps);
-                    }
+                    allValidMoves.addAll(allMultiJumps);
 
                 }
             }
