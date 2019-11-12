@@ -54,7 +54,7 @@ public class PostValidateMoveRouteTest {
         when(session.attribute(ConstsUI.CURRENT_USER_PARAM)).thenReturn(currentPlayer);
 
         Piece.Color currentPlayerColor = currentPlayer.getColor();
-        ArrayList<Move> validMoves = currentUserBoard.getAllValidMoves(currentPlayerColor);
+        ArrayList<MovePacket> validMoves = currentUserBoard.getAllValidMoves(currentPlayerColor);
 
         assertFalse(validMoves.contains(move));
 

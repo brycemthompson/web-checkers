@@ -3,10 +3,12 @@ package model;
 import com.webcheckers.Model.Piece;
 import com.webcheckers.Model.Position;
 import com.webcheckers.Model.Space;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("Model-Tier")
 public class SpaceTest {
 
 

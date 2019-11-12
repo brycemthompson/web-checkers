@@ -149,7 +149,6 @@ public class PlayerLobby
                 return Authentication.FAIL_NAME_TAKEN;
             }
         }
-
         // authentication successful
         return Authentication.SUCCESS;
     }

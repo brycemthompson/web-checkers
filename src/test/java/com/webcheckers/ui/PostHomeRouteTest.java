@@ -45,8 +45,9 @@ public class PostHomeRouteTest {
     @Test
     public void test_view(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
+        System.out.println(playerLobby.size());
 
-        Object something  = CuT.handle(request, response);
+        CuT.handle(request, response);
         templateEngineTester.assertViewModelAttribute("title", "Welcome to Home Page!");
     }
 

@@ -1,8 +1,6 @@
 package com.webcheckers.Model;
 
-import com.webcheckers.ui.PostHomeRoute;
 import com.webcheckers.util.Message;
-
 import static java.lang.Math.abs;
 
 /**
@@ -12,11 +10,15 @@ import static java.lang.Math.abs;
 
 public class Move {
 
-    // private fields
+    /**
+     *  Private Fields
+     */
     private Position start;
     private Position end;
 
-    // what is defined as "too far" for a move
+    /**
+     * What is defined as too-far of a move
+     */
     private static int tooFarThreshold = 2;
 
     /**
@@ -31,6 +33,7 @@ public class Move {
 
     /**
      * Getter for start.
+     * return: the start Position
      */
     public Position getStart(){
         return this.start;
@@ -38,6 +41,7 @@ public class Move {
 
     /**
      * Getter for end.
+     * return: the end Position
      */
     public Position getEnd(){
         return this.end;
@@ -55,7 +59,8 @@ public class Move {
     }
 
     /**
-     * Returns a Message describing the validity of the move.
+     * Gets the Move validity message
+     * return: a Message describing the validity of the move.
      */
     public Message validityMessage(){
         // check if distance is too large
@@ -65,12 +70,21 @@ public class Move {
         return Message.info("Good move!");
     }
 
+    /**
+     * Puts the start and end position into an assembled String
+     * @return: the start and end position in a String
+     */
     @Override
     public String toString() {
         return start.toString() + " -> " + end.toString();
     }
 
-    // Overriding equals() to check if two Moves are equal by checking if their starting and ending positions are the same.
+    /**
+     * Overriding equals() to check if two Moves are equal by checking if their starting and ending positions are the
+     * same.
+     * @param obj: The object to compare to the move.
+     * @return: boolean value based on the truth of the comparison
+     */
     @Override
     public boolean equals(Object obj) {
         // this Move equals itself

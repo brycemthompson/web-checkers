@@ -18,10 +18,14 @@ import java.util.logging.Logger;
 public class PostGameRoute implements Route{
     private static final Logger LOG = Logger.getLogger(PostGameRoute.class.getName());
 
-    // Messages
+    /**
+     * Messages
+     */
     public static final Message MESSAGE_MSG = Message.info("AAAAAAAAAA");
 
-    // Values used in the view-model map for rendering the game view after a guess.
+    /**
+     * Private View-Model fields
+     */
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
 
