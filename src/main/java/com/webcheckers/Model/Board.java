@@ -111,6 +111,31 @@ public class Board implements Iterable<Row> {
     }
 
     /**
+     * Gets any Pieces neighboring the given Position.
+     * @param position the Position to find neighboring Pieces around
+     * @return an ArrayList of all Pieces adjacent to the given Position
+     */
+    public ArrayList<Piece> getNeighboringPieces(Position position){
+
+        int row = position.getRow();
+        int col = position.getCell();
+        ArrayList<Piece> pieces = new ArrayList<>();
+
+        for (int r = -1; r < 2; r += 2){
+            for (int c = -1; c < 2; c += 2){
+                Space space = getSpace(row + r, col + c);
+                Piece piece = space.getPiece();
+                if (piece != null){
+                    pieces.add(piece);
+                }
+            }
+        }
+
+        return pieces;
+
+    }
+
+    /**
      * Helper function for getAllValidMoves that gets all simple moves.
      * @param player the Piece Color for the player
      * @return array list containing all simple moves
@@ -271,6 +296,8 @@ public class Board implements Iterable<Row> {
                                                                  Position currentPosition,
                                                                  ArrayList<PieceWithPosition> jumpedPieces)
     {
+        ArrayList <MovePacket> allValidMoves = new ArrayList<>();
+        //TODO
         return null;
     }
 
