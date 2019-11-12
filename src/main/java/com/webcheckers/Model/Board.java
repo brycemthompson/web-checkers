@@ -260,18 +260,59 @@ public class Board implements Iterable<Row> {
     }
 
     /**
+     * Recursive method for finding all multiple jump moves a given Piece can make.
+     * This method is used as a helper method for getAllMultipleJumpMoves().
+     * @param startingPosition the Position of the Piece to find the multiple jump move for
+     * @param currentPosition the current Position of the Space we are looking for jump moves from
+     * @param jumpedPieces a running list of all Pieces we've jumped thus far
+     * @return an ArrayList of all Moves possible from the given starting position
+     */
+    private ArrayList<MovePacket> findAllMultiJumpMovesForAPiece(Position startingPosition,
+                                                                 Position currentPosition,
+                                                                 ArrayList<PieceWithPosition> jumpedPieces)
+    {
+        return null;
+    }
+
+    /**
      * Helper function for getAllValidMoves that gets all multiple jump moves.
      * @param player the Piece Color for the player
      * @return array list containing all valid multiple jump moves
      */
-    public ArrayList<MovePacket> getAllMultipleJumpMoves(Piece.Color player){
-        /*
-        ALGORITHM:
-        1. Check for any Spaces which contain Pieces belonging to the Opponent.
-        2.
-         */
+    private ArrayList<MovePacket> getAllMultipleJumpMoves(Piece.Color player){
 
-        return null;
+        ArrayList<MovePacket> allValidMoves = new ArrayList<>();
+
+        // use indexing to find player's Pieces so we can derive coordinates
+        for (int r = 0; r < rowsPerBoard; r++){
+            for (int c = 0; c < rowsPerBoard; r++){
+                // check if this space has a piece belonging to the player
+                Space currentSpace = getSpace(r, c);
+                Piece pieceOnSpace = currentSpace.getPiece();
+
+                // if it does, find all possible multiple jump moves this Piece can make
+                if (pieceOnSpace != null){
+
+                    // begin recursion
+                    Position startingPosition = new Position(r, c);
+                    Position currentPosition = new Position(r, c);
+                    ArrayList<MovePacket>  allMultiJumps = findAllMultiJumpMovesForAPiece(
+                            startingPosition,
+                            currentPosition,
+                            new ArrayList<PieceWithPosition>()
+                    );
+
+                    // collect all found moves into our list of valid moves
+                    if (allMultiJumps != null){
+                        allValidMoves.addAll(allMultiJumps);
+                    }
+
+                }
+            }
+        }
+
+        return allValidMoves;
+
     }
 
     /**
