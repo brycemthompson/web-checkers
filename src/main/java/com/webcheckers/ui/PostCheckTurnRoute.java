@@ -28,20 +28,12 @@ public class PostCheckTurnRoute implements Route {
 
         // get the current user and their board
         Player currentUser = request.session().attribute(ConstsUI.CURRENT_USER_PARAM);
-        Player opponent = currentUser.getOpponent();
-        System.out.println(opponent);
         Board currentUserBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
-        System.out.println(opponent.isInGame());
         // create a Message depending on whether or not it is this current user's turn
         Message msg = null;
-        if(!opponent.isInGame()){
-            msg = Message.info("Game Over");
-            Map<String, Object> vm = new HashMap<>();
-            vm.put(ConstsUI.TITLE_PARAM, ConstsUI.HOME_TITLE_DEFAULT_VALUE);
-            vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.RESIGN_SUCCESSFUL);
-            request.session().attribute(ConstsUI.MESSAGE_PARAM, ConstsUI.RESIGN_SUCCESSFUL);
-            response.redirect(ConstsUI.HOME_URL);
-            return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
+        if(currentUser.opponentHasResigned()){
+            // opponent has resigned
+            msg = Message.info("true");
         }
         else if (currentUserBoard.getActiveColor() == currentUser.getColor()){
             msg = Message.info("true");
