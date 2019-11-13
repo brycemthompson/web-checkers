@@ -47,25 +47,24 @@ public class PostHomeRouteTest {
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
         final String username = "Test";
         playerLobby.addPlayer(username);
-        when(session.attribute(ConstsUI.CURRENT_USER_PARAM)).thenReturn(username);
+        when(request.queryParams(ConstsUI.USERNAME_PARAM)).thenReturn(username);
 
         CuT.handle(request, response);
+
         templateEngineTester.assertViewName("signin.ftl");
     }
 
     @Test
     public void test_invalid_username() {
-        final Map<String, Object> vm = new HashMap<>();
+        when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
         // Testing an invalid username
         final String username = "_122g";
         playerLobby.addPlayer(username);
-        Authentication authResult = playerLobby.authenticateSignIn(username);
-        when(request.queryParams(ConstsUI.CURRENT_USER_PARAM)).thenReturn(username);
+        when(request.queryParams(ConstsUI.USERNAME_PARAM)).thenReturn(username);
 
 //        assertEquals(authResult, Authentication.FAIL_INVALID_USERNAME);
 
-        when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
         CuT.handle(request, response);
 
         templateEngineTester.assertViewModelAttribute(ConstsUI.TITLE_PARAM, ConstsUI.DEFAULT_WELCOME_FOR_TITLE);
@@ -83,6 +82,7 @@ public class PostHomeRouteTest {
 
         String second_username = "bob";
         Authentication authResult = playerLobby.authenticateSignIn(second_username);
+        when(request.queryParams(ConstsUI.USERNAME_PARAM)).thenReturn(username);
 
         assertEquals(authResult, Authentication.FAIL_NAME_TAKEN);
 
@@ -105,7 +105,12 @@ public class PostHomeRouteTest {
 
         Player currentUser = new Player(username);
         assertEquals(authResult, Authentication.SUCCESS);
-        playerLobby.addPlayer(currentUser);
+
+//        playerLobby.addPlayer(currentUser);
+        when(request.queryParams(ConstsUI.USERNAME_PARAM)).thenReturn(username);
+//        when(playerLobby.authenticateSignIn(username)).thenReturn(authResult);
+
+//        when(request.queryParams(ConstsUI.CURRENT_USER_PARAM)).thenReturn(currentUser);
 
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
         CuT.handle(request, response);
