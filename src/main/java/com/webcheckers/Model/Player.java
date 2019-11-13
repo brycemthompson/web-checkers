@@ -44,6 +44,12 @@ public class Player
     public Player getOpponent() { return opponent; }
 
     /**
+     * Returns whether or not this Player has an opponent.
+     * @return boolean for whether this Player has an opponent
+     */
+    public boolean hasOpponent() { return this.opponent != null; }
+
+    /**
      * Getter for color
      * @return this.color: The color of the Player
      */
