@@ -17,8 +17,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Unit Test for the PostHomeRoute Class
+ */
 @Tag("UI-Tier")
 public class PostHomeRouteTest {
+
+    /**
+     * Private fields
+     */
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -27,7 +34,9 @@ public class PostHomeRouteTest {
     private Response response;
     private Session session;
 
-
+    /**
+     * setup function to initialize and mock the session items used for testing
+     */
     @BeforeEach
     public void setup() {
 
@@ -42,6 +51,9 @@ public class PostHomeRouteTest {
         templateEngineTester = new TemplateEngineTester();
     }
 
+    /**
+     * test function to check for the correct view model title attribute
+     */
     @Test
     public void test_view(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
@@ -51,6 +63,10 @@ public class PostHomeRouteTest {
         templateEngineTester.assertViewModelAttribute("title", "Welcome to Home Page!");
     }
 
+    /**
+     * test function to check for an invalid username error message on an invalid username, and checking for the
+     * appropriate view model attributes being held and displayed
+     */
     @Test
     public void test_invalid_username() {
         final Map<String, Object> vm = new HashMap<>();
@@ -70,6 +86,10 @@ public class PostHomeRouteTest {
         templateEngineTester.assertViewName(ConstsUI.SIGNIN_VIEW);
     }
 
+    /**
+     * test function to test for the name taken error message when a user tries to enter a username that is already
+     * being used by another user in addition to checking the appropriate view model attributes
+     */
     @Test
     public void test_username_taken() {
         final Map<String, Object> vm = new HashMap<>();
@@ -91,6 +111,10 @@ public class PostHomeRouteTest {
         templateEngineTester.assertViewName(ConstsUI.SIGNIN_VIEW);
     }
 
+    /**
+     * test function to assert a successful login message along with a successful authentication when the user
+     * enters an valid and unused username to signin
+     */
     @Test
     public void test_successful_username()
     {
