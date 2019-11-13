@@ -11,9 +11,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Unit Test for the GetSignInRoute Class
+ */
 @Tag("UI-Tier")
 public class GetSignInRouteTest {
 
+    /**
+     * Private fields
+     */
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -22,7 +28,9 @@ public class GetSignInRouteTest {
     private Response response;
     private Session session;
 
-
+    /**
+     * the setup function to initialize the items for the session and the signin route
+     */
     @BeforeEach
     public void setup() {
 
@@ -37,6 +45,9 @@ public class GetSignInRouteTest {
         templateEngineTester = new TemplateEngineTester();
     }
 
+    /**
+     * test function to test that the session message parameter and view model is holding the correct message item
+     */
     @Test
     public void message_is_not_null_test(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
