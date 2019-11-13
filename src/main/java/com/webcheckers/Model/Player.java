@@ -50,6 +50,12 @@ public class Player
     public boolean hasOpponent() { return this.opponent != null; }
 
     /**
+     * Returns whether or not this Player's opponent has resigned.
+     * @return whether this Player's opponent has an opponent
+     */
+    public boolean opponentHasResigned() { return this.opponent.getOpponent() == null; }
+
+    /**
      * Getter for color
      * @return this.color: The color of the Player
      */
