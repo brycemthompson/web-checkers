@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.google.gson.Gson;
 import com.webcheckers.Model.Board;
 import com.webcheckers.Model.Piece;
 import com.webcheckers.Model.Player;
@@ -20,14 +21,10 @@ import java.util.logging.Logger;
 public class GetGameRoute implements Route {
 
     private enum GameState {
-        CHALLENGING, CHALLENGED, INGAME;
+        CHALLENGING, CHALLENGED, INGAME, OPPONENT_RESIGNED;
     }
 
     private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
-
-    // Constants for the ViewModel
-    public static final String VIEW_NAME = "game.ftl";
-    public static final String CURRENTPLAYERBOARD_PARAM = "currentPlayerBoard";
 
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
@@ -55,8 +52,10 @@ public class GetGameRoute implements Route {
             return GameState.CHALLENGING;
         } else if ((currentPlayerBoard == null)){
             return GameState.CHALLENGED;
-        } else {
+        } else if (!currentPlayer.opponentHasResigned()) {
             return GameState.INGAME;
+        } else {
+            return GameState.OPPONENT_RESIGNED;
         }
     }
 
@@ -148,13 +147,15 @@ public class GetGameRoute implements Route {
         Player opponent = null;
 
         /*
-        There are three cases to consider.
+        There are four cases to consider.
         1) There is no board for the current player and they are not currently in a game.
             => This implies that they have just challenged an opponent and a game needs to start.
         2) There is no board for the current player and they are currently in a game.
             => This implies that they have just been challenged to a game.
-        3) There is a board.
+        3) There is a board and the current user's opponent has not resigned.
             => This implies a game is already in progress.
+        4) There is a board and the current user's opponent has resigned.
+            => This implies that the current user's opponent has resigned (wow).
          */
         //TODO: check if the opponent is still in the game or not
         switch(determineGameState(currentPlayer, currentPlayerBoard)){
@@ -212,6 +213,7 @@ public class GetGameRoute implements Route {
                     response.redirect(ConstsUI.HOME_URL);
                     return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
                 }
+
                 // refresh the game
                 refreshGame(request,
                         currentPlayer,
@@ -227,7 +229,35 @@ public class GetGameRoute implements Route {
                 );
 
                 return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
+            case OPPONENT_RESIGNED:
+                // find the Player who resigned
+                opponent = currentPlayer.getOpponent();
 
+                // refresh the game
+                refreshGame(request,
+                        currentPlayer,
+                        opponent);
+
+                // populate our view model
+                currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+                GameView.buildGameViewModel(
+                        currentPlayer,
+                        opponent,
+                        currentPlayerBoard,
+                        vm
+                );
+
+                // put info on how game ended into the view-model
+                Map<String, Object> modeOptions = new HashMap<>();
+
+                String gameOverMessage = opponent.getName() + " has resigned. Lucky you!";
+
+                modeOptions.put("isGameOver", true);
+                modeOptions.put("gameOverMessage", gameOverMessage);
+
+                vm.put(ConstsUI.MODE_OPTIONS_PARAM, new Gson().toJson(modeOptions));
+
+                return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
         }
 
         return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
