@@ -51,8 +51,10 @@ public class PostValidateMoveRoute implements Route {
 
         // if validationMessage is null, the move is invalid
         if (validationMessage == null){
-            if (validMoves.get(0).getType() == MovePacket.Type.SIMPLE_JUMP){
-                validationMessage = Message.error("You must make a jump move.");
+            if (validMoves.get(0).getType() == MovePacket.Type.SIMPLE_JUMP) {
+                validationMessage = Message.error("You must jump a piece.");
+            } else if (validMoves.get(0).getType() == MovePacket.Type.MULTIPLE_JUMP){
+                validationMessage = Message.error("You must jump multiple pieces.");
             } else {
                 validationMessage = Message.error("Move is too far.");
             }
