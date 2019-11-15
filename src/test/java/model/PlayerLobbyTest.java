@@ -12,17 +12,26 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit Test for PlayerLobby Class
+ */
 @Tag("Model-Tier")
 public class PlayerLobbyTest {
 
     ArrayList<Player> players;
     PlayerLobby playerLobby = new PlayerLobby();
 
+    /**
+     * PlayerLobbyTest constructor
+     */
     public PlayerLobbyTest()
     {
         players = new ArrayList<>();
     }
 
+    /**
+     * Test function asserting that a new Player is not null, and that the correct Player name is returned
+     */
     @Test
     public void addPlayer_test(){
         Player p = new Player("Isaias");
@@ -55,6 +64,9 @@ public class PlayerLobbyTest {
 //        }
 //    }
 
+    /**
+     * Test function that asserts that the playerLobby holds the correct number of Players
+     */
     @Test
     public void removePlayer_test(){
         Player p = new Player("Isaias");
@@ -102,7 +114,10 @@ public class PlayerLobbyTest {
 
     }
 
-    //THIS TEST IS FAILING FIX LATER
+    /**
+     * Test function to assert the correct size of the player array list
+     * THIS TEST IS FAILING FIX LATER
+     */
     @Test
     public void size_test(){
         ArrayList<Player> players = new ArrayList<>();
@@ -110,6 +125,9 @@ public class PlayerLobbyTest {
         assertEquals(1, players.size());
     }
 
+    /**
+     * Unit Test to assert the correct Messages based on the validity of the username input
+     */
     @Test
     public void authenticateSignIn_test(){
         String username = "Test1";
