@@ -114,13 +114,14 @@ public class PostHomeRouteTest {
 
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
         CuT.handle(request, response);
-
         templateEngineTester.assertViewModelAttribute(ConstsUI.CURRENT_USER_PARAM, currentUser);
         templateEngineTester.assertViewModelAttribute(ConstsUI.USERNAME_PARAM, username);
-
+        playerLobby.addPlayer(currentUser);
         ArrayList<String> playerNames = playerLobby.getPlayerNames();
-        templateEngineTester.assertViewModelAttribute(ConstsUI.PLAYER_LIST_PARAM, playerNames);
+        //Player then is removed from playernames in original PostHomeRouteCode
+        playerNames.remove(username);
 
+        templateEngineTester.assertViewModelAttribute(ConstsUI.PLAYER_LIST_PARAM, playerNames);
         templateEngineTester.assertViewModelAttribute(ConstsUI.TITLE_PARAM, ConstsUI.DEFAULT_WELCOME_FOR_TITLE);
         templateEngineTester.assertViewModelAttribute(ConstsUI.MESSAGE_PARAM, ConstsUI.WELCOME_MSG);
         templateEngineTester.assertViewName(ConstsUI.HOME_VIEW);
