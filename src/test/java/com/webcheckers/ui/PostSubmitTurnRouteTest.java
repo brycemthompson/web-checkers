@@ -14,9 +14,15 @@ import spark.TemplateEngine;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Unit Test for PostSubmitTurnRoute
+ */
 @Tag("UI-Tier")
 public class PostSubmitTurnRouteTest {
 
+    /**
+     * Private fields
+     */
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -25,6 +31,9 @@ public class PostSubmitTurnRouteTest {
     private Response response;
     private Session session;
 
+    /**
+     * setup function to initialize and mock the session items for testing
+     */
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
@@ -38,6 +47,10 @@ public class PostSubmitTurnRouteTest {
         templateEngineTester = new TemplateEngineTester();
     }
 
+    /**
+     * test function to test that the correct board is held in the session, and that the flipping of the active
+     * color is functioning correctly
+     */
     @Test
     public void test_game_board()
     {
@@ -56,6 +69,5 @@ public class PostSubmitTurnRouteTest {
         currentPlayerBoard.flipActiveColor();
         Piece.Color flippedColor = currentPlayerBoard.getActiveColor();
         assert(flippedColor != activeColor);
-
     }
 }
