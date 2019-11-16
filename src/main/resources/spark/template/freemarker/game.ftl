@@ -34,7 +34,9 @@
             <legend>Info</legend>
 
             <#include "message.ftl" />
+            <#if resignMessage >
 
+                </#if>
             <div>
               <table data-color='RED'>
                 <tr>

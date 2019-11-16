@@ -4,10 +4,11 @@ import com.google.gson.Gson;
 import com.webcheckers.Model.Board;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
-import com.webcheckers.util.Message;
 import spark.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class PostResignRoute implements Route {
     private static final Logger LOG = Logger.getLogger(PostResignRoute.class.getName());
-
+    private String resignMessage = "";
     private PlayerLobby playerLobby;
     private final TemplateEngine templateEngine;
     private boolean p1Game, p2Game;
@@ -38,6 +39,7 @@ public class PostResignRoute implements Route {
     public static void resignPlayer(Player player, PlayerLobby playerLobby){
         player.removeFromGame();
         playerLobby.removeBoard(player);
+
     }
 
     /**
@@ -57,10 +59,12 @@ public class PostResignRoute implements Route {
         LOG.finer("PostResignRoute is invoked.");
 
         //TODO: Resignation right now is, theoretically, always successful. When is it supposed to fail?
+        final Map<String, Object> vm = new HashMap<>();
 
         // Get the current user and resign them from the game
         Player currentPlayer = request.session().attribute(ConstsUI.CURRENT_USER_PARAM);
         Player opponent = request.session().attribute(ConstsUI.OPPONENT_PARAM);
+
 
         // Flip the active user on the board
         Board board = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
@@ -69,14 +73,16 @@ public class PostResignRoute implements Route {
         resignPlayer(currentPlayer, playerLobby);
         opponent.removeFromGame();
 
+        playerLobby.removeBoard(board);
 
-        //opponent.removeFromGame();
-        //playerLobby.removeBoard(board);
+//        opponent.removeFromGame();
 
-
-        // Return a successful resignation message.
-        return new Gson().toJson(ConstsUI.RESIGN_SUCCESSFUL);
-
+        if (p1Game && p2Game){
+            return new Gson().toJson(ConstsUI.RESIGN_SUCCESSFUL);
+        }
+        else{
+            return new Gson().toJson(ConstsUI.RESIGN_UNSUCCESSFUL);
+        }
         /*
         //System.out.println(playerLobby.boards);
         for(Player player: players)
