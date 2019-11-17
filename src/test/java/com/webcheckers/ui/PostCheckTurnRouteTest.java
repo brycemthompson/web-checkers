@@ -5,6 +5,7 @@ import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.Request;
 import spark.Response;
@@ -14,6 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Unit Test for the PostCheckTurnRoute Class
+ */
+@Tag("UI-Tier")
 public class PostCheckTurnRouteTest {
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
@@ -23,7 +28,9 @@ public class PostCheckTurnRouteTest {
     private Response response;
     private Session session;
 
-
+    /**
+     * setup function to initialize the items in teh session
+     */
     @BeforeEach
     public void setup() {
 
@@ -38,6 +45,9 @@ public class PostCheckTurnRouteTest {
         templateEngineTester = new TemplateEngineTester();
     }
 
+    /**
+     * test function that tests for a message containing the color of the player whose turn it is
+     */
     @Test
     public void test_player_turn()
     {

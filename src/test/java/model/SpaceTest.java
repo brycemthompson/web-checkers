@@ -3,13 +3,20 @@ package model;
 import com.webcheckers.Model.Piece;
 import com.webcheckers.Model.Position;
 import com.webcheckers.Model.Space;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit Test for the Space Class
+ */
+@Tag("Model-Tier")
 public class SpaceTest {
 
-
+    /**
+     * Test function to assert the correct x-coordinate of the cell from the provided Space
+     */
     @Test
     public void getCellIdx_test(){
          int cellIdx = 0;
@@ -19,6 +26,9 @@ public class SpaceTest {
          assertEquals(0, sp.getCellIdx());
     }
 
+    /**
+     * Test function to assert the correct y-coordinate of the cell from the provided Space
+     */
     @Test
     public void getCellIdy_test(){
         int cellIdx = 0;
@@ -28,6 +38,9 @@ public class SpaceTest {
         assertEquals(1, sp.getCellIdy());
     }
 
+    /**
+     * Test function to assert the return of the correct Piece from the Space
+     */
     @Test
     public void getPiece_test(){
         int cellIdx = 2;
@@ -38,7 +51,9 @@ public class SpaceTest {
         assertSame(piece, sp.getPiece());
     }
 
-
+    /**
+     * Test function that asserts that the hasPiece function does not return a null Piece in the provided Space
+     */
     @Test
     public void hasPiece_test(){
         int cellIdx = 3;
@@ -49,6 +64,9 @@ public class SpaceTest {
         assertNotNull(sp.hasPiece());
     }
 
+    /**
+     * Test function to assert that the addPieceToSpace function does not throw an IndexOutOfBoundsException
+     */
     @Test
     public void addPieceToSpace_test_valid(){
         int cellIdx = 7;
@@ -60,6 +78,10 @@ public class SpaceTest {
         assertDoesNotThrow(IndexOutOfBoundsException::new);
     }
 
+    /**
+     * Test function to assert that the addPieceToSpace function does throw an IndexOutOfBoundsException on an invalid
+     * add
+     */
     @Test
     public void addPieceToSpace_test_not_valid(){
         boolean thrown = false;
@@ -82,6 +104,10 @@ public class SpaceTest {
 
     }
 
+    /**
+     * Test function to assert that when a Piece is removed from a Space, and the getPiece() function on that Space
+     * will return null
+     */
     @Test
     public void removePieceFromSpace_test() {
 
@@ -97,6 +123,9 @@ public class SpaceTest {
 
     }
 
+    /**
+     * Test function to assert that the Space.getPosition() function returns a real Position object
+     */
     @Test
     public void getPosition_test() {
 
@@ -111,8 +140,10 @@ public class SpaceTest {
         assertTrue(sp.getPosition() instanceof Position );
     }
 
-
-    //This test is confusing, what is the code supposed to do for space validity
+    /**
+     * Test function that tests that a Piece on a Space is in fact valid.
+     * This test is confusing, what is the code supposed to do for space validity
+     */
     @Test
     public void isValid_test() {
 
@@ -123,12 +154,11 @@ public class SpaceTest {
         Space sp = new Space(cellIdx, cellIdy, piece);
         sp.addPieceToSpace(piece);
         Position pos = new Position(cellIdx,cellIdy);
-//        assertNotNull(sp);
+        // assertNotNull(sp);
         assertEquals(false, sp.isValid()); //This should be True, because space object
                                                     // is not null, and the cellIdx and cellIdy
                                                     //  are not equal mods.
                                                     // This should be True
-
     }
 
 }

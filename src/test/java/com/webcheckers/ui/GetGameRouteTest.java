@@ -17,7 +17,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @Tag("UI-Tier")
+/**
+ * Unit Test for the GetGameRoute class
+ */
 public class GetGameRouteTest {
+
+    /**
+     * Private fields
+     */
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -26,6 +33,9 @@ public class GetGameRouteTest {
     private Response response;
     private Session session;
 
+    /**
+     * Game state enumeration
+     */
     public enum GameState {
         CHALLENGING, CHALLENGED, INGAME;
     }
@@ -49,7 +59,13 @@ public class GetGameRouteTest {
         playerLobby.addBoard(newBoard);
     }
 
-
+    /**
+     * Helper function to begin a new game
+     * @param request: an HTTP request
+     * @param lobby: the player lobby containing the players
+     * @param currentUser: the current user used to build the game
+     * @param opponentUser: the opponent user used to build the game
+     */
     public static void startNewGameFromHome(Request request, PlayerLobby lobby, Player currentUser, Player opponentUser){
         // create our Board
         Board board;
@@ -61,12 +77,23 @@ public class GetGameRouteTest {
         request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, board);
     }
 
+    /**
+     * Helper function to get the game from the session
+     * @param request: an HTTP request
+     * @param currentUser: the current user of the game
+     * @param opponentUser: the opponent of the current user of the game
+     */
     private void fetchGame(Request request, Player currentUser, Player opponentUser){
         Board board = playerLobby.getBoard(currentUser, opponentUser);
         request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, board);
     }
 
-
+    /**
+     * Helper function to refresh the current game
+     * @param request: an HTTP request
+     * @param currentUser: the current user of the game
+     * @param opponentUser: the opponent of the current user of the game
+     */
     private void refreshGame(Request request, Player currentUser, Player opponentUser){
         // find our Board
         Board board;
@@ -78,7 +105,9 @@ public class GetGameRouteTest {
         request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, board);
     }
 
-
+    /**
+     * unit test setup function to initialize all of the items of the class
+     */
     @BeforeEach
     public void setup() {
 
@@ -93,7 +122,10 @@ public class GetGameRouteTest {
         templateEngineTester = new TemplateEngineTester();
     }
 
-
+    /**
+     * test function that currently checks for the session attributes and checks for the correct
+     * view name
+     */
     @Test
     public void challengingGameState_test() {
 
@@ -124,6 +156,9 @@ public class GetGameRouteTest {
         //Something is missing here idk David will help probably
     }
 
+    /**
+     * test function that currently creates a board and a new game, testing the session attributes and game view name
+     */
     @Test
     public void challengingGameState_test_2() {
 
@@ -157,21 +192,6 @@ public class GetGameRouteTest {
                vm
        );
         templateEngineTester.assertViewName("game.ftl");
-
-    }
-
-    @Test
-    public void test2(){
-
-    }
-
-    @Test
-    public void test3(){
-
-    }
-
-    @Test
-    public void test4(){
 
     }
 }

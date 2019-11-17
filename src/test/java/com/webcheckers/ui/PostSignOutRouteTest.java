@@ -1,20 +1,24 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Unit Test for the PostSignOutRoute Class
+ */
 @Tag("UI-Tier")
 public class PostSignOutRouteTest {
+
+    /**
+     * Private fields
+     */
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -23,6 +27,9 @@ public class PostSignOutRouteTest {
     private Response response;
     private Session session;
 
+    /**
+     * setup function to initialize and mock the items in the session for testing
+     */
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
@@ -36,6 +43,9 @@ public class PostSignOutRouteTest {
         templateEngineTester = new TemplateEngineTester();
     }
 
+    /**
+     * test function to assert that the correct signin title is being displayed on the view model
+     */
     @Test
     public void test_signin_title_and_msg(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
@@ -44,6 +54,10 @@ public class PostSignOutRouteTest {
         templateEngineTester.assertViewModelAttribute("title", ConstsUI.HOME_TITLE_DEFAULT_VALUE);
     }
 
+    /**
+     * test function to assert that the message attribute is correctly updating when a new message is
+     * introduced to the view model
+     */
     @Test
     public void test_message_display(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
@@ -57,6 +71,10 @@ public class PostSignOutRouteTest {
         templateEngineTester.assertViewModelAttribute(ConstsUI.MESSAGE_PARAM, msg);
     }
 
+    /**
+     * test function to test that the player lobby size is correctly updating when new players are added to the
+     * list of players in the lobby. This attribute is held and tested in the view model.
+     */
     @Test
     public void test_playerlobby_size(){
 
@@ -75,6 +93,4 @@ public class PostSignOutRouteTest {
         templateEngineTester.assertViewModelAttribute(PLAYERSPLAYING_PARAM, 0);
 
     }
-
-
 }

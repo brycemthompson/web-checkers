@@ -12,6 +12,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Unit Test for the PostBackupMoveRoute Class
+ */
 @Tag("UI-Tier")
 public class PostBackupMoveRouteTest {
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
@@ -22,6 +25,9 @@ public class PostBackupMoveRouteTest {
     private Response response;
     private Session session;
 
+    /**
+     * the setup function to initialize the session attributes
+     */
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
@@ -35,6 +41,10 @@ public class PostBackupMoveRouteTest {
         templateEngineTester = new TemplateEngineTester();
     }
 
+    /**
+     * test function to test the functionality of the backup move, checking for a null value, and checking to see
+     * if the backup move is populated once a move is created
+     */
     @Test
     public void test_backup_move()
     {
@@ -47,10 +57,12 @@ public class PostBackupMoveRouteTest {
         Player opponent = new Player("p2");
         when(session.attribute(ConstsUI.OPPONENT_PARAM)).thenReturn(opponent);
 
-        Move backupMove = currentBoard.getBackupMove();
+        MovePacket backupMove = currentBoard.getBackupMove();
         assertNull(backupMove);
 
-        currentBoard.movePiece(new Move(new Position(1, 2), new Position(2, 2)));
+        Move move = new Move(new Position(1,2), new Position(2,2));
+
+        currentBoard.movePiece(new MovePacket(move, MovePacket.Type.SIMPLE));
         backupMove = currentBoard.getBackupMove();
         assertNotNull(backupMove);
         when(request.attribute(ConstsUI.BACKUP_MOVE_PARAM)).thenReturn(backupMove);
