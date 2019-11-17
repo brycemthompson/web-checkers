@@ -3,7 +3,7 @@ package com.webcheckers.Model;
 import com.webcheckers.ui.PostHomeRoute;
 import com.webcheckers.util.Message;
 
-import static java.lang.Math.abs;
+import static java.lang.Math.*;
 
 /**
  * Represents a Move on the Board by tracking the start Position and the end Position.
@@ -48,8 +48,16 @@ public class Move {
     /**
      * Getter for end.
      */
-    public Position getEnd(){
-        return this.end;
+    public Position getEnd(){ return this.end; }
+
+    /**
+     * Returns the distance covered by this Move.
+     * @return distance between the starting and ending Positions
+     */
+    public double getDistance(){
+        return sqrt(
+                pow((end.getCell() - start.getCell()), 2) + pow(end.getRow() - start.getRow(), 2)
+        );
     }
 
     /**
