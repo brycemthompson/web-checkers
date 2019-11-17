@@ -28,6 +28,14 @@ public class Board implements Iterable<Row> {
     private Player whitePlayer;
     private Piece.Color activeColor;
 
+    private void addRedPiece(int c, int r){
+        addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.RED), c, r);
+    }
+
+    private void addWhitePiece(int c, int r){
+        addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), c, r);
+    }
+
     /**
      * Constructor. Automatically populates the board with the starting pieces.
      */
@@ -53,6 +61,33 @@ public class Board implements Iterable<Row> {
                 addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.RED), c, r);
             }
         }
+
+        /*
+        addWhitePiece(1, 0);
+        addWhitePiece(3, 0);
+        addWhitePiece(5, 0);
+        addWhitePiece(7, 0);
+        addWhitePiece(0, 1);
+        addWhitePiece(6, 1);
+        addWhitePiece(1, 2);
+        addWhitePiece(3, 2);
+        addWhitePiece(5, 2);
+        addWhitePiece(7, 2);
+        addWhitePiece(5, 4);
+
+        addRedPiece(0, 3);
+        addRedPiece(4, 5);
+        addRedPiece(6, 5);
+        addRedPiece(1, 6);
+        addRedPiece(3, 6);
+        addRedPiece(5, 6);
+        addRedPiece(7, 6);
+        addRedPiece(0, 7);
+        addRedPiece(2, 7);
+        addRedPiece(4, 7);
+        addRedPiece(6, 7);
+
+         */
     }
 
     /**
@@ -123,7 +158,12 @@ public class Board implements Iterable<Row> {
 
         for (int r = -1; r < 2; r += 2){
             for (int c = -1; c < 2; c += 2){
-                Space space = getSpace(row + r, col + c);
+                Space space = null;
+                try{
+                    space = getSpace(row + r, col + c);
+                } catch (IndexOutOfBoundsException e) {
+                    continue;
+                }
                 Piece piece = space.getPiece();
                 if (piece != null){
                     Position piecePosition = new Position(row + r, col + c);
@@ -159,27 +199,20 @@ public class Board implements Iterable<Row> {
         ArrayList<MovePacket> allValidMoves = new ArrayList<>();
         for (Space start : allStartingSpaces){
             // scan for valid spaces or spaces with pieces that can be jumped
-            System.out.println("For " + start + "...");
             for (int r = -1; r <= 1; r++){
                 for (int c = -1; c <= 1; c++){
                     Space cur = null;
                     try {
                         cur = getSpace(start.getCellIdy() + r, start.getCellIdx() + c);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        continue;
                     } catch (IndexOutOfBoundsException e) {
                         continue;
                     }
 
                     if (cur.isValid()){
                         // space is a valid space to move to
-                        System.out.println("\t" + cur + " is valid to move to.");
                         Move move = new Move(start.getPosition(), cur.getPosition());
                         MovePacket mp = new MovePacket(move);
                         allValidMoves.add(mp);
-                    } else if (cur.hasPiece(opponent)){
-                        // space has an opponent piece => check if it can be jumped
-                        // TODO
                     }
                 }
             }
@@ -237,11 +270,10 @@ public class Board implements Iterable<Row> {
                     Space scan;
                     try{
                         scan = getSpace(scan_row, scan_col);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        continue;
                     } catch (IndexOutOfBoundsException e) {
                         continue;
                     }
+
                     // check if Space is empty or has one of our Pieces
                     Position pos = new Position(scan_row, scan_col);
                     if (!scan.hasPiece()){
@@ -298,13 +330,25 @@ public class Board implements Iterable<Row> {
                                                                  ArrayList<PieceWithPosition> jumpedPieces)
     {
 
+        System.out.println("ENTERING RECURSION");
+
         ArrayList<MovePacket> allValidMoves = new ArrayList<>();
 
-        // find all diagonally adjacent unjumped opponent Pieces to the current Position
-        ArrayList<PieceWithPosition> neighboringPieces = getNeighboringPieces(startingPosition);
+        // find all diagonally adjacent Pieces to the current Position
+        ArrayList<PieceWithPosition> neighboringPieces = getNeighboringPieces(currentPosition);
+        // collect any of the diagonally adjacent Pieces that belong to us
+        Piece playerPiece = getSpace(startingPosition.getRow(), startingPosition.getCell()).getPiece();
+        Piece.Color playerPieceColor = playerPiece.getColor();
+        ArrayList<PieceWithPosition> ourPieces = new ArrayList<>();
+        for (PieceWithPosition pwp : neighboringPieces){
+            Piece piece = pwp.getPiece();
+            if (piece.getColor() == playerPieceColor){
+                ourPieces.add(pwp);
+            }
+        }
+        // remove jumped opponent Pieces and our Pieces from the adjacency list
+        neighboringPieces.removeAll(ourPieces);
         neighboringPieces.removeAll(jumpedPieces);
-        //TODO: I think this finds all adjacent pieces regardless of owner. Need to fix.
-
 
         /*
         If there are diagonally adjacent unjumped opponent Pieces, recursively run this method until we find one
@@ -314,37 +358,61 @@ public class Board implements Iterable<Row> {
         if (neighboringPieces.size() != 0){
             for (PieceWithPosition neighboringPiece : neighboringPieces){
 
+                System.out.println("Current adjacency check: " + neighboringPiece.getPosition());
+
                 // find the diagonal this neighboring Piece is along relative to our current Position
                 int diagonalRowDifference = neighboringPiece.getRow() - currentPosition.getRow();
                 int diagonalCellDifference = neighboringPiece.getCell() - currentPosition.getCell();
 
-                // check if the next Space along the diagonal is empty
+                // check if the next Space along the diagonal is empty (or exists)
                 int nextSpaceRow = neighboringPiece.getRow() + diagonalRowDifference;
                 int nextSpaceCell = neighboringPiece.getCell() + diagonalCellDifference;
-                Space nextSpaceAlongDiagonal = getSpace(nextSpaceRow, nextSpaceCell);
+
+                Space nextSpaceAlongDiagonal = null;
+                try {
+                    nextSpaceAlongDiagonal = getSpace(nextSpaceRow, nextSpaceCell);
+                } catch (IndexOutOfBoundsException e){
+                    if (!currentPosition.equals(startingPosition)) {
+                        Position endingPosition = currentPosition;
+                        Move move = new Move(startingPosition, endingPosition);
+                        System.out.println("c) NEW MOVE: " + move);
+                        MovePacket mp = new MovePacket(move, jumpedPieces);
+                        allValidMoves.add(mp);
+                    }
+                    continue;
+                }
+
                 boolean spaceIsEmpty = !nextSpaceAlongDiagonal.hasPiece();
 
                 // if there is an empty Space along the diagonal then calculate the next jump; otherwise end this jump.
                 if (spaceIsEmpty){
+                    System.out.println("Empty space found at cell " + nextSpaceCell + " and row: " + nextSpaceRow);
                     jumpedPieces.add(neighboringPiece);
                     ArrayList<MovePacket> newValidMoves = findAllMultiJumpMovesForAPiece(startingPosition,
                             new Position(nextSpaceRow, nextSpaceCell),
                             jumpedPieces);
                     allValidMoves.addAll(newValidMoves);
                 } else {
-                    Position endingPosition = currentPosition;
-                    Move move = new Move(startingPosition, endingPosition);
-                    MovePacket mp = new MovePacket(move, jumpedPieces);
-                    allValidMoves.add(mp);
+                    if (!currentPosition.equals(startingPosition)) {
+                        System.out.println(nextSpaceAlongDiagonal + " is NOT empty!");
+                        Position endingPosition = currentPosition;
+                        Move move = new Move(startingPosition, endingPosition);
+                        System.out.println("b) NEW MOVE: " + move);
+                        MovePacket mp = new MovePacket(move, jumpedPieces);
+                        allValidMoves.add(mp);
+                    }
                 }
 
             }
         } else {
-            // there is no more opponent Pieces to jump
-            Position endingPosition = currentPosition;
-            Move move = new Move(startingPosition, endingPosition);
-            MovePacket mp = new MovePacket(move, jumpedPieces);
-            allValidMoves.add(mp);
+            // there are no more opponent Pieces to jump
+            if (!currentPosition.equals(startingPosition)) {
+                Position endingPosition = currentPosition;
+                Move move = new Move(startingPosition, endingPosition);
+                System.out.println("a) NEW MOVE: " + move);
+                MovePacket mp = new MovePacket(move, jumpedPieces);
+                allValidMoves.add(mp);
+            }
         }
 
         return allValidMoves;
@@ -361,7 +429,7 @@ public class Board implements Iterable<Row> {
 
         // use indexing to find player's Pieces so we can derive coordinates
         for (int r = 0; r < rowsPerBoard; r++){
-            for (int c = 0; c < rowsPerBoard; r++){
+            for (int c = 0; c < rowsPerBoard; c++){
                 // check if this space has a piece belonging to the player
                 Space currentSpace = getSpace(r, c);
                 Piece pieceOnSpace = currentSpace.getPiece();
@@ -372,6 +440,9 @@ public class Board implements Iterable<Row> {
                     // begin recursion
                     Position startingPosition = new Position(r, c);
                     Position currentPosition = new Position(r, c);
+                    System.out.println("======================================");
+                    System.out.println("SCANNING SPACE: " + currentSpace);
+                    System.out.println("======================================");
                     ArrayList<MovePacket>  allMultiJumps = findAllMultiJumpMovesForAPiece(
                             startingPosition,
                             currentPosition,
@@ -385,6 +456,17 @@ public class Board implements Iterable<Row> {
             }
         }
 
+        // The algorithm finds ALL jump Moves, so prune any Moves that are too short.
+
+        ArrayList<MovePacket> smallMoves = new ArrayList<>();
+
+        for (MovePacket mp : allValidMoves){
+            if (mp.getMove().getDistance() <= Math.sqrt(8)){
+                smallMoves.add(mp);
+            }
+        }
+
+        allValidMoves.removeAll(smallMoves);
         return allValidMoves;
 
     }
@@ -398,8 +480,16 @@ public class Board implements Iterable<Row> {
 
         ArrayList<MovePacket> allSimpleMoves = getAllSimpleMoves(player);
         ArrayList<MovePacket> allSimpleJumpMoves = getAllSimpleJumpMoves(player);
+        ArrayList<MovePacket> allMultiJumpMoves = getAllMultipleJumpMoves(player);
 
-        // if there are jump moves present, they must be made
+        System.out.println("allSimpleMoves: " + allSimpleMoves.size());
+        System.out.println("allSimpleJumpMoves: " + allSimpleJumpMoves.size());
+        System.out.println("allMultiJumpMoves: " + allMultiJumpMoves.size());
+
+        // priority: multiple jump > simple jump > simple move
+        if (allMultiJumpMoves.size() != 0){
+            return allMultiJumpMoves;
+        }
         if (allSimpleJumpMoves.size() != 0){
             return allSimpleJumpMoves;
         } else {
