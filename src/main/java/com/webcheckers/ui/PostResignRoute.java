@@ -63,8 +63,8 @@ public class PostResignRoute implements Route {
 
         // Get the current user and resign them from the game
         Player currentPlayer = request.session().attribute(ConstsUI.CURRENT_USER_PARAM);
+        String name = currentPlayer.getName();
         Player opponent = request.session().attribute(ConstsUI.OPPONENT_PARAM);
-
 
         // Flip the active user on the board
         Board board = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
@@ -76,12 +76,27 @@ public class PostResignRoute implements Route {
         playerLobby.removeBoard(board);
 
 //        opponent.removeFromGame();
-
         if (p1Game && p2Game){
-            return new Gson().toJson(ConstsUI.RESIGN_SUCCESSFUL);
+            vm.put(ConstsUI.TITLE_PARAM, new Gson().toJson(ConstsUI.RESIGN_SUCCESSFUL));
+            vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
+            vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
+            vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.WELCOME_MSG);
+            vm.put("redPlayer", currentPlayer);
+            vm.put("whitePlayer", opponent);
+            vm.put("activeColor", "red");
+
+            return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
         }
         else{
-            return new Gson().toJson(ConstsUI.RESIGN_UNSUCCESSFUL);
+            vm.put(ConstsUI.TITLE_PARAM, new Gson().toJson(ConstsUI.RESIGN_SUCCESSFUL));
+            vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
+            vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
+            vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.WELCOME_MSG);
+            vm.put("redPlayer", currentPlayer);
+            vm.put("whitePlayer", opponent);
+            vm.put("activeColor", "red");
+            vm.put(ConstsUI.TITLE_PARAM, new Gson().toJson(ConstsUI.RESIGN_UNSUCCESSFUL));
+            return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
         }
         /*
         //System.out.println(playerLobby.boards);

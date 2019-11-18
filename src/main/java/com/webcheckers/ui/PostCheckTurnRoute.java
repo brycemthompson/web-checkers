@@ -29,9 +29,16 @@ public class PostCheckTurnRoute implements Route {
         // get the current user and their board
         Player currentUser = request.session().attribute(ConstsUI.CURRENT_USER_PARAM);
         Board currentUserBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+        Player opponent = request.session().attribute(ConstsUI.OPPONENT_PARAM);
+
+
+        if(opponent.isInGame()){
+
+        }
         // create a Message depending on whether or not it is this current user's turn
         Message msg = null;
         if(currentUser.opponentHasResigned()){
+
             // opponent has resigned
             msg = Message.info("true");
         }
