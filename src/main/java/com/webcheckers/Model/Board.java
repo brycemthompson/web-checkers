@@ -48,6 +48,7 @@ public class Board implements Iterable<Row> {
 
         // populate board with checkers in starting positions
 
+        /*
         // white
         for (int r = 0; r < 3; r += 1){
             for (int c = (r + 1) % 2; c < rowsPerBoard; c += 2){
@@ -61,8 +62,8 @@ public class Board implements Iterable<Row> {
                 addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.RED), c, r);
             }
         }
+         */
 
-        /*
         addWhitePiece(1, 0);
         addWhitePiece(3, 0);
         addWhitePiece(5, 0);
@@ -86,8 +87,6 @@ public class Board implements Iterable<Row> {
         addRedPiece(2, 7);
         addRedPiece(4, 7);
         addRedPiece(6, 7);
-
-         */
     }
 
     /**
@@ -131,6 +130,11 @@ public class Board implements Iterable<Row> {
                 this.backupMove = new MovePacket(
                         Move.reverse(mp.getMove()),
                         mp.getJumpedPiece());
+                break;
+            case MULTIPLE_JUMP:
+                this.backupMove = new MovePacket(
+                        Move.reverse(mp.getMove()),
+                        mp.getJumpedPieces());
                 break;
         }
     }
