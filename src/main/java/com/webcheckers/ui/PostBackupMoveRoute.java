@@ -44,11 +44,21 @@ public class PostBackupMoveRoute implements Route {
             backupMoveMessage = ConstsUI.BACKUPMOVE_SUCCESSFUL_MSG;
             request.session().attribute(ConstsUI.BACKUP_MOVE_PARAM, backupMove);
             currentBoard.movePiece(backupMove);
-            // if a Piece was jumped, add it back
-            if (backupMove.getJumpedPiece() != null){
-                Piece jumpedPiece = backupMove.getJumpedPiece().getPiece();
-                Position jumpedPiecePosition = backupMove.getJumpedPiece().getPosition();
-                currentBoard.addPieceToSpace(jumpedPiece, jumpedPiecePosition.getCell(), jumpedPiecePosition.getRow());
+
+            // if any Pieces were jumped, add them back
+            switch(backupMove.getType()){
+                case SIMPLE_JUMP:
+                    Piece jumpedPiece = backupMove.getJumpedPiece().getPiece();
+                    Position jumpedPiecePosition = backupMove.getJumpedPiece().getPosition();
+                    currentBoard.addPieceToSpace(jumpedPiece, jumpedPiecePosition.getCell(), jumpedPiecePosition.getRow());
+                    break;
+                case MULTIPLE_JUMP:
+                    for (PieceWithPosition pwp : backupMove.getJumpedPieces()){
+                        Piece piece = pwp.getPiece();
+                        Position position = pwp.getPosition();
+                        currentBoard.addPieceToSpace(piece, position.getCell(), position.getRow());
+                    }
+                    break;
             }
         }
 
