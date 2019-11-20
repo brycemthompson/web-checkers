@@ -1,5 +1,8 @@
 package com.webcheckers.Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Packet for transferring Moves between the server and client. Holds information such as Move type and position
  * for Pieces jumped.
@@ -9,73 +12,103 @@ package com.webcheckers.Model;
 
 public class MovePacket {
 
-    /**
-     * Enumeration for the Type of the Move
-     */
     public static enum Type{
-        SIMPLE, SIMPLE_JUMP;
+        SIMPLE, SIMPLE_JUMP, MULTIPLE_JUMP;
     }
 
-    /**
-     * Private fields
+    /*
+    Private fields.
      */
-    private Move move;
+
+    // the type of the Move contained in this MovePacket
     private Type type;
-    private Piece jumpedPiece;
-    private Position jumpedPiecePosition;
+
+    // the Move contained in this MovePacket
+    private Move move;
+
+    // list of all Pieces jumped in this MovePacket (if any)
+    private List<PieceWithPosition> jumpedPieces;
+
 
     /**
-     * Full Constructor for the MovePacket
-     * @param move: The move to be made
-     * @param type: The type of the move
-     * @param jumpedPiece: The piece to be jumped
-     * @param jumpedPiecePosition: The position of the piece to be jumped
+     * Constructor for a multiple jump move.
+     * @param move the Move being made
+     * @param jumpedPieces all jumped Pieces and their associated Positions
      */
-    public MovePacket(Move move, Type type, Piece jumpedPiece, Position jumpedPiecePosition){
+    public MovePacket(Move move, List<PieceWithPosition> jumpedPieces){
         this.move = move;
-        this.type = type;
-        this.jumpedPiece = jumpedPiece;
-        this.jumpedPiecePosition = jumpedPiecePosition;
+        this.jumpedPieces = jumpedPieces;
+        this.type = Type.MULTIPLE_JUMP;
     }
 
+
     /**
-     * Half-Constructor for MovePacket
-     * @param move: The move to be made
-     * @param type: The type of the move
+     * Constructor for a simple jump move.
+     * @param move the Move being made
+     * @param jumpedPiece the jumped Piece and its Position
      */
-    public MovePacket(Move move, Type type){
-        this(move, type, null, null);
+    public MovePacket(Move move, PieceWithPosition jumpedPiece){
+
+        this.move = move;
+
+        this.jumpedPieces = new ArrayList<PieceWithPosition>();
+        this.jumpedPieces.add(jumpedPiece);
+
+        this.type = Type.SIMPLE_JUMP;
+
+    }
+
+
+    /**
+     * Constructor for a simple move.
+     * @param move the Move being made
+     */
+    public MovePacket(Move move){
+
+        this.move = move;
+
+        this.jumpedPieces = null;
+
+        this.type = Type.SIMPLE;
+
     }
 
     /**
-     * Getter for the Move
-     * @return: the move
+     * Get the Move contained in this MovePacket.
+     * @return a Move object
      */
     public Move getMove(){
         return this.move;
     }
 
+
     /**
-     * Getter for the Move Type
-     * @return: the move type
+     * Get the Type of this MovePacket.
+     * @return enum Type evaluating to either SIMPLE, SIMPLE_JUMP, or MULTIPLE_JUMP
      */
     public Type getType(){
         return this.type;
     }
 
     /**
-     * Getter for the piece to be jumped
-     * @return: the piece to be jumped
+     * Get the first jumped Piece contained in the jumped Pieces list for this MovePacket. Used for simple jumps.
+     * @return a PieceWithPosition object
      */
-    public Piece getJumpedPiece(){
-        return this.jumpedPiece;
+    public PieceWithPosition getJumpedPiece()
+    {
+        if (this.jumpedPieces == null){
+            return null;
+        }
+        return this.jumpedPieces.get(0);
     }
 
     /**
-     * Getter for the Position of the piece to be jumped
-     * @return: position of the piece to be jumped
+     * Get the Pieces jumped by this move as well as their associated Positions.
+     * @return List of PieceWithPositions
      */
-    public Position getJumpedPiecePosition() { return this.jumpedPiecePosition; }
+    public List<PieceWithPosition> getJumpedPieces(){
+        return this.jumpedPieces;
+    }
 
 
 }

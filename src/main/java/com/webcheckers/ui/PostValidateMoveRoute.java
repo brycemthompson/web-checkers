@@ -51,8 +51,10 @@ public class PostValidateMoveRoute implements Route {
 
         // if validationMessage is null, the move is invalid
         if (validationMessage == null){
-            if (validMoves.get(0).getType() == MovePacket.Type.SIMPLE_JUMP){
-                validationMessage = Message.error("You must make a jump move.");
+            if (validMoves.get(0).getType() == MovePacket.Type.SIMPLE_JUMP) {
+                validationMessage = Message.error("You must jump a piece.");
+            } else if (validMoves.get(0).getType() == MovePacket.Type.MULTIPLE_JUMP){
+                validationMessage = Message.error("You must jump multiple pieces.");
             } else {
                 validationMessage = Message.error("Move is too far.");
             }
@@ -60,10 +62,17 @@ public class PostValidateMoveRoute implements Route {
         }
 
         currentBoard.movePiece(movePacket);
-        if (movePacket.getJumpedPiece() != null){
-            Position jumpedPiecePosition = movePacket.getJumpedPiecePosition();
-            System.out.println("Removing " + jumpedPiecePosition);
-            currentBoard.removePieceFromSpace(jumpedPiecePosition.getCell(), jumpedPiecePosition.getRow());
+        switch(movePacket.getType()){
+            case SIMPLE_JUMP:
+                Position jumpedPiecePosition = movePacket.getJumpedPiece().getPosition();
+                currentBoard.removePieceFromSpace(jumpedPiecePosition.getCell(), jumpedPiecePosition.getRow());
+                break;
+            case MULTIPLE_JUMP:
+                for (PieceWithPosition pwp : movePacket.getJumpedPieces()){
+                    Position pos = pwp.getPosition();
+                    currentBoard.removePieceFromSpace(pos.getCell(), pos.getRow());
+                }
+                break;
         }
 
         /*

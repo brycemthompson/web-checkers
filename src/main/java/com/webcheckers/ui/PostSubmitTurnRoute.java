@@ -30,8 +30,18 @@ public class PostSubmitTurnRoute implements Route {
     public Object handle(Request request, Response response) throws Exception {
         LOG.finer("PostSubmitTurnRoute invoked");
 
-        //TODO: A turn will only fail to submit if a multiple jump move still needs to be completed. Future worries.
         Board currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+        Player currentUser = request.session().attribute(ConstsUI.CURRENT_USER_PARAM);
+        Piece.Color currentUserColor = currentUser.getColor();
+
+        boolean winCondition = currentPlayerBoard.checkForWin(currentUserColor);
+        if(winCondition)
+        {
+            // send a message to the current player that they won
+            // send a message to the opponent saying they lost
+            // give both players a view of a exit button to bring them to the home screen
+        }
+
         currentPlayerBoard.flipActiveColor();
         return new Gson().toJson(Message.info("Turn submitted."));
 
