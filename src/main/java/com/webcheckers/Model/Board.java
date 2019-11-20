@@ -2,6 +2,8 @@ package com.webcheckers.Model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 
 /**
@@ -498,6 +500,32 @@ public class Board implements Iterable<Row> {
         } else {
             return allSimpleMoves;
         }
+    }
+
+    public boolean checkForWin(Piece.Color currentPlayerColor)
+    {
+        boolean winFlag = false;
+        Piece.Color opponentColor;
+        Piece.Color checkColor;
+        Space currentSpace;
+
+        if(currentPlayerColor == Piece.Color.RED)
+            opponentColor = Piece.Color.WHITE;
+        else
+            opponentColor = Piece.Color.RED;
+
+        for(int r = 0; r < rowsPerBoard; r++)
+        {
+            for(int c = 0; c < rowsPerBoard; c++)
+            {
+                currentSpace = rows.get(r).getSpace(c);
+                checkColor = currentSpace.getPiece().getColor();
+
+                if(checkColor.equals(opponentColor))
+                    winFlag = true;
+            }
+        }
+        return winFlag;
     }
 
     /**
