@@ -14,8 +14,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Unit Test for the PostPlayerRoute Class
+ */
 @Tag("UI-Tier")
 public class PostPlayerRouteTest {
+
+    /**
+     * Private fields
+     */
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -24,6 +31,9 @@ public class PostPlayerRouteTest {
     private Response response;
     private Session session;
 
+    /**
+     * setup function to initialize and mock the session items for testing
+     */
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
@@ -37,6 +47,12 @@ public class PostPlayerRouteTest {
         templateEngineTester = new TemplateEngineTester();
     }
 
+    /**
+     * test function to check the components of putting two players into a game.
+     * this consists of checking that the current user and opponent are not null in the session,
+     * the current user and the opponent are separate Player objects,
+     * and that both players are truthfully and successfully put into a game together.
+     */
     @Test
     public void test_players_in_game()
     {
@@ -61,6 +77,10 @@ public class PostPlayerRouteTest {
         assert(opponent.isInGame());
     }
 
+    /**
+     * test function that checks all of the components that are to be displayed and held within the view model as an
+     * attribute or the current view name.
+     */
     @Test
     public void test_view_model_messages()
     {

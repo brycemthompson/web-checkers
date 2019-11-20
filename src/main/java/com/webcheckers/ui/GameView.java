@@ -46,8 +46,11 @@ public class GameView {
     }
 
     /**
-     * Build the given view-model to reflect Game View.
-     * @param vm view-model to build
+     * Build the given view-model to reflext Game View
+     * @param currentPlayer: The player
+     * @param opponentPlayer: The opponent
+     * @param currentPlayerBoard: The board
+     * @param vm: view-model to build
      */
     public static void buildGameViewModel(Player currentPlayer, Player opponentPlayer,
                                           Board currentPlayerBoard,
@@ -61,6 +64,12 @@ public class GameView {
         populateViewModelPlayerData(vm, currentPlayer, opponentPlayer);
     }
 
+    /**
+     * Build the given view-model to reflect a Game Error for the opponent
+     * @param request: the session request object
+     * @param response: the session response object
+     * @param vm: the view-model to build
+     */
     public static void buildOpponentInGameErrorView(Request request, Response response, Map<String, Object> vm){
         vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
         vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);

@@ -1,10 +1,7 @@
 package com.webcheckers.Model;
 
-
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import static java.lang.Math.abs;
 
 /**
@@ -55,14 +52,19 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     * Adds the given Piece to the given coordinates.
+     * Adds the given Piece to the given coordinates
+     * @param piece: The piece to add the the space
+     * @param col: The column of the space
+     * @param row: The row of the space
      */
     public void addPieceToSpace(Piece piece, int col, int row){
         this.rows.get(row).addPieceToSpace(piece, col);
     }
 
     /**
-     * Removes a Piece from the Space with the given coordinates.
+     * Removes a Piece from the Space with the given coordinates
+     * @param col: Column of the space to remove a piece from
+     * @param row: Row of the space to remove a piece from
      */
     public void removePieceFromSpace(int col, int row){
         getSpace(row, col).removePieceFromSpace();
@@ -148,7 +150,6 @@ public class Board implements Iterable<Row> {
                 }
             }
         }
-
         return allValidMoves;
     }
 
@@ -245,7 +246,6 @@ public class Board implements Iterable<Row> {
                 }
             }
         }
-
         return allValidMoves;
     }
 
@@ -309,6 +309,7 @@ public class Board implements Iterable<Row> {
     }
 
     /**
+     * Gets the red player
      * @return redPlayer
      */
     public Player getRedPlayer(){
@@ -316,6 +317,7 @@ public class Board implements Iterable<Row> {
     }
 
     /**
+     * Gets the white player
      * @return whitePlayer
      */
     public Player getWhitePlayer(){
@@ -323,6 +325,7 @@ public class Board implements Iterable<Row> {
     }
 
     /**
+     * Gets the active color
      * @return activeColor
      */
     public Piece.Color getActiveColor(){

@@ -2,6 +2,7 @@ package model;
 
 import com.webcheckers.Model.Authentication;
 import com.webcheckers.Model.Player;
+import com.webcheckers.Model.PlayerLobby;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -11,32 +12,32 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit Test for PlayerLobby Class
+ */
 @Tag("Model-Tier")
 public class PlayerLobbyTest {
 
     ArrayList<Player> players;
+    PlayerLobby playerLobby = new PlayerLobby();
 
+    /**
+     * PlayerLobbyTest constructor
+     */
     public PlayerLobbyTest()
     {
         players = new ArrayList<>();
     }
 
-    @Test
-    public void addPlayer_test(Player player)
-    {
-        boolean isInList = players.contains(player);
-        if(!isInList)
-            players.add(player);
-        assertTrue(Arrays.asList(players).contains(player));
-    }
-
-
+    /**
+     * Test function asserting that a new Player is not null, and that the correct Player name is returned
+     */
     @Test
     public void addPlayer_test(){
-        String playerName = "Isaias";
-        assertNotNull(new Player(playerName));
-        addPlayer_test(new Player(playerName));
-
+        Player p = new Player("Isaias");
+        assertNotNull(p);
+        playerLobby.addPlayer(p);
+        assertEquals(playerLobby.getPlayer("Isaias"), p);
     }
 
     /**
@@ -44,29 +45,35 @@ public class PlayerLobbyTest {
      * @param playerName the username of the Player to get
      * @return the Player with the matching username
      */
-    @Test
-    public void getPlayer_test(String playerName){
-        for (Player player : players){
-
-            String pName = player.getName();
-            assertNotNull(player);
-            assertTrue(pName instanceof String);
-
-            if (player.getName().equals(playerName)){
-                assertEquals(pName, playerName);
-            }
-
-        }
-    }
+//    @Test
+//    public void getPlayer_test(){
+//        Player play  = new Player("Kyle");
+//        String playerName = play.getName();
+//        playerLobby.addPlayer(play);
+//
+//        for (Player player : players){
+//
+//            String pName = player.getName();
+//            assertNotNull(player);
+//            assertTrue(pName instanceof String);
+//
+//            if (player.getName().equals(playerName)){
+//                assertEquals(pName, playerName);
+//            }
+//
+//        }
+//    }
 
     /**
-     * removePlayer function to remove a Player from the lobby
-     * @param player : Player to remove from the lobby
+     * Test function that asserts that the playerLobby holds the correct number of Players
      */
     @Test
-    public void removePlayer_test(Player player){
+    public void removePlayer_test(){
+        Player p = new Player("Isaias");
+        players.add(p);
+
         assertEquals(1, players.size());
-        players.remove(player);
+        players.remove(p);
         assertEquals(0, players.size());
     }
 
@@ -76,9 +83,17 @@ public class PlayerLobbyTest {
      */
     @Test
     public void getPlayers_test(){
-        ArrayList<Player> mockArrayList = new ArrayList<>();
-        mockArrayList.add(new Player("Isaias"));
-        assertEquals(mockArrayList, players);
+        Player p = new Player("Test1");
+        Player p2 = new Player("Test2");
+
+        playerLobby.addPlayer(p);
+        playerLobby.addPlayer(p2);
+
+        ArrayList<Player> plays = new ArrayList<>();
+        plays.add(p);
+        plays.add(p2);
+
+        assertEquals(plays, playerLobby.getPlayers());
     }
 
     /**
@@ -99,7 +114,10 @@ public class PlayerLobbyTest {
 
     }
 
-    //THIS TEST IS FAILING FIX LATER
+    /**
+     * Test function to assert the correct size of the player array list
+     * THIS TEST IS FAILING FIX LATER
+     */
     @Test
     public void size_test(){
         ArrayList<Player> players = new ArrayList<>();
@@ -107,6 +125,9 @@ public class PlayerLobbyTest {
         assertEquals(1, players.size());
     }
 
+    /**
+     * Unit Test to assert the correct Messages based on the validity of the username input
+     */
     @Test
     public void authenticateSignIn_test(){
         String username = "Test1";

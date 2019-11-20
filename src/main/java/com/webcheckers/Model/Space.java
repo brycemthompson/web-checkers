@@ -82,6 +82,10 @@ public class Space {
      */
     public void removePieceFromSpace() { this.piece = null; }
 
+    /**
+     * Getter for the Position
+     * @return: a new Position with the Space coordinates
+     */
     public Position getPosition(){
         return new Position(this.cellIdy, this.cellIdx);
     }
@@ -94,6 +98,10 @@ public class Space {
         return ((cellIdx % 2 != cellIdy % 2) && this.piece == null);
     }
 
+    /**
+     * Overriding toString() to create a String representation of the Position, using the Space coordinates.
+     * @return: a new Position calling the toString() override in the Position class.
+     */
     @Override
     public String toString() {
         return new Position(cellIdy, cellIdx).toString();
