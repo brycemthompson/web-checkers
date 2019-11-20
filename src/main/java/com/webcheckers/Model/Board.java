@@ -27,15 +27,7 @@ public class Board implements Iterable<Row> {
     private Player redPlayer;
     private Player whitePlayer;
     private Piece.Color activeColor;
-
-    private void addRedPiece(int c, int r){
-        addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.RED), c, r);
-    }
-
-    private void addWhitePiece(int c, int r){
-        addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), c, r);
-    }
-
+    
     /**
      * Constructor. Automatically populates the board with the starting pieces.
      */
@@ -48,7 +40,6 @@ public class Board implements Iterable<Row> {
 
         // populate board with checkers in starting positions
 
-        /*
         // white
         for (int r = 0; r < 3; r += 1){
             for (int c = (r + 1) % 2; c < rowsPerBoard; c += 2){
@@ -62,31 +53,7 @@ public class Board implements Iterable<Row> {
                 addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.RED), c, r);
             }
         }
-         */
 
-        addWhitePiece(1, 0);
-        addWhitePiece(3, 0);
-        addWhitePiece(5, 0);
-        addWhitePiece(7, 0);
-        addWhitePiece(0, 1);
-        addWhitePiece(6, 1);
-        addWhitePiece(1, 2);
-        addWhitePiece(3, 2);
-        addWhitePiece(5, 2);
-        addWhitePiece(7, 2);
-        addWhitePiece(5, 4);
-
-        addRedPiece(0, 3);
-        addRedPiece(4, 5);
-        addRedPiece(6, 5);
-        addRedPiece(1, 6);
-        addRedPiece(3, 6);
-        addRedPiece(5, 6);
-        addRedPiece(7, 6);
-        addRedPiece(0, 7);
-        addRedPiece(2, 7);
-        addRedPiece(4, 7);
-        addRedPiece(6, 7);
     }
 
     /**
