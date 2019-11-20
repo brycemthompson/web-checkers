@@ -27,7 +27,7 @@ public class Board implements Iterable<Row> {
     private Player redPlayer;
     private Player whitePlayer;
     private Piece.Color activeColor;
-    
+
     /**
      * Constructor. Automatically populates the board with the starting pieces.
      */
@@ -476,6 +476,40 @@ public class Board implements Iterable<Row> {
     public MovePacket getBackupMove()
     {
         return this.backupMove;
+    }
+
+    /**
+     * Scans the Board to check if any Pieces should be updated to King. If there are any, update them.
+     */
+    public void updateKingStatus(){
+        // scan each column at each end of the board looking for Pieces
+        for (int c = 0; c < rowsPerBoard; c += 1){
+            // get top and bottom spaces for this scan
+            Space topSpace = getSpace(0, c);
+            Space bottomSpace = getSpace(rowsPerBoard - 1, c);
+
+            /*
+            The top space should be on white's side, so check if it has a red piece on it.
+            Similarly, the bottom space should be on red's side.
+            If there is an opposing piece on a given side and it has not been King'd, King that sucker.
+             */
+
+            Piece topPiece = topSpace.getPiece();
+            Piece bottomPiece = bottomSpace.getPiece();
+
+            if (topPiece != null){
+                if (topPiece.getColor() == Piece.Color.RED && topPiece.getType() != Piece.Type.KING){
+                    topPiece.kingMe();
+                }
+            }
+
+            if (bottomPiece != null){
+                if (bottomPiece.getColor() == Piece.Color.WHITE && bottomPiece.getType() != Piece.Type.KING){
+                    bottomPiece.kingMe();
+                }
+            }
+
+        }
     }
 
     /**

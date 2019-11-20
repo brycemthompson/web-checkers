@@ -32,6 +32,7 @@ public class PostSubmitTurnRoute implements Route {
 
         Board currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
         currentPlayerBoard.flipActiveColor();
+        currentPlayerBoard.updateKingStatus();
         return new Gson().toJson(Message.info("Turn submitted."));
 
         /*
