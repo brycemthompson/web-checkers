@@ -40,6 +40,13 @@ public class Piece {
     }
 
     /**
+     * Kings this piece.
+     */
+    public void kingMe(){
+        this.type = Type.KING;
+    }
+
+    /**
      * Getter for type
      * @return this.type: the type of the piece
      */
