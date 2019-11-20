@@ -39,20 +39,8 @@ public class MovePacketTest {
         MovePacket.Type type = MovePacket.Type.SIMPLE;
         Piece jumpedPiece = new Piece(Piece.Type.SINGLE, Piece.Color.RED);
         Position jumpedPiecePosition = new Position(1,1);
-
-        MovePacket mp = new MovePacket(move, type, jumpedPiece, jumpedPiecePosition);
+        PieceWithPosition pieceWithPosition = new PieceWithPosition(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), jumpedPiecePosition);
+        MovePacket mp = new MovePacket(move, pieceWithPosition);
         assertEquals(jumpedPiece, mp.getJumpedPiece());
-    }
-
-    @Test
-    public void testGetJumpedPiecePosition()
-    {
-        Move move = new Move(new Position(0,0), new Position(0,1));
-        MovePacket.Type type = MovePacket.Type.SIMPLE;
-        Piece jumpedPiece = new Piece(Piece.Type.SINGLE, Piece.Color.RED);
-        Position jumpedPiecePosition = new Position(1,1);
-
-        MovePacket mp = new MovePacket(move, type, jumpedPiece, jumpedPiecePosition);
-        assertEquals(jumpedPiecePosition, mp.getJumpedPiecePosition());
     }
 }

@@ -61,7 +61,7 @@ public class PostBackupMoveRouteTest {
         assertNull(backupMove);
 
         Move move = new Move(new Position(1,2), new Position(2,2));
-        PieceWithPosition pieceWithPosition = new PieceWithPosition(new Piece(Piece.Type.SINGLE, Piece.Color.RED );
+        PieceWithPosition pieceWithPosition = new PieceWithPosition(new Piece(Piece.Type.SINGLE, Piece.Color.RED ), new Position(2,2));
         currentBoard.movePiece(new MovePacket(move, pieceWithPosition));
         backupMove = currentBoard.getBackupMove();
         assertNotNull(backupMove);
