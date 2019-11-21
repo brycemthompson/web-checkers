@@ -35,6 +35,7 @@ public class MovePacketTest {
     @Test
     public void testGetJumpedPiece()
     {
+
         Position start  = new Position(0,0);
         Position end =  new Position(0,1);
         Move move = new Move(start, end);
