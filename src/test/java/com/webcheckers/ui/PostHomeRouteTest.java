@@ -17,15 +17,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * Unit Test for the PostHomeRoute Class
- */
 @Tag("UI-Tier")
 public class PostHomeRouteTest {
 
-    /**
-     * Private fields
-     */
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -34,15 +28,12 @@ public class PostHomeRouteTest {
     private Response response;
     private Session session;
 
-    /**
-     * setup function to initialize and mock the session items used for testing
-     */
     @BeforeEach
-    public void setup() {
+    public void setup(){
 
         request = mock(Request.class);
         response = mock(Response.class);
-        templateEngine = mock(TemplateEngine.class);
+        templateEngine  = mock(TemplateEngine.class);
         session = mock(Session.class);
         when(request.session()).thenReturn(session);
 
@@ -51,34 +42,29 @@ public class PostHomeRouteTest {
         templateEngineTester = new TemplateEngineTester();
     }
 
-    /**
-     * test function to check for the correct view model title attribute
-     */
     @Test
-    public void test_view(){
+    public void test_default_view(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
-        System.out.println(playerLobby.size());
+        final String username = "Test";
+        playerLobby.addPlayer(username);
+        when(request.queryParams(ConstsUI.USERNAME_PARAM)).thenReturn(username);
 
         CuT.handle(request, response);
-        templateEngineTester.assertViewModelAttribute("title", "Welcome to Home Page!");
+
+        templateEngineTester.assertViewName("signin.ftl");
     }
 
-    /**
-     * test function to check for an invalid username error message on an invalid username, and checking for the
-     * appropriate view model attributes being held and displayed
-     */
     @Test
     public void test_invalid_username() {
-        final Map<String, Object> vm = new HashMap<>();
+        when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
         // Testing an invalid username
         final String username = "_122g";
         playerLobby.addPlayer(username);
-        Authentication authResult = playerLobby.authenticateSignIn(username);
+        when(request.queryParams(ConstsUI.USERNAME_PARAM)).thenReturn(username);
 
-        assertEquals(authResult, Authentication.FAIL_INVALID_USERNAME);
+//        assertEquals(authResult, Authentication.FAIL_INVALID_USERNAME);
 
-        when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
         CuT.handle(request, response);
 
         templateEngineTester.assertViewModelAttribute(ConstsUI.TITLE_PARAM, ConstsUI.DEFAULT_WELCOME_FOR_TITLE);
@@ -86,10 +72,6 @@ public class PostHomeRouteTest {
         templateEngineTester.assertViewName(ConstsUI.SIGNIN_VIEW);
     }
 
-    /**
-     * test function to test for the name taken error message when a user tries to enter a username that is already
-     * being used by another user in addition to checking the appropriate view model attributes
-     */
     @Test
     public void test_username_taken() {
         final Map<String, Object> vm = new HashMap<>();
@@ -100,6 +82,7 @@ public class PostHomeRouteTest {
 
         String second_username = "bob";
         Authentication authResult = playerLobby.authenticateSignIn(second_username);
+        when(request.queryParams(ConstsUI.USERNAME_PARAM)).thenReturn(username);
 
         assertEquals(authResult, Authentication.FAIL_NAME_TAKEN);
 
@@ -111,10 +94,6 @@ public class PostHomeRouteTest {
         templateEngineTester.assertViewName(ConstsUI.SIGNIN_VIEW);
     }
 
-    /**
-     * test function to assert a successful login message along with a successful authentication when the user
-     * enters an valid and unused username to signin
-     */
     @Test
     public void test_successful_username()
     {
@@ -126,17 +105,23 @@ public class PostHomeRouteTest {
 
         Player currentUser = new Player(username);
         assertEquals(authResult, Authentication.SUCCESS);
-        playerLobby.addPlayer(currentUser);
+
+//        playerLobby.addPlayer(currentUser);
+        when(request.queryParams(ConstsUI.USERNAME_PARAM)).thenReturn(username);
+//        when(playerLobby.authenticateSignIn(username)).thenReturn(authResult);
+
+//        when(request.queryParams(ConstsUI.CURRENT_USER_PARAM)).thenReturn(currentUser);
 
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
         CuT.handle(request, response);
-
         templateEngineTester.assertViewModelAttribute(ConstsUI.CURRENT_USER_PARAM, currentUser);
         templateEngineTester.assertViewModelAttribute(ConstsUI.USERNAME_PARAM, username);
-
+        playerLobby.addPlayer(currentUser);
         ArrayList<String> playerNames = playerLobby.getPlayerNames();
-        templateEngineTester.assertViewModelAttribute(ConstsUI.PLAYER_LIST_PARAM, playerNames);
+        //Player then is removed from playernames in original PostHomeRouteCode
+        playerNames.remove(username);
 
+        templateEngineTester.assertViewModelAttribute(ConstsUI.PLAYER_LIST_PARAM, playerNames);
         templateEngineTester.assertViewModelAttribute(ConstsUI.TITLE_PARAM, ConstsUI.DEFAULT_WELCOME_FOR_TITLE);
         templateEngineTester.assertViewModelAttribute(ConstsUI.MESSAGE_PARAM, ConstsUI.WELCOME_MSG);
         templateEngineTester.assertViewName(ConstsUI.HOME_VIEW);
