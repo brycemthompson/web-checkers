@@ -153,35 +153,33 @@ public class Board implements Iterable<Row> {
      * @return array list containing all simple moves
      */
     private ArrayList<MovePacket> getAllSimpleMoves(Piece.Color player){
-        // get opponent color
-        Piece.Color opponent = Piece.getOtherColor(player);
 
-        // scan each row and collect all spaces with pieces with the matching color
-        ArrayList<Space> allStartingSpaces = new ArrayList<Space>();
+        // scan each row and collect all Pieces belonging to the given player
+        ArrayList<PieceWithPosition> allStartingPieces = new ArrayList<>();
         for (Row row : rows){
             for (Space space : row){
                 if (space.hasPiece(player)){
-                    allStartingSpaces.add(space);
+                    allStartingPieces.add(new PieceWithPosition(space.getPiece(), space.getPosition()));
                 }
             }
         }
 
-        // generate all valid Moves with the given start spaces
+        // generate all valid Moves with the given starting piece
         ArrayList<MovePacket> allValidMoves = new ArrayList<>();
-        for (Space start : allStartingSpaces){
-            // scan for valid spaces or spaces with pieces that can be jumped
-            for (int r = -1; r <= 1; r++){
-                for (int c = -1; c <= 1; c++){
+        for (PieceWithPosition pwp : allStartingPieces){
+            // scan for valid spaces
+            for (int r = -1; r <= 1; r += 2){
+                for (int c = -1; c <= 1; c += 2){
                     Space cur = null;
                     try {
-                        cur = getSpace(start.getCellIdy() + r, start.getCellIdx() + c);
+                        cur = getSpace(pwp.getRow() + r, pwp.getCell() + c);
                     } catch (IndexOutOfBoundsException e) {
                         continue;
                     }
 
                     if (cur.isValid()){
                         // space is a valid space to move to
-                        Move move = new Move(start.getPosition(), cur.getPosition());
+                        Move move = new Move(pwp.getPosition(), cur.getPosition());
                         MovePacket mp = new MovePacket(move);
                         allValidMoves.add(mp);
                     }
