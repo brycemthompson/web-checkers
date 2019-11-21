@@ -105,7 +105,7 @@ public class GetHomeRouteTest {
 
         when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentUserBoard);
 
-        GetGameRoute.drawBoard(currentUserBoard, pl.getColor(), opponent.getColor());
+//        GetGameRoute.drawBoard(currentUserBoard, pl.getColor(), opponent.getColor());
 
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
