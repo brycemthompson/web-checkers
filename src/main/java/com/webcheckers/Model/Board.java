@@ -504,9 +504,10 @@ public class Board implements Iterable<Row> {
 
     public boolean checkForWin(Piece.Color currentPlayerColor)
     {
-        boolean winFlag = false;
+        boolean winFlag = true;
         Piece.Color opponentColor;
         Piece.Color checkColor;
+        Piece currentPiece;
         Space currentSpace;
 
         if(currentPlayerColor == Piece.Color.RED)
@@ -519,10 +520,12 @@ public class Board implements Iterable<Row> {
             for(int c = 0; c < rowsPerBoard; c++)
             {
                 currentSpace = rows.get(r).getSpace(c);
-                checkColor = currentSpace.getPiece().getColor();
-
-                if(checkColor.equals(opponentColor))
-                    winFlag = true;
+                currentPiece = currentSpace.getPiece();
+                if(currentPiece != null) {
+                    checkColor = currentSpace.getPiece().getColor();
+                    if (checkColor.equals(opponentColor))
+                        winFlag = false;
+                }
             }
         }
         return winFlag;
