@@ -24,7 +24,6 @@ public class PostSignOutRoute implements Route {
     private static final Logger LOG = Logger.getLogger(PostSignOutRoute.class.getName());
 
     // Messages
-    private static final Message WELCOME_MSG = Message.info("Sign In to Play!");
     private static final Message SIGNIN_FAILED_INVALID_MSG = Message.info("Username must contain only alphanumeric character.");
     private static final Message SIGNIN_FAILED_NAME_TAKEN_MSG = Message.info("Username taken. Please enter a unique username.");
 
@@ -62,7 +61,7 @@ public class PostSignOutRoute implements Route {
 
         // re-render the default home page
         vm.put(ConstsUI.TITLE_PARAM, "Welcome to Home Page!");
-        vm.put(ConstsUI.MESSAGE_PARAM, WELCOME_MSG);
+        vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.SIGN_IN_MSG);
         int amountOfPlayersPlaying = playerLobby.size();
         vm.put(GetHomeRoute.PLAYERSPLAYING_PARAM, amountOfPlayersPlaying);
         return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));

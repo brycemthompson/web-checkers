@@ -62,7 +62,7 @@ public class PostSignOutRouteTest {
     public void test_message_display(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
-        Message msg = new Message("Test1", Message.Type.INFO);
+        Message msg = ConstsUI.SIGN_IN_MSG;
         when(session.attribute(ConstsUI.MESSAGE_PARAM)).thenReturn(msg);
 
         //session.attribute(ConstsUI.MESSAGE_PARAM, msg );
@@ -90,7 +90,7 @@ public class PostSignOutRouteTest {
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
         CuT.handle(request, response);
-        templateEngineTester.assertViewModelAttribute(PLAYERSPLAYING_PARAM, 0);
+        templateEngineTester.assertViewModelAttribute(PLAYERSPLAYING_PARAM, 1);
 
     }
 }
