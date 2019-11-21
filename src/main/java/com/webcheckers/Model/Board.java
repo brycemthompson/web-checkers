@@ -26,6 +26,11 @@ public class Board implements Iterable<Row> {
     private Player whitePlayer;
     private Piece.Color activeColor;
 
+    // end game results
+    private boolean redPlayerWin;
+    private boolean whitePlayerWin;
+    public String opponentUsername;
+
     private void addRedPiece(int c, int r){
         addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.RED), c, r);
     }
@@ -61,8 +66,9 @@ public class Board implements Iterable<Row> {
             }
         }
          */
-
-        addWhitePiece(1, 0);
+        addWhitePiece(1,0);
+        addRedPiece(0,3);
+        /*addWhitePiece(1, 0);
         addWhitePiece(3, 0);
         addWhitePiece(5, 0);
         addWhitePiece(7, 0);
@@ -84,7 +90,7 @@ public class Board implements Iterable<Row> {
         addRedPiece(0, 7);
         addRedPiece(2, 7);
         addRedPiece(4, 7);
-        addRedPiece(6, 7);
+        addRedPiece(6, 7);*/
     }
 
     /**
@@ -595,6 +601,29 @@ public class Board implements Iterable<Row> {
     public Piece.Color getActiveColor(){
         return this.activeColor;
     }
+
+    public void setWinner(Player winningPlayer, String opponentUsername){
+        if(winningPlayer.equals(redPlayer)) {
+            redPlayerWin = true;
+            whitePlayerWin = false;
+            this.opponentUsername = opponentUsername;
+        }
+        else{
+            whitePlayerWin = true;
+            redPlayerWin = false;
+            this.opponentUsername = opponentUsername;
+        }
+    }
+
+    public Player getWinner()
+    {
+        if(redPlayerWin)
+            return redPlayer;
+        else if(whitePlayerWin)
+            return whitePlayer;
+        return null;
+    }
+
 
     /**
      * Override iterator function. Contains other functions for the iterator

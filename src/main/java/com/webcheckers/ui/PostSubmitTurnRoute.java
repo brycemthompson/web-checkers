@@ -30,21 +30,20 @@ public class PostSubmitTurnRoute implements Route {
     public Object handle(Request request, Response response) throws Exception {
         LOG.finer("PostSubmitTurnRoute invoked");
 
+        final String opponentUsername = request.queryParams("opponentUsername");
         Board currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
         Player currentUser = request.session().attribute(ConstsUI.CURRENT_USER_PARAM);
-        final String opponentUsername = request.queryParams("opponentUsername");
         Piece.Color currentUserColor = currentUser.getColor();
 
         boolean winCondition = currentPlayerBoard.checkForWin(currentUserColor);
         if(winCondition)
         {
-            System.out.println("here");
+            currentPlayerBoard.setWinner(currentUser, opponentUsername);
+            // This sends a message to the winner of the game
             Message currentUserWonMessage = Message.info("You won! You've captured all of " + opponentUsername +
                     "'s pieces.");
-            // send a message to the current player that they won
+            request.session().attribute(ConstsUI.GAME_OVER_PARAM, currentUserWonMessage);
             return new Gson().toJson(currentUserWonMessage);
-            // send a message to the opponent saying they lost
-            // give both players a view of a exit button to bring them to the home screen
         }
 
         currentPlayerBoard.flipActiveColor();

@@ -3,6 +3,7 @@ package com.webcheckers.ui;
 import com.webcheckers.Model.Board;
 import com.webcheckers.Model.Piece;
 import com.webcheckers.Model.Player;
+import com.webcheckers.util.Message;
 import spark.Request;
 import spark.Response;
 
@@ -61,6 +62,15 @@ public class GameView {
         vm.put(ConstsUI.BOARD_PARAM, currentPlayerBoard);
         vm.put(ConstsUI.CURRENT_USER_BOARD_PARAM, currentPlayerBoard);
         vm.put("activeColor", currentPlayerBoard.getActiveColor());
+
+        // checking to see if a winner was announced. If so, maintaining the win message on the game page
+        Player winningPlayer = currentPlayerBoard.getWinner();
+        if(winningPlayer != null)
+        {
+            vm.put(ConstsUI.GAME_OVER_PARAM, Message.info("You won! You've captured all of " + currentPlayerBoard.opponentUsername +
+                    "'s pieces."));
+        }
+
         populateViewModelPlayerData(vm, currentPlayer, opponentPlayer);
     }
 

@@ -25,6 +25,7 @@ public final class ConstsUI {
     public static final String OPPONENT_PARAM = "opponent";
     public static final String PROPOSED_MOVES_PARAM = "proposedMoves";
     public static final String BACKUP_MOVE_PARAM = "backupMove";
+    public static final String GAME_OVER_PARAM = "gameOverMessage";
 
     /**
      * Default Values
