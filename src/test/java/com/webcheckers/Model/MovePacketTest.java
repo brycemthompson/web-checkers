@@ -24,23 +24,24 @@ public class MovePacketTest {
     public void testGetType()
     {
         Move move = new Move(new Position(0,0), new Position(0,1));
-        MovePacket.Type type = MovePacket.Type.SIMPLE;
         PieceWithPosition pieceWithPosition = new PieceWithPosition(
                                                 new Piece(Piece.Type.SINGLE, Piece.Color.RED),
                                                     new Position(3, 3) );
+
         MovePacket mp = new MovePacket(move, pieceWithPosition);
-        assertEquals(type, mp.getType());
+        assertEquals(MovePacket.Type.SIMPLE_JUMP, mp.getType());
     }
 
     @Test
     public void testGetJumpedPiece()
     {
-        Move move = new Move(new Position(0,0), new Position(0,1));
-        MovePacket.Type type = MovePacket.Type.SIMPLE;
+        Position start  = new Position(0,0);
+        Position end =  new Position(0,1);
+        Move move = new Move(start, end);
         Piece jumpedPiece = new Piece(Piece.Type.SINGLE, Piece.Color.RED);
-        Position jumpedPiecePosition = new Position(1,1);
+        Position jumpedPiecePosition = start;
         PieceWithPosition pieceWithPosition = new PieceWithPosition(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), jumpedPiecePosition);
         MovePacket mp = new MovePacket(move, pieceWithPosition);
-        assertEquals(jumpedPiece, mp.getJumpedPiece());
+        assertEquals(pieceWithPosition, mp.getJumpedPiece());
     }
 }
