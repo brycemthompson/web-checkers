@@ -80,7 +80,7 @@ public class GetGameRouteTest {
         CuT.handle(request, response);
 
         templateEngineTester.assertViewName("home.ftl");
-:
+
     }
 
     /**
