@@ -55,6 +55,12 @@ public class Piece {
     }
 
     /**
+     * Check if this Piece is a King.
+     * @return boolean for whether this Piece's Type is King
+     */
+    public boolean isKing() { return this.type == Type.KING; }
+
+    /**
      * Getter for color
      * @return this.color: the color of the piece
      */
