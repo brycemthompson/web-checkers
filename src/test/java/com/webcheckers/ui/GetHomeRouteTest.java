@@ -119,22 +119,24 @@ public class GetHomeRouteTest {
      */
     @Test
     public void test_board(){
-        Player pl = new Player("David2");
-        playerLobby.addPlayer(pl);
+        Player p1 = new Player("David2");
+        Player p2 = new Player("OpponentPlayer");
+        playerLobby.addPlayer(p1);
+        playerLobby.addPlayer(p2);
         ArrayList<String> playerNames = playerLobby.getPlayerNames();
 
-        Board currentUserBoard ;
-        Player opponent = pl.getOpponent();
-
-        pl.color = Piece.Color.RED;
-        currentUserBoard = playerLobby.getBoard(pl, opponent);
+        Board currentUserBoard;
+        p1.putInGame(p2, Piece.Color.WHITE);
+        Player opponent = p1.getOpponent();
+        currentUserBoard = playerLobby.getBoard(p1, opponent);
 
         when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentUserBoard);
+        session.attribute(ConstsUI.PLAYER_LIST_PARAM, playerNames);
 
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
         CuT.handle(request, response);
-        templateEngineTester.assertViewModelAttribute(ConstsUI.CURRENT_USER_PARAM, pl);
+        templateEngineTester.assertViewModelAttribute(ConstsUI.CURRENT_USER_PARAM, null);
         templateEngineTester.assertViewModelAttribute(ConstsUI.CURRENT_USER_BOARD_PARAM, currentUserBoard);
 
     }
