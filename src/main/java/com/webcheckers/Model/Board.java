@@ -54,6 +54,11 @@ public class Board implements Iterable<Row> {
             }
         }
 
+        /*
+        addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), 0, 3);
+        addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.RED), 2, 1);
+         */
+
     }
 
     /**

@@ -41,9 +41,9 @@ public class Piece {
         this.color = color;
 
         if (color == Color.RED){
-            this.forwardDirection = -1;
-        } else {
             this.forwardDirection = 1;
+        } else {
+            this.forwardDirection = -1;
         }
 
     }
