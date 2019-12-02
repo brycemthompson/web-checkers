@@ -248,8 +248,9 @@ public class GetGameRoute implements Route {
                         vm
                 );
 
-                // update Players' in-game statuses
-
+                // update Players' in-game statuses (stati?)
+                currentPlayer.removeFromGame();
+                opponent.removeFromGame();
 
                 return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
         }
