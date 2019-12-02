@@ -61,6 +61,15 @@ public class Move {
     }
 
     /**
+     * Returns the direction of this Move.
+     * @return direction of this Move
+     */
+    public double getDirection(){
+        double diff = this.start.getRow() - this.end.getRow();
+        return diff/abs(diff);
+    }
+
+    /**
      * Helper function that returns whether this Move is too large.
      * @return whether start Position and end Position are too far
      */
