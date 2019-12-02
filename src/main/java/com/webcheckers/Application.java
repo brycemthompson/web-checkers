@@ -120,7 +120,7 @@ public final class Application {
   // Constructor
   //
 
-  private Application(final WebServer webServer) {
+  public Application(final WebServer webServer) {
     // validation
     Objects.requireNonNull(webServer, "webServer must not be null");
     //
