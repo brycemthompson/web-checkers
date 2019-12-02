@@ -21,14 +21,10 @@ import java.util.logging.Logger;
 public class GetGameRoute implements Route {
 
     private enum GameState {
-        CHALLENGING, CHALLENGED, INGAME, GAMEOVER;
+        CHALLENGING, CHALLENGED, INGAME, GAMEOVER, WERESIGNED, OPPONENTRESIGNED;
     }
 
     private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
-
-    // Constants for the ViewModel
-    public static final String VIEW_NAME = "game.ftl";
-    public static final String CURRENTPLAYERBOARD_PARAM = "currentPlayerBoard";
 
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
@@ -58,6 +54,10 @@ public class GetGameRoute implements Route {
             return GameState.CHALLENGED;
         } else if (currentPlayerBoard.getWinningColor() != null){
             return GameState.GAMEOVER;
+        } else if (!currentPlayer.isInGame() && currentPlayer.getOpponent() != null) {
+            return GameState.WERESIGNED;
+        } else if (currentPlayer.isInGame() && !currentPlayer.getOpponent().isInGame()) {
+            return GameState.OPPONENTRESIGNED;
         } else {
             return GameState.INGAME;
         }
@@ -251,6 +251,32 @@ public class GetGameRoute implements Route {
                 // update Players' in-game statuses (stati?)
                 currentPlayer.removeFromGame();
                 opponent.removeFromGame();
+
+                return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
+            case WERESIGNED:
+                // redirect to home page
+                GameView.buildWeResignedView(request, vm);
+                response.redirect(ConstsUI.HOME_URL);
+                return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
+            case OPPONENTRESIGNED:
+                // find the Player who resigned
+                opponent = currentPlayer.getOpponent();
+                // refresh the game
+                refreshGame(request,
+                        currentPlayer,
+                        opponent);
+                // populate our view model
+                currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+                GameView.buildGameViewModel(
+                        currentPlayer,
+                        opponent,
+                        currentPlayerBoard,
+                        vm
+                );
+                GameView.buildOpponentResignedView(opponent, vm);
+
+                // update our status
+                currentPlayer.removeFromGame();
 
                 return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
         }

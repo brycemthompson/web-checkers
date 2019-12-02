@@ -43,6 +43,7 @@ public final class ConstsUI {
     public static final Message SUBMIT_SUCCESSFUL_MSG = Message.info("Submission Successful!");
     public static final Message BACKUPMOVE_SUCCESSFUL_MSG = Message.info("The move has been reversed.");
     public static final Message PLAYER_IN_GAME_ERROR_MSG = Message.error("The chosen player is already in a game.");
+    public static final Message RESIGNATION_SUCCESSFUL_MSG = Message.info("You have resigned from the game. Coward.");
     public static final Message BACKUPMOVE_FAIL_ERROR_MSG = Message.error("The backup move failed.");
     public static final Message JUMP_REQUIRED_ERROR_MSG = Message.error("Invalid Turn. Jump move available.");
 
@@ -65,4 +66,5 @@ public final class ConstsUI {
     public static final String SUBMITTURN_URL = "/submitTurn";
     public static final String CHECKTURN_URL = "/checkTurn";
     public static final String BACKUPMOVE_URL = "/backupMove";
+    public static final String RESIGNGAME_URL = "/resignGame";
 }

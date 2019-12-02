@@ -104,6 +104,27 @@ public class GameView {
         vm.put("modeOptionsAsJSON", new Gson().toJson(modeOptions));
     }
 
+    /**
+     * Updates the given view-model to update that Game View to reflect that the opponent has resigned.
+     */
+    public static void buildOpponentResignedView(Player opponentPlayer, Map<String, Object> vm){
+
+        // build the game over message
+        String gameOverMessage = opponentPlayer + " has resigned.";
+
+        // build the modeOptionsAsJSON map and put it into the view-model
+        final Map<String, Object> modeOptions = new HashMap<>(2);
+        modeOptions.put("isGameOver", true);
+        modeOptions.put("gameOverMessage", gameOverMessage);
+        vm.put("modeOptionsAsJSON", new Gson().toJson(modeOptions));
+    }
+
+    public static void buildWeResignedView(Request request, Map<String, Object> vm){
+        vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
+        vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.RESIGNATION_SUCCESSFUL_MSG);
+        request.session().attribute(ConstsUI.MESSAGE_PARAM, ConstsUI.RESIGNATION_SUCCESSFUL_MSG);
+    }
+
     public static void buildOpponentInGameErrorView(Request request, Response response, Map<String, Object> vm){
         vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
         vm.put(ConstsUI.MESSAGE_PARAM, ConstsUI.PLAYER_IN_GAME_ERROR_MSG);

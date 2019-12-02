@@ -159,6 +159,9 @@ public class WebServer {
     // Initialize the PostCheckTurnRoute.
     post(ConstsUI.CHECKTURN_URL, new PostCheckTurnRoute(templateEngine, playerLobby));
 
+    // Initialize the PostResignGameRoute.
+    post(ConstsUI.RESIGNGAME_URL, new PostResignGameRoute(templateEngine, playerLobby));
+
     // Initialize the PostGameRoute
 //    post(GAME_URL, new PostGameRoute(templateEngine));
 
