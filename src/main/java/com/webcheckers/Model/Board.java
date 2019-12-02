@@ -28,6 +28,10 @@ public class Board implements Iterable<Row> {
     private Player whitePlayer;
     private Piece.Color activeColor;
 
+    // private stat tracking
+    private int whitePieces;
+    private int redPieces;
+
     /**
      * Constructor. Automatically populates the board with the starting pieces.
      */
@@ -40,6 +44,10 @@ public class Board implements Iterable<Row> {
 
         // populate board with checkers in starting positions
 
+        this.whitePieces = 0;
+        this.redPieces = 0;
+
+        /*
         // white
         for (int r = 0; r < 3; r += 1){
             for (int c = (r + 1) % 2; c < rowsPerBoard; c += 2){
@@ -53,6 +61,10 @@ public class Board implements Iterable<Row> {
                 addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.RED), c, r);
             }
         }
+         */
+
+        addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), 1, 4);
+        addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.RED), 2,5);
 
     }
 
@@ -60,14 +72,33 @@ public class Board implements Iterable<Row> {
      * Adds the given Piece to the given coordinates.
      */
     public void addPieceToSpace(Piece piece, int col, int row){
+        // add Piece
         this.rows.get(row).addPieceToSpace(piece, col);
+        // update count
+        if (piece.getColor() == Piece.Color.RED){
+            this.redPieces += 1;
+        } else if (piece.getColor() == Piece.Color.WHITE){
+            this.whitePieces += 1;
+        }
     }
 
     /**
      * Removes a Piece from the Space with the given coordinates.
      */
     public void removePieceFromSpace(int col, int row){
-        getSpace(row, col).removePieceFromSpace();
+        Space space = getSpace(row, col);
+        Piece pieceToRemove = space.getPiece();
+
+        space.removePieceFromSpace();
+
+        switch (pieceToRemove.getColor()){
+            case RED:
+                redPieces -= 1;
+                break;
+            case WHITE:
+                whitePieces -= 1;
+                break;
+        }
     }
 
     /**
