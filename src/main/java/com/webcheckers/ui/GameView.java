@@ -94,7 +94,7 @@ public class GameView {
         if (winner == currentPlayer){
             gameOverMessage = "You have captured all of your opponent's pieces!";
         } else {
-            gameOverMessage = winner + " has captured all of your pieces.";
+            gameOverMessage = winner.getName() + " has captured all of your pieces.";
         }
 
         // build the modeOptionsAsJSON map and put it into the view-model
@@ -110,7 +110,7 @@ public class GameView {
     public static void buildOpponentResignedView(Player opponentPlayer, Map<String, Object> vm){
 
         // build the game over message
-        String gameOverMessage = opponentPlayer + " has resigned.";
+        String gameOverMessage = opponentPlayer.getName() + " has resigned.";
 
         // build the modeOptionsAsJSON map and put it into the view-model
         final Map<String, Object> modeOptions = new HashMap<>(2);

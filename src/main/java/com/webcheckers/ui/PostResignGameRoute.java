@@ -1,6 +1,8 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
+import com.webcheckers.Model.Board;
+import com.webcheckers.Model.Piece;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
@@ -34,13 +36,16 @@ public class PostResignGameRoute implements Route {
 
         // initialize view-model
         final Map<String, Object> vm = new HashMap<>();
-        // get the current user
+        // get the current user and their board
         Player currentPlayer = request.session().attribute(ConstsUI.CURRENT_USER_PARAM);
+        Board currentBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
 
         // attempt to resign the Player
         Message msg;
         if (currentPlayer.isInGame()){
             currentPlayer.removeFromGame();
+            Piece.Color newActiveColor = Piece.getOtherColor(currentPlayer.getColor());
+            currentBoard.setActiveColor(newActiveColor);
             msg = Message.info("Resignation successful.");
         } else {
             msg = Message.info("Resignation failed.");
