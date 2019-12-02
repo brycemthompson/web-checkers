@@ -33,11 +33,12 @@ public class GetGameRouteTest {
     /**
      * Starts a new game between the current user and opponent user then stores the game data in the current user's
      * session.
-     * @param request an HTTP request
-     * @param currentUser the current user for whom the game is being built
+     *
+     * @param request      an HTTP request
+     * @param currentUser  the current user for whom the game is being built
      * @param opponentUser the opponent to the current user
      */
-    private void startNewGame(Request request, Player currentUser, Player opponentUser){
+    private void startNewGame(Request request, Player currentUser, Player opponentUser) {
         // set up players
         opponentUser.putInGame(currentUser, Piece.Color.WHITE);
         currentUser.putInGame(opponentUser, Piece.Color.RED);
@@ -50,10 +51,10 @@ public class GetGameRouteTest {
     }
 
 
-    public static void startNewGameFromHome(Request request, PlayerLobby lobby, Player currentUser, Player opponentUser){
+    public static void startNewGameFromHome(Request request, PlayerLobby lobby, Player currentUser, Player opponentUser) {
         // create our Board
         Board board;
-        if (currentUser.getColor() == Piece.Color.RED){
+        if (currentUser.getColor() == Piece.Color.RED) {
             board = lobby.getBoard(currentUser, opponentUser);
         } else {
             board = lobby.getBoard(opponentUser, currentUser);
@@ -61,16 +62,16 @@ public class GetGameRouteTest {
         request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, board);
     }
 
-    private void fetchGame(Request request, Player currentUser, Player opponentUser){
+    private void fetchGame(Request request, Player currentUser, Player opponentUser) {
         Board board = playerLobby.getBoard(currentUser, opponentUser);
         request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, board);
     }
 
 
-    private void refreshGame(Request request, Player currentUser, Player opponentUser){
+    private void refreshGame(Request request, Player currentUser, Player opponentUser) {
         // find our Board
         Board board;
-        if (currentUser.getColor() == Piece.Color.RED){
+        if (currentUser.getColor() == Piece.Color.RED) {
             board = playerLobby.getBoard(currentUser, opponentUser);
         } else {
             board = playerLobby.getBoard(opponentUser, currentUser);
@@ -144,34 +145,19 @@ public class GetGameRouteTest {
 
         opponent = playerLobby.getPlayer(request.queryParams("opponentUsername"));
         // start a new game
-        startNewGame(request,
+//        startNewGame(request,
+//                currentPlayer,
+//                opponent);
+
+        when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentPlayerBoard);
+
+        GameView.buildGameViewModel(
                 currentPlayer,
-                opponent);
-
-       when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentPlayerBoard);
-
-       GameView.buildGameViewModel(
-               currentPlayer,
-               opponent,
-               currentPlayerBoard,
-               vm
-       );
+                opponent,
+                currentPlayerBoard,
+                vm
+        );
         templateEngineTester.assertViewName("game.ftl");
-
-    }
-
-    @Test
-    public void test2(){
-
-    }
-
-    @Test
-    public void test3(){
-
-    }
-
-    @Test
-    public void test4(){
 
     }
 }
