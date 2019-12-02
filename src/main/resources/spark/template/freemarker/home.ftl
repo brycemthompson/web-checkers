@@ -34,6 +34,11 @@
                     </#list>
                 </#if>
            </form>
+
+           <form action="/rules" method="GET">
+                <button name = "getRulesButton" type = "submit" value ="American Checkers Rules">American Rules
+                 of Checkers</button>
+           </form>
     </div>
 
   </div>
