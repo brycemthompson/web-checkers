@@ -1,11 +1,13 @@
 package com.webcheckers.ui;
 
+import com.google.gson.Gson;
 import com.webcheckers.Model.Board;
 import com.webcheckers.Model.Piece;
 import com.webcheckers.Model.Player;
 import spark.Request;
 import spark.Response;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -47,7 +49,6 @@ public class GameView {
 
     /**
      * Build the given view-model to reflect Game View.
-     * @param vm view-model to build
      */
     public static void buildGameViewModel(Player currentPlayer, Player opponentPlayer,
                                           Board currentPlayerBoard,
@@ -59,6 +60,48 @@ public class GameView {
         vm.put(ConstsUI.CURRENT_USER_BOARD_PARAM, currentPlayerBoard);
         vm.put("activeColor", currentPlayerBoard.getActiveColor());
         populateViewModelPlayerData(vm, currentPlayer, opponentPlayer);
+    }
+
+    /**
+     * Updates the given view-model to update that Game View to reflect that the game has been won.
+     */
+    public static void buildGameOverView(Player currentPlayer, Player opponentPlayer,
+                                         Board currentPlayerBoard,
+                                         Map<String, Object> vm){
+        // determine who won the game
+        Player winner;
+        switch (currentPlayerBoard.getWinningColor()){
+            case WHITE:
+                if (currentPlayer.getColor() == Piece.Color.WHITE){
+                    winner = currentPlayer;
+                } else {
+                    winner = opponentPlayer;
+                }
+                break;
+            case RED:
+                if (currentPlayer.getColor() == Piece.Color.RED){
+                    winner = currentPlayer;
+                } else {
+                    winner = opponentPlayer;
+                }
+                break;
+            default:
+                return;
+        }
+
+        // build the game over message
+        String gameOverMessage;
+        if (winner == currentPlayer){
+            gameOverMessage = "You have captured all of your opponent's pieces!";
+        } else {
+            gameOverMessage = winner + " has captured all of your pieces.";
+        }
+
+        // build the modeOptionsAsJSON map and put it into the view-model
+        final Map<String, Object> modeOptions = new HashMap<>(2);
+        modeOptions.put("isGameOver", true);
+        modeOptions.put("gameOverMessage", gameOverMessage);
+        vm.put("modeOptionsAsJSON", new Gson().toJson(modeOptions));
     }
 
     public static void buildOpponentInGameErrorView(Request request, Response response, Map<String, Object> vm){

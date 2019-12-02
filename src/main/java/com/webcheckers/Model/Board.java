@@ -594,6 +594,19 @@ public class Board implements Iterable<Row> {
     }
 
     /**
+     * Gets the color of the winning Player. Returns null if there is no winner yet.
+     * @return Piece.Color or null
+     */
+    public Piece.Color getWinningColor(){
+        if (this.whitePieces == 0){
+            return Piece.Color.RED;
+        } else if (this.redPieces == 0){
+            return Piece.Color.WHITE;
+        }
+        return null;
+    }
+
+    /**
      * Override iterator function. Contains other functions for the iterator
      * @return it: The new iterator
      */
