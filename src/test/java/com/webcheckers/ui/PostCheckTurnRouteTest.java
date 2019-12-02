@@ -53,11 +53,11 @@ public class PostCheckTurnRouteTest {
 
         if(currentUserBoard.getActiveColor() == currentUser.getColor())
         {
-            assertEquals(msg, Message.info("true"));
+            assertEquals(Message.info("true"), msg);
         }
         else
         {
-            assertEquals(msg, Message.info("false"));
+            assertEquals(Message.info("false"), msg);
         }
     }
 }
