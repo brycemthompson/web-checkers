@@ -77,6 +77,13 @@ public class Player
     }
 
     /**
+     * Removes this Player from the game.
+     */
+    public void removeFromGame(){
+        this.inGame = false;
+    }
+
+    /**
      * toString override that returns Player's username.
      */
     @Override
