@@ -36,11 +36,20 @@ public class PostValidateMoveRoute implements Route {
         Player currentPlayer = request.session().attribute(ConstsUI.CURRENTUSER_PARAM);
         Piece.Color currentPlayerColor = currentPlayer.getColor();
 
+        Message validationMessage = null;
+
+        // check if the move is even possibly valid with the current state of the Piece
+        Position moveStart = move.getStart();
+        Piece movedPiece = currentBoard.getSpace(moveStart.getRow(), moveStart.getCell()).getPiece();
+        int forwardDirection = movedPiece.getForwardDirection();
+        if (forwardDirection != move.getDirection() && !movedPiece.isKing()){
+            validationMessage = Message.error("Only King pieces can move backwards.");
+            return new Gson().toJson(validationMessage);
+        }
+
         // get list of valid moves
         ArrayList<MovePacket> validMoves = currentBoard.getAllValidMoves(currentPlayerColor);
-
         // find the move in the move packets
-        Message validationMessage = null;
         MovePacket movePacket = null;
         for (MovePacket mp : validMoves){
             if (mp.getMove().equals(move)){

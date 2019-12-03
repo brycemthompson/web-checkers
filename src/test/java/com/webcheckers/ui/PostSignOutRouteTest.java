@@ -1,11 +1,14 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import spark.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -15,7 +18,6 @@ import static org.mockito.Mockito.when;
  */
 @Tag("UI-Tier")
 public class PostSignOutRouteTest {
-
     /**
      * Private fields
      */
@@ -26,7 +28,6 @@ public class PostSignOutRouteTest {
     private PostSignOutRoute CuT;
     private Response response;
     private Session session;
-
     /**
      * setup function to initialize and mock the items in the session for testing
      */
@@ -42,7 +43,6 @@ public class PostSignOutRouteTest {
         CuT = new PostSignOutRoute(templateEngine, playerLobby);
         templateEngineTester = new TemplateEngineTester();
     }
-
     /**
      * test function to assert that the correct signin title is being displayed on the view model
      */
@@ -64,9 +64,6 @@ public class PostSignOutRouteTest {
 
         Message msg = ConstsUI.SIGN_IN_MSG;
         when(session.attribute(ConstsUI.MESSAGE_PARAM)).thenReturn(msg);
-
-        //session.attribute(ConstsUI.MESSAGE_PARAM, msg );
-
         CuT.handle(request, response);
         templateEngineTester.assertViewModelAttribute(ConstsUI.MESSAGE_PARAM, msg);
     }
@@ -86,11 +83,12 @@ public class PostSignOutRouteTest {
         String PLAYERSPLAYING_PARAM = "amountOfPlayersPlaying";
 
         int amountOfPlayersPlaying = playerLobby.size();
-        System.out.println(amountOfPlayersPlaying);
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
         CuT.handle(request, response);
         templateEngineTester.assertViewModelAttribute(PLAYERSPLAYING_PARAM, 1);
 
     }
+
+
 }

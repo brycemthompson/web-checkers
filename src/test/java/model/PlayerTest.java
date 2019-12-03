@@ -23,12 +23,12 @@ public class PlayerTest
     /**
      * Test that the main constructor works without failure.
      */
-//    @Test
-//    public void ctor_Arg()
-//    {
-//        final Player CuT = new Player(name);
-//        assertEquals("{Player " + name + "}", CuT.toString());
-//    }
+    @Test
+    public void ctor_Arg()
+    {
+        final Player CuT = new Player(name);
+        assertEquals("Player(" + name + ")", CuT.toString());
+    }
 
     /**
      * Test that the returned name is correct.
@@ -43,23 +43,24 @@ public class PlayerTest
     /**
      * Test that the returned opponent Player is correct.
      */
-//    @Test
-//    public void testGetOpponent()
-//    {
-//        Player CuT = opponent;
-//        assertEquals(opponent, CuT.getOpponent());
-//    }
+    @Test
+    public void testGetOpponent()
+    {
+        final Player CuT = opponent;
+        CuT.opponent = opponent;
+        assertEquals(opponent, CuT.getOpponent());
+    }
 
     /**
      * Test that the returned Player color is correct.
      */
-//    @Test
-//    public void testGetColor()
-//    {
-//        final Player CuT = new Player(name);
-//        CuT.color.RED;
-//        assertEquals(color.RED.toString(), CuT.getColor());
-//    }
+    @Test
+    public void testGetColor()
+    {
+        final Player CuT = opponent;
+        CuT.color = Piece.Color.RED;
+        assertEquals(Piece.Color.RED, CuT.getColor());
+    }
 
     /**
      * Test that the initialized player is not in a game to start

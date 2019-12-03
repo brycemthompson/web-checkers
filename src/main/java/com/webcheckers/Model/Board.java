@@ -1,9 +1,11 @@
 package com.webcheckers.Model;
 
+//import javafx.geometry.Pos;
+
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 
 /**
@@ -24,15 +26,7 @@ public class Board implements Iterable<Row> {
     // players
     private Player redPlayer;
     private Player whitePlayer;
-    private Piece.Color activeColor;
-
-    private void addRedPiece(int c, int r){
-        addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.RED), c, r);
-    }
-
-    private void addWhitePiece(int c, int r){
-        addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), c, r);
-    }
+    public Piece.Color activeColor;
 
     /**
      * Constructor. Automatically populates the board with the starting pieces.
@@ -45,7 +39,6 @@ public class Board implements Iterable<Row> {
         }
 
         // populate board with checkers in starting positions
-
 
         // white
         for (int r = 0; r < 3; r += 1){
@@ -61,46 +54,22 @@ public class Board implements Iterable<Row> {
             }
         }
 
+        /*
+        addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), 0, 3);
+        addPieceToSpace(new Piece(Piece.Type.SINGLE, Piece.Color.RED), 2, 1);
+         */
 
-        /*addWhitePiece(1, 0);
-        addWhitePiece(3, 0);
-        addWhitePiece(5, 0);
-        addWhitePiece(7, 0);
-        addWhitePiece(0, 1);
-        addWhitePiece(6, 1);
-        addWhitePiece(1, 2);
-        addWhitePiece(3, 2);
-        addWhitePiece(5, 2);
-        addWhitePiece(7, 2);
-        addWhitePiece(5, 4);
-
-        addRedPiece(0, 3);
-        addRedPiece(4, 5);
-        addRedPiece(6, 5);
-        addRedPiece(1, 6);
-        addRedPiece(3, 6);
-        addRedPiece(5, 6);
-        addRedPiece(7, 6);
-        addRedPiece(0, 7);
-        addRedPiece(2, 7);
-        addRedPiece(4, 7);
-        addRedPiece(6, 7);*/
     }
 
     /**
-     * Adds the given Piece to the given coordinates
-     * @param piece: The piece to add the the space
-     * @param col: The column of the space
-     * @param row: The row of the space
+     * Adds the given Piece to the given coordinates.
      */
     public void addPieceToSpace(Piece piece, int col, int row){
         this.rows.get(row).addPieceToSpace(piece, col);
     }
 
     /**
-     * Removes a Piece from the Space with the given coordinates
-     * @param col: Column of the space to remove a piece from
-     * @param row: Row of the space to remove a piece from
+     * Removes a Piece from the Space with the given coordinates.
      */
     public void removePieceFromSpace(int col, int row){
         getSpace(row, col).removePieceFromSpace();
@@ -189,41 +158,40 @@ public class Board implements Iterable<Row> {
      * @return array list containing all simple moves
      */
     private ArrayList<MovePacket> getAllSimpleMoves(Piece.Color player){
-        // get opponent color
-        Piece.Color opponent = Piece.getOtherColor(player);
 
-        // scan each row and collect all spaces with pieces with the matching color
-        ArrayList<Space> allStartingSpaces = new ArrayList<Space>();
+        // scan each row and collect all Pieces belonging to the given player
+        ArrayList<PieceWithPosition> allStartingPieces = new ArrayList<>();
         for (Row row : rows){
             for (Space space : row){
                 if (space.hasPiece(player)){
-                    allStartingSpaces.add(space);
+                    allStartingPieces.add(new PieceWithPosition(space.getPiece(), space.getPosition()));
                 }
             }
         }
 
-        // generate all valid Moves with the given start spaces
+        // generate all valid Moves with the given starting piece
         ArrayList<MovePacket> allValidMoves = new ArrayList<>();
-        for (Space start : allStartingSpaces){
-            // scan for valid spaces or spaces with pieces that can be jumped
-            for (int r = -1; r <= 1; r++){
-                for (int c = -1; c <= 1; c++){
+        for (PieceWithPosition pwp : allStartingPieces){
+            // scan for valid spaces
+            for (int r = -1; r <= 1; r += 2){
+                for (int c = -1; c <= 1; c += 2){
                     Space cur = null;
                     try {
-                        cur = getSpace(start.getCellIdy() + r, start.getCellIdx() + c);
+                        cur = getSpace(pwp.getRow() + r, pwp.getCell() + c);
                     } catch (IndexOutOfBoundsException e) {
                         continue;
                     }
 
                     if (cur.isValid()){
                         // space is a valid space to move to
-                        Move move = new Move(start.getPosition(), cur.getPosition());
+                        Move move = new Move(pwp.getPosition(), cur.getPosition());
                         MovePacket mp = new MovePacket(move);
                         allValidMoves.add(mp);
                     }
                 }
             }
         }
+
         return allValidMoves;
     }
 
@@ -319,6 +287,7 @@ public class Board implements Iterable<Row> {
                 }
             }
         }
+
         return allValidMoves;
     }
 
@@ -502,35 +471,6 @@ public class Board implements Iterable<Row> {
         }
     }
 
-    public boolean checkForWin(Piece.Color currentPlayerColor)
-    {
-        boolean winFlag = true;
-        Piece.Color opponentColor;
-        Piece.Color checkColor;
-        Piece currentPiece;
-        Space currentSpace;
-
-        if(currentPlayerColor == Piece.Color.RED)
-            opponentColor = Piece.Color.WHITE;
-        else
-            opponentColor = Piece.Color.RED;
-
-        for(int r = 0; r < rowsPerBoard; r++)
-        {
-            for(int c = 0; c < rowsPerBoard; c++)
-            {
-                currentSpace = rows.get(r).getSpace(c);
-                currentPiece = currentSpace.getPiece();
-                if(currentPiece != null) {
-                    checkColor = currentSpace.getPiece().getColor();
-                    if (checkColor.equals(opponentColor))
-                        winFlag = false;
-                }
-            }
-        }
-        return winFlag;
-    }
-
     /**
      * Getter for the backupMove to return the backupMove for the purpose to returning the moved piece to the original
      * location
@@ -539,6 +479,40 @@ public class Board implements Iterable<Row> {
     public MovePacket getBackupMove()
     {
         return this.backupMove;
+    }
+
+    /**
+     * Scans the Board to check if any Pieces should be updated to King. If there are any, update them.
+     */
+    public void updateKingStatus(){
+        // scan each column at each end of the board looking for Pieces
+        for (int c = 0; c < rowsPerBoard; c += 1){
+            // get top and bottom spaces for this scan
+            Space topSpace = getSpace(0, c);
+            Space bottomSpace = getSpace(rowsPerBoard - 1, c);
+
+            /*
+            The top space should be on white's side, so check if it has a red piece on it.
+            Similarly, the bottom space should be on red's side.
+            If there is an opposing piece on a given side and it has not been King'd, King that sucker.
+             */
+
+            Piece topPiece = topSpace.getPiece();
+            Piece bottomPiece = bottomSpace.getPiece();
+
+            if (topPiece != null){
+                if (topPiece.getColor() == Piece.Color.RED && topPiece.getType() != Piece.Type.KING){
+                    topPiece.kingMe();
+                }
+            }
+
+            if (bottomPiece != null){
+                if (bottomPiece.getColor() == Piece.Color.WHITE && bottomPiece.getType() != Piece.Type.KING){
+                    bottomPiece.kingMe();
+                }
+            }
+
+        }
     }
 
     /**
@@ -573,7 +547,6 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     * Gets the red player
      * @return redPlayer
      */
     public Player getRedPlayer(){
@@ -581,7 +554,6 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     * Gets the white player
      * @return whitePlayer
      */
     public Player getWhitePlayer(){
@@ -589,7 +561,6 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     * Gets the active color
      * @return activeColor
      */
     public Piece.Color getActiveColor(){

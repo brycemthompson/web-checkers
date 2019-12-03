@@ -4,46 +4,94 @@ import com.webcheckers.Model.*;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Tag("Model-Tier")
+/**
+ * Unit Test for the MovePacket Class
+ */
+@Tag("Model")
 public class MovePacketTest {
 
+    /**
+     * Test function that tests whether the movePacket getMove function works
+     */
     @Test
-    public void testGetMove()
-    {
-        Move move = new Move(new Position(0,0), new Position(0,1));
-        MovePacket.Type type = MovePacket.Type.SIMPLE;
-        Position pos = new Position(2, 3);
-        Piece piece = new Piece(Piece.Type.SINGLE, Piece.Color.WHITE);
-        PieceWithPosition p = new PieceWithPosition(piece, pos);
-        MovePacket mp = new MovePacket(move,p);
-        assertEquals(move, mp.getMove());
-    }
-
-    @Test
-    public void testGetType()
-    {
-        Move move = new Move(new Position(0,0), new Position(0,1));
-        PieceWithPosition pieceWithPosition = new PieceWithPosition(
-                                                new Piece(Piece.Type.SINGLE, Piece.Color.RED),
-                                                    new Position(3, 3) );
-
-        MovePacket mp = new MovePacket(move, pieceWithPosition);
-        assertEquals(MovePacket.Type.SIMPLE_JUMP, mp.getType());
-    }
-
-    @Test
-    public void testGetJumpedPiece()
-    {
-
-        Position start  = new Position(0,0);
-        Position end =  new Position(0,1);
+    public void testGetMove(){
+        int row = 1, col = 1;
+        Position start = new Position(row, col);
+        Position end = new Position(row, col);
         Move move = new Move(start, end);
-        Piece jumpedPiece = new Piece(Piece.Type.SINGLE, Piece.Color.RED);
-        Position jumpedPiecePosition = start;
-        PieceWithPosition pieceWithPosition = new PieceWithPosition(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), jumpedPiecePosition);
-        MovePacket mp = new MovePacket(move, pieceWithPosition);
-        assertEquals(pieceWithPosition, mp.getJumpedPiece());
+        PieceWithPosition p = new PieceWithPosition(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), new Position(row, col));
+        MovePacket movePacket = new MovePacket(move, p);
+
+        assertTrue(movePacket instanceof MovePacket);
+
+        assertEquals(move, movePacket.getMove());
+        assertEquals(1, move.getStart().getCell());
+        assertEquals(1, move.getEnd().getRow());
+    }
+
+    /**
+     * Test function that tests whether the movePacket getType function works
+     */
+    @Test
+    public void testGetType(){
+        int row = 1, col = 1;
+        Position start = new Position(row, col);
+        Position end = new Position(row, col);
+        Move move = new Move(start, end);
+        PieceWithPosition p = new PieceWithPosition(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), new Position(row, col));
+        MovePacket movePacket = new MovePacket(move, p);
+
+        assertEquals(MovePacket.Type.SIMPLE_JUMP, movePacket.getType());
+    }
+
+    /**
+     * Test function that tests whether the movePacket getJumped function works
+     */
+    @Test
+    public void testGetJumped(){
+        int row = 1, col = 1;
+        Position start = new Position(row, col);
+        Position end = new Position(row, col);
+        Move move = new Move(start, end);
+        Piece piece = new Piece(Piece.Type.SINGLE, Piece.Color.RED);
+        PieceWithPosition p = new PieceWithPosition(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), new Position(row, col));
+
+        MovePacket movePacket = new MovePacket(move, p);
+
+        assertEquals(MovePacket.Type.SIMPLE_JUMP, movePacket.getType());
+    }
+    /**
+     * Test function that tests whether the movePacket getJumpedPiece function works
+     */
+    @Test
+    public void getJumpedPieceTest(){
+        int row = 1, col = 1;
+        Position start = new Position(row, col);
+        Position end = new Position(row, col);
+        Move move = new Move(start, end);
+        PieceWithPosition p = new PieceWithPosition(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), new Position(row, col));
+
+        MovePacket movePacket = new MovePacket(move, p);
+
+        assertEquals(p, movePacket.getJumpedPiece());
+    }
+
+    /**
+     * Test function that tests whether the getJumpedPiecePosition works
+     */
+    @Test
+    public void getJumpedPiecePosition(){
+        int row = 1, col = 4;
+        Position start = new Position(row, col);
+        Position end = new Position(row, col);
+        Move move = new Move(start, end);
+        PieceWithPosition p = new PieceWithPosition(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), new Position(row, col));
+
+        MovePacket movePacket = new MovePacket(move, p);
+
+        assertEquals(start, movePacket.getMove().getStart());
     }
 }

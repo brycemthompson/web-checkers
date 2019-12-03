@@ -8,20 +8,14 @@ package com.webcheckers.Model;
 public class Player
 {
 
-    /**
-     * Player Fields
-     */
+    // Player Fields
     private String name;
     private boolean inGame;
 
-    /**
-     * Player opponent object
-     */
-    private Player opponent;
+    // the current opponent for this Player
+    public Player opponent;
 
-    /**
-     * Piece Color
-     */
+    // the current color for this Player
     public Piece.Color color;
 
     /**

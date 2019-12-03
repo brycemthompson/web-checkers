@@ -1,7 +1,6 @@
 package model;
 
-import com.webcheckers.Model.Piece;
-import com.webcheckers.Model.Row;
+import com.webcheckers.Model.*;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -9,13 +8,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * Unit Test for the Board Class
  */
 @Tag("Model-Tier")
-public class BoardTest implements Iterable<Row> {
-
+public class BoardTest {
+    // all rows in the board
     /**
      * Fields
      */
@@ -50,7 +48,6 @@ public class BoardTest implements Iterable<Row> {
      * Override function to iterate through the Spaces on the Board
      * @return it: the iterator
      */
-    @Override
     public Iterator<Row> iterator() {
         Iterator<Row> it = new Iterator<Row>() {
             private int currentIndex = 0;
@@ -119,6 +116,36 @@ public class BoardTest implements Iterable<Row> {
         board.addPieceToSpace(pieceTest4, 1,1);
 
     }
+    /**
+     * Test function to test the getSpace function
+     */
+    @Test
+    public void get_space_test(){
+        Board board = new Board();
+        int row = 1;
+        int cell = 2;
+
+        //Creat two pieces to test if a space is occupied.
+        Piece piece = new Piece(Piece.Type.SINGLE, Piece.Color.RED);
+        Space space = new Space(cell, row, piece);
+        assertEquals(space.toString(), board.getSpace(row, cell).toString());
+    }
+    /**
+     * Test function to check whether the active color is set or not
+     */
+    @Test
+    public void active_color_test(){
+        Board board = new Board();
+        int rows = 1;
+        int cell = 2;
+        Piece piece = new Piece(Piece.Type.SINGLE, Piece.Color.RED);
+        Space space = new Space(cell, rows, piece);
+        board.activeColor = Piece.Color.RED;
+        assertEquals(Piece.Color.RED, board.getActiveColor());
+    }
+
+
+
 }
 
 

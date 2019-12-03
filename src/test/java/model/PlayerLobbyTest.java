@@ -41,30 +41,6 @@ public class PlayerLobbyTest {
     }
 
     /**
-     * Gets a Player by their username.
-     * @param playerName the username of the Player to get
-     * @return the Player with the matching username
-     */
-//    @Test
-//    public void getPlayer_test(){
-//        Player play  = new Player("Kyle");
-//        String playerName = play.getName();
-//        playerLobby.addPlayer(play);
-//
-//        for (Player player : players){
-//
-//            String pName = player.getName();
-//            assertNotNull(player);
-//            assertTrue(pName instanceof String);
-//
-//            if (player.getName().equals(playerName)){
-//                assertEquals(pName, playerName);
-//            }
-//
-//        }
-//    }
-
-    /**
      * Test function that asserts that the playerLobby holds the correct number of Players
      */
     @Test
@@ -159,9 +135,5 @@ public class PlayerLobbyTest {
         // authentication successful
         assertEquals("SUCCESS", Authentication.SUCCESS.name());
     }
-
-
-
-
 
 }

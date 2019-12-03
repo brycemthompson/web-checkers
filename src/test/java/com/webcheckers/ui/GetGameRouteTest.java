@@ -106,14 +106,14 @@ public class GetGameRouteTest {
 
         opponent = playerLobby.getPlayer(request.queryParams("opponentUsername"));
 
-       when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentPlayerBoard);
+        when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentPlayerBoard);
 
-       GameView.buildGameViewModel(
-               currentPlayer,
-               opponent,
-               currentPlayerBoard,
-               vm
-       );
+        GameView.buildGameViewModel(
+                currentPlayer,
+                opponent,
+                currentPlayerBoard,
+                vm
+        );
         templateEngineTester.assertViewName("game.ftl");
 
     }

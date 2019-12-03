@@ -73,8 +73,8 @@ public class GameViewTest {
      * @param vm: the view model to build
      */
     public void buildGameViewModel(Player currentPlayer, Player opponentPlayer,
-                                          Board currentPlayerBoard,
-                                          Map<String, Object> vm){
+                                   Board currentPlayerBoard,
+                                   Map<String, Object> vm){
         vm.put(ConstsUI.TITLE_PARAM, ConstsUI.GAME_WELCOME_MSG);
         vm.put(ConstsUI.CURRENT_USER_PARAM, currentPlayer);
         vm.put(ConstsUI.VIEW_MODE_PARAM, "PLAY");
