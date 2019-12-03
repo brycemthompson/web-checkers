@@ -35,7 +35,7 @@
                 </#if>
            </form>
 
-           <form action="/rules" method="GET">
+           <form action="http://www.se.rit.edu/~swen-261/projects/WebCheckers/American%20Rules.html" method="GET">
                 <button name = "getRulesButton" type = "submit" value ="American Checkers Rules">American Rules
                  of Checkers</button>
            </form>
