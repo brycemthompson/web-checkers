@@ -35,18 +35,6 @@ public class PostSubmitTurnRoute implements Route {
         final String opponentUsername = request.queryParams("opponentUsername");
         Piece.Color currentUserColor = currentUser.getColor();
 
-        boolean winCondition = currentPlayerBoard.checkForWin(currentUserColor);
-        if(winCondition)
-        {
-            System.out.println("here");
-            Message currentUserWonMessage = Message.info("You won! You've captured all of " + opponentUsername +
-                    "'s pieces.");
-            // send a message to the current player that they won
-            return new Gson().toJson(currentUserWonMessage);
-            // send a message to the opponent saying they lost
-            // give both players a view of a exit button to bring them to the home screen
-        }
-
         currentPlayerBoard.flipActiveColor();
         currentPlayerBoard.updateKingStatus();
         return new Gson().toJson(Message.info("Turn submitted."));
