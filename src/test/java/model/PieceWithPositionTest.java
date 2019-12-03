@@ -79,5 +79,4 @@ public class PieceWithPositionTest {
         assertTrue(piece.equals(newPiece));
     }
 
-
 }
