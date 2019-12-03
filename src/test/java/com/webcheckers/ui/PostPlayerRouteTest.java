@@ -16,6 +16,9 @@ import static org.mockito.Mockito.when;
 
 @Tag("UI-Tier")
 public class PostPlayerRouteTest {
+    /**
+     * The fields needed
+     */
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -24,6 +27,9 @@ public class PostPlayerRouteTest {
     private Response response;
     private Session session;
 
+    /**
+     * the setup function to initialize the session attributes
+     */
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
@@ -36,7 +42,9 @@ public class PostPlayerRouteTest {
         CuT = new PostPlayerRoute(templateEngine, playerLobby);
         templateEngineTester = new TemplateEngineTester();
     }
-
+    /**
+     * the function which will test if players are in a game
+     */
     @Test
     public void test_players_in_game()
     {
@@ -61,6 +69,9 @@ public class PostPlayerRouteTest {
         assert(opponent.isInGame());
     }
 
+    /**
+     * the test function used to test if the view model has all the proper fields in it
+     */
     @Test
     public void test_view_model_messages()
     {
@@ -72,7 +83,6 @@ public class PostPlayerRouteTest {
         when(session.attribute(ConstsUI.CURRENT_USER_PARAM)).thenReturn(currentUser);
 
         Player opponent = null;
-
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
         CuT.handle(request, response);
 
@@ -81,10 +91,11 @@ public class PostPlayerRouteTest {
         opponent = playerLobby.getPlayer(request.queryParams("opponentUsername"));
         when(session.attribute(ConstsUI.OPPONENT_PARAM)).thenReturn(opponent);
 
-        Object o  = CuT.handle(request, response);
+        CuT.handle(request, response);
+
         templateEngineTester.assertViewModelAttribute(ConstsUI.CURRENT_USER_PARAM, currentUser);
         templateEngineTester.assertViewModelAttribute(ConstsUI.VIEW_MODE_PARAM, "PLAY");
-        templateEngineTester.assertViewModelAttribute(ConstsUI.MESSAGE_PARAM, ConstsUI.WELCOME_MSG);
+//        templateEngineTester.assertViewModelAttribute("message", msg);
         templateEngineTester.assertViewModelAttribute("redPlayer", currentUser);
         templateEngineTester.assertViewModelAttribute("whitePlayer", opponent);
         templateEngineTester.assertViewModelAttribute("activeColor", "red");

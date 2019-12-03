@@ -16,8 +16,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Unit Test for PostValidateMoveRoute
+ */
 @Tag("UI-Tier")
 public class PostValidateMoveRouteTest {
+
+    /**
+     * Private fields
+     */
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -26,6 +33,9 @@ public class PostValidateMoveRouteTest {
     private Response response;
     private Session session;
 
+    /**
+     * setup function to initialize and mock the session items for testing
+     */
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
@@ -39,6 +49,10 @@ public class PostValidateMoveRouteTest {
         templateEngineTester = new TemplateEngineTester();
     }
 
+    /**
+     * test function to test the validity of the proposed moves. This happens through checking for a null move, and
+     * by checking that the populated proposed moves are correctly placed in the session.
+     */
     @Test
     public void test_valid_moves()
     {

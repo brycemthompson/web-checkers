@@ -27,7 +27,7 @@ public class PlayerTest
     public void ctor_Arg()
     {
         final Player CuT = new Player(name);
-        assertEquals("{Player " + name + "}", CuT.toString());
+        assertEquals("Player(" + name + ")", CuT.toString());
     }
 
     /**
@@ -47,6 +47,7 @@ public class PlayerTest
     public void testGetOpponent()
     {
         final Player CuT = opponent;
+        CuT.opponent = opponent;
         assertEquals(opponent, CuT.getOpponent());
     }
 
@@ -56,8 +57,9 @@ public class PlayerTest
     @Test
     public void testGetColor()
     {
-        final Player CuT = new Player(name);
-        assertEquals(color, CuT.getColor());
+        final Player CuT = opponent;
+        CuT.color = Piece.Color.RED;
+        assertEquals(Piece.Color.RED, CuT.getColor());
     }
 
     /**

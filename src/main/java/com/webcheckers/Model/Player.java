@@ -13,7 +13,7 @@ public class Player
     private boolean inGame;
 
     // the current opponent for this Player
-    private Player opponent;
+    public Player opponent;
 
     // the current color for this Player
     public Piece.Color color;

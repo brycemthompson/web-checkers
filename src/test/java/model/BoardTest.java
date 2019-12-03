@@ -1,7 +1,6 @@
 package model;
 
-import com.webcheckers.Model.Piece;
-import com.webcheckers.Model.Row;
+import com.webcheckers.Model.*;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -9,49 +8,71 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
+/**
+ * Unit Test for the Board Class
+ */
 @Tag("Model-Tier")
-public class BoardTest implements Iterable<Row> {
+public class BoardTest {
+    // all rows in the board
+    /**
+     * Fields
+     */
+    ArrayList<Row> rows;
+    public static int rowsPerBoard = 8;
 
-        ArrayList<Row> rows;
+    /**
+     * Board Constructor
+     */
+    public BoardTest(){
+        // populate board with rows
+        rows = new ArrayList<Row>();
+        for (int i = 0; i < rowsPerBoard; i++){
+            rows.add(new Row(i));
+        }
+    }
 
-        public static int rowsPerBoard = 8;
+    /**
+     * Helper function to add a Piece to a Space on the Board
+     * @param piece: the Piece to add to the space
+     * @param cellIdx: the cell x-coordinate location of the Space
+     * @param cellIdy: the cell y-coordinate location of the Space
+     * @return true: that the Piece has been successfully added to the Space
+     * @throws IndexOutOfBoundsException
+     */
+    public boolean addPieceToSpace(Piece piece, int cellIdx, int cellIdy) throws IndexOutOfBoundsException{
+        this.rows.get(cellIdy).addPieceToSpace(piece, cellIdx);
+        return true;
+    }
 
-        public BoardTest(){
-            // populate board with rows
-            rows = new ArrayList<Row>();
-            for (int i = 0; i < rowsPerBoard; i++){
-                rows.add(new Row(i));
+    /**
+     * Override function to iterate through the Spaces on the Board
+     * @return it: the iterator
+     */
+    public Iterator<Row> iterator() {
+        Iterator<Row> it = new Iterator<Row>() {
+            private int currentIndex = 0;
+
+            @Override
+            public boolean hasNext(){
+                return (currentIndex < rows.size() && rows.get(currentIndex) != null);
             }
-        }
 
-        public boolean addPieceToSpace(Piece piece, int cellIdx, int cellIdy) throws IndexOutOfBoundsException{
-            this.rows.get(cellIdy).addPieceToSpace(piece, cellIdx);
-            return true;
-        }
+            @Override
+            public Row next(){
+                return rows.get(currentIndex++);
+            }
 
-        @Override
-        public Iterator<Row> iterator() {
-            Iterator<Row> it = new Iterator<Row>() {
-                private int currentIndex = 0;
+            @Override
+            public void remove(){
+                throw new UnsupportedOperationException();
+            }
+        };
+        return it;
+    }
 
-                @Override
-                public boolean hasNext(){
-                    return (currentIndex < rows.size() && rows.get(currentIndex) != null);
-                }
-
-                @Override
-                public Row next(){
-                    return rows.get(currentIndex++);
-                }
-
-                @Override
-                public void remove(){
-                    throw new UnsupportedOperationException();
-                }
-            };
-            return it;
-        }
-
+    /**
+     * Assert that the Piece in a Space on the Board is legal
+     */
     @Test
     public void testBoard_case_legal(){
         //Test for a piece in boundary of board, should be legal
@@ -61,7 +82,10 @@ public class BoardTest implements Iterable<Row> {
         assertTrue(true);
     }
 
-    //This Test case should fail, the code is supposed to throw an error. LOOK INTO THIS MORE
+    /**
+     * Assert that an illegally placed Piece on the Board will be false
+     * This Test case should fail, the code is supposed to throw an error. LOOK INTO THIS MORE
+     */
     @Test
     public void testBoard_case_illegal(){
         int celldx = 1;
@@ -75,12 +99,15 @@ public class BoardTest implements Iterable<Row> {
         });
     }
 
+    /**
+     * Test function to check whether the Space we are trying to add a Piece to is already occupied
+     */
     @Test
     public void testBoard_case_occupied(){
         //Create a board that will hold pieces
         BoardTest board = new BoardTest();
 
-        //Creat two pieces to test if a space is occupied.
+        //Create two pieces to test if a space is occupied.
         Piece pieceTest3 = new Piece(Piece.Type.SINGLE, Piece.Color.RED);
         Piece pieceTest4 = new Piece(Piece.Type.SINGLE, Piece.Color.RED);
 
@@ -89,7 +116,33 @@ public class BoardTest implements Iterable<Row> {
         board.addPieceToSpace(pieceTest4, 1,1);
 
     }
+    /**
+     * Test function to test the getSpace function
+     */
+    @Test
+    public void get_space_test(){
+        Board board = new Board();
+        int row = 1;
+        int cell = 2;
 
+        //Creat two pieces to test if a space is occupied.
+        Piece piece = new Piece(Piece.Type.SINGLE, Piece.Color.RED);
+        Space space = new Space(cell, row, piece);
+        assertEquals(space.toString(), board.getSpace(row, cell).toString());
+    }
+    /**
+     * Test function to check whether the active color is set or not
+     */
+    @Test
+    public void active_color_test(){
+        Board board = new Board();
+        int rows = 1;
+        int cell = 2;
+        Piece piece = new Piece(Piece.Type.SINGLE, Piece.Color.RED);
+        Space space = new Space(cell, rows, piece);
+        board.activeColor = Piece.Color.RED;
+        assertEquals(Piece.Color.RED, board.getActiveColor());
+    }
 
 
 

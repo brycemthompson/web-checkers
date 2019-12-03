@@ -17,7 +17,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @Tag("UI-Tier")
+/**
+ * Unit Test for the GetGameRoute class
+ */
 public class GetGameRouteTest {
+
+    /**
+     * Private fields
+     */
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -26,10 +33,9 @@ public class GetGameRouteTest {
     private Response response;
     private Session session;
 
-    public enum GameState {
-        CHALLENGING, CHALLENGED, INGAME;
-    }
-
+    /**
+     * unit test setup function to initialize all of the items of the class
+     */
     @BeforeEach
     public void setup() {
 
@@ -44,7 +50,10 @@ public class GetGameRouteTest {
         templateEngineTester = new TemplateEngineTester();
     }
 
-
+    /**
+     * test function that currently checks for the session attributes and checks for the correct
+     * view name
+     */
     @Test
     public void challengingGameState_test() {
 
@@ -74,6 +83,9 @@ public class GetGameRouteTest {
 
     }
 
+    /**
+     * test function that currently creates a board and a new game, testing the session attributes and game view name
+     */
     @Test
     public void challengingGameState_test_2() {
 
@@ -86,18 +98,13 @@ public class GetGameRouteTest {
 
         when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentPlayerBoard);
 
-//        Player opponent = null;
+        Player opponent = null;
 
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
         CuT.handle(request, response);
 
-        Player opponent = playerLobby.getPlayer(request.queryParams("opponentUsername"));
-        // start a new game
-
-//        CuT.startNewGame(request,
-//                currentPlayer,
-//                opponent);
+        opponent = playerLobby.getPlayer(request.queryParams("opponentUsername"));
 
         when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentPlayerBoard);
 

@@ -18,9 +18,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Unit Test for the PostGameRoute Class
+ */
 @Tag("UI-Tier")
 public class PostGameRouteTest {
 
+    /**
+     * Private fields
+     */
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -29,6 +35,9 @@ public class PostGameRouteTest {
     private Response response;
     private Session session;
 
+    /**
+     * setup function to initialize the items for the session
+     */
     @BeforeEach
     public void setup() {
 
@@ -43,6 +52,9 @@ public class PostGameRouteTest {
         templateEngineTester = new TemplateEngineTester();
     }
 
+    /**
+     * test to check whether the two players in the game are the same Player object
+     */
     @Test
     public void test_same_person(){
         final Map<String, Object> vm = new HashMap<>();
@@ -70,7 +82,4 @@ public class PostGameRouteTest {
 
         templateEngineTester.assertViewName("home.ftl");
     }
-
-
 }
-

@@ -14,9 +14,17 @@ import spark.TemplateEngine;
 
 public class PostBackupMoveRoute implements Route {
 
+    /**
+     * Private Fields
+     */
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
 
+    /**
+     * PostBackupMoveRoute Constructor
+     * @param templateEngine: the TemplateEngine
+     * @param playerLobby: The "global" playerLobby
+     */
     public PostBackupMoveRoute(TemplateEngine templateEngine, PlayerLobby playerLobby)
     {
         this.templateEngine = templateEngine;

@@ -46,6 +46,9 @@ public final class ConstsUI {
     public static final Message RESIGNATION_SUCCESSFUL_MSG = Message.info("You have resigned from the game. Coward.");
     public static final Message BACKUPMOVE_FAIL_ERROR_MSG = Message.error("The backup move failed.");
     public static final Message JUMP_REQUIRED_ERROR_MSG = Message.error("Invalid Turn. Jump move available.");
+    public static final Message SIGNIN_FAILED_INVALID_MSG = Message.info("Username must contain only alphanumeric character.");
+    public static final Message SIGNIN_FAILED_NAME_TAKEN_MSG = Message.info("Username taken. Please enter a unique username.");
+    public static final Message SIGNIN_FAILED_UNKNOWN_MSG = Message.info("Unknown error. Please try another username.");
 
     /**
      * VIEWS

@@ -205,7 +205,6 @@ public class GetGameRoute implements Route {
                         currentPlayerBoard,
                         vm
                 );
-
                 return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
             case INGAME:
                 // find the Player who we are in a game with
@@ -224,8 +223,8 @@ public class GetGameRoute implements Route {
                         currentPlayerBoard,
                         vm
                 );
-
                 return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
+
             case GAMEOVER:
                 // find the Player who we are in a game with
                 opponent = currentPlayer.getOpponent();
@@ -280,9 +279,6 @@ public class GetGameRoute implements Route {
 
                 return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
         }
-
         return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
     }
-
-
 }

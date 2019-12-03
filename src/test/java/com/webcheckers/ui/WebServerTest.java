@@ -11,10 +11,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
+/**
+    This is the class that will test the WebServer class
+ */
 @Tag("UI-Tier")
 public class WebServerTest {
 
+    /**
+     * These are the fields
+     */
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
     private WebServer CuT;
@@ -23,6 +28,9 @@ public class WebServerTest {
     private Gson gson = new Gson();
     private Request request;
 
+    /**
+     * The setup for the test function
+     */
     @BeforeEach
     public void setup(){
 
@@ -36,6 +44,9 @@ public class WebServerTest {
         CuT = new WebServer(templateEngine,gson, playerLobby);
     }
 
+    /**
+     * This test will simply test if you can initialize an instance of the WebServer and not throw any errors.
+     */
     @Test
     public void intializeTest(){
 

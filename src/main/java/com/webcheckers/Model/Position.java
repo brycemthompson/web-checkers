@@ -7,10 +7,11 @@ package com.webcheckers.Model;
 
 public class Position {
 
-    // private fields
+    /**
+     * Private fields
+     */
     private int row;
     private int cell;
-
 
     /**
      * Constructor.
@@ -24,6 +25,7 @@ public class Position {
 
     /**
      * Getter for row.
+     * return: the row
      */
     public int getRow(){
         return this.row;
@@ -31,12 +33,17 @@ public class Position {
 
     /**
      * Getter for cell.
+     * return: the cell
      */
     public int getCell(){
         return this.cell;
     }
 
-    // Overriding equals() to compare if two Positions are equal by checking their coordinates.
+    /**
+     * Overriding equals() to compare if two Positions are equal by checking their coordinates.
+     * @param obj: The object to compare to the Position
+     * @return: boolean value based on the truth of the comparison
+     */
     @Override
     public boolean equals(Object obj) {
         // this Position equals itself
@@ -54,6 +61,10 @@ public class Position {
         return (this.cell == p.cell && this.row == p.row);
     }
 
+    /**
+     * Overriding toString() to build a Position String using the row and the cell
+     * @return: String representing the Position
+     */
     @Override
     public String toString() {
         return "(cell: " + cell + ", row: " + row + ")";
