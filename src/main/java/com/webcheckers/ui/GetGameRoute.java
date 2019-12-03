@@ -21,14 +21,10 @@ import java.util.logging.Logger;
 public class GetGameRoute implements Route {
 
     private enum GameState {
-        CHALLENGING, CHALLENGED, INGAME;
+        CHALLENGING, CHALLENGED, INGAME, GAMEOVER, WERESIGNED, OPPONENTRESIGNED;
     }
 
     private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
-
-    // Constants for the ViewModel
-    public static final String VIEW_NAME = "game.ftl";
-    public static final String CURRENTPLAYERBOARD_PARAM = "currentPlayerBoard";
 
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
@@ -54,8 +50,14 @@ public class GetGameRoute implements Route {
     private GameState determineGameState(Player currentPlayer, Board currentPlayerBoard){
         if ((currentPlayerBoard == null) && !currentPlayer.isInGame()){
             return GameState.CHALLENGING;
-        } else if ((currentPlayerBoard == null)){
+        } else if ((currentPlayerBoard == null)) {
             return GameState.CHALLENGED;
+        } else if (currentPlayerBoard.getWinningColor() != null){
+            return GameState.GAMEOVER;
+        } else if (!currentPlayer.isInGame() && currentPlayer.getOpponent() != null) {
+            return GameState.WERESIGNED;
+        } else if (currentPlayer.isInGame() && !currentPlayer.getOpponent().isInGame()) {
+            return GameState.OPPONENTRESIGNED;
         } else {
             return GameState.INGAME;
         }
@@ -68,7 +70,7 @@ public class GetGameRoute implements Route {
      * @param currentUser the current user for whom the game is being built
      * @param opponentUser the opponent to the current user
      */
-    public void startNewGame(Request request, Player currentUser, Player opponentUser){
+    private void startNewGame(Request request, Player currentUser, Player opponentUser){
         // set up players
         opponentUser.putInGame(currentUser, Piece.Color.WHITE);
         currentUser.putInGame(opponentUser, Piece.Color.RED);
@@ -127,7 +129,6 @@ public class GetGameRoute implements Route {
         request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM, board);
     }
 
-
     /**
      * Handles all the happenings of GetGameRoute
      * @param request
@@ -147,6 +148,8 @@ public class GetGameRoute implements Route {
         Board currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
         // declare opponent user
         Player opponent = null;
+
+        System.out.println(currentPlayer + ": AAAAAAAAAAAA");
 
         /*
         There are three cases to consider.
@@ -220,6 +223,60 @@ public class GetGameRoute implements Route {
                         currentPlayerBoard,
                         vm
                 );
+                return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
+
+            case GAMEOVER:
+                // find the Player who we are in a game with
+                opponent = currentPlayer.getOpponent();
+                // refresh the game
+                refreshGame(request,
+                        currentPlayer,
+                        opponent);
+                // populate our view model
+                currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+                GameView.buildGameViewModel(
+                        currentPlayer,
+                        opponent,
+                        currentPlayerBoard,
+                        vm
+                );
+                GameView.buildGameOverView(
+                        currentPlayer,
+                        opponent,
+                        currentPlayerBoard,
+                        vm
+                );
+
+                // update Players' in-game statuses (stati?)
+                currentPlayer.removeFromGame();
+                opponent.removeFromGame();
+
+                return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
+            case WERESIGNED:
+                // redirect to home page
+                GameView.buildWeResignedView(request, vm);
+                response.redirect(ConstsUI.HOME_URL);
+                return templateEngine.render(new ModelAndView(vm, ConstsUI.HOME_VIEW));
+            case OPPONENTRESIGNED:
+                // find the Player who resigned
+                opponent = currentPlayer.getOpponent();
+                // refresh the game
+                refreshGame(request,
+                        currentPlayer,
+                        opponent);
+                // populate our view model
+                currentPlayerBoard = request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM);
+                GameView.buildGameViewModel(
+                        currentPlayer,
+                        opponent,
+                        currentPlayerBoard,
+                        vm
+                );
+                GameView.buildOpponentResignedView(opponent, vm);
+
+                // update our status
+                currentPlayer.removeFromGame();
+
                 return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
         }
         return templateEngine.render(new ModelAndView(vm, ConstsUI.GAME_VIEW));
