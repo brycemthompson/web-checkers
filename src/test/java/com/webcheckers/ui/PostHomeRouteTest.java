@@ -17,9 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
+/**
+ * This is the test class that will test the PostHomeRoute class
+ */
 @Tag("UI-Tier")
 public class PostHomeRouteTest {
+
 
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;

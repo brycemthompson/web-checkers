@@ -16,6 +16,9 @@ import static org.mockito.Mockito.when;
 
 @Tag("UI-Tier")
 public class PostPlayerRouteTest {
+    /**
+     * The fields needed
+     */
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -24,6 +27,9 @@ public class PostPlayerRouteTest {
     private Response response;
     private Session session;
 
+    /**
+     * the setup function to initialize the session attributes
+     */
     @BeforeEach
     public void setup() {
         request = mock(Request.class);
@@ -36,7 +42,9 @@ public class PostPlayerRouteTest {
         CuT = new PostPlayerRoute(templateEngine, playerLobby);
         templateEngineTester = new TemplateEngineTester();
     }
-
+    /**
+     * the function which will test if players are in a game
+     */
     @Test
     public void test_players_in_game()
     {
@@ -61,6 +69,9 @@ public class PostPlayerRouteTest {
         assert(opponent.isInGame());
     }
 
+    /**
+     * the test function used to test if the view model has all the proper fields in it
+     */
     @Test
     public void test_view_model_messages()
     {
@@ -81,9 +92,6 @@ public class PostPlayerRouteTest {
         when(session.attribute(ConstsUI.OPPONENT_PARAM)).thenReturn(opponent);
 
         CuT.handle(request, response);
-////        Message msg = new Message("Welcome to the world of online Checkers.", Message.Type.INFO);
-//        Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
-//        String msg = request.queryParams(WELCOME_MSG.toString());
 
         templateEngineTester.assertViewModelAttribute(ConstsUI.CURRENT_USER_PARAM, currentUser);
         templateEngineTester.assertViewModelAttribute(ConstsUI.VIEW_MODE_PARAM, "PLAY");

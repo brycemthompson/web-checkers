@@ -15,7 +15,9 @@ import spark.TemplateEngine;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
+/**
+ * Unit Test for the PostCheckTurnRoute Class
+ */
 @Tag("UI-Tier")
 public class PostCheckTurnRouteTest {
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
@@ -26,7 +28,9 @@ public class PostCheckTurnRouteTest {
     private Response response;
     private Session session;
 
-
+    /**
+     * setup function to initialize the items in teh session
+     */
     @BeforeEach
     public void setup() {
 
@@ -40,7 +44,9 @@ public class PostCheckTurnRouteTest {
         CuT = new PostCheckTurnRoute(templateEngine, playerLobby);
         templateEngineTester = new TemplateEngineTester();
     }
-
+    /**
+     * test function that tests for a message containing the color of the player whose turn it is
+     */
     @Test
     public void test_player_turn_active_color_equality()
     {
