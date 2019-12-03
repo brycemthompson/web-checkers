@@ -26,7 +26,7 @@ public class Board implements Iterable<Row> {
     // players
     private Player redPlayer;
     private Player whitePlayer;
-    private Piece.Color activeColor;
+    public Piece.Color activeColor;
 
     /**
      * Constructor. Automatically populates the board with the starting pieces.
