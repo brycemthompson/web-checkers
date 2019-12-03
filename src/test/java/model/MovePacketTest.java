@@ -6,11 +6,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-//
+
+/**
+ * Unit Test for the MovePacket Class
+ */
 @Tag("Model")
 public class MovePacketTest {
 
-
+    /**
+     * Test function that tests whether the movePacket getMove function works
+     */
     @Test
     public void testGetMove(){
         int row = 1, col = 1;
@@ -27,6 +32,9 @@ public class MovePacketTest {
         assertEquals(1, move.getEnd().getRow());
     }
 
+    /**
+     * Test function that tests whether the movePacket getType function works
+     */
     @Test
     public void testGetType(){
         int row = 1, col = 1;
@@ -39,6 +47,9 @@ public class MovePacketTest {
         assertEquals(MovePacket.Type.SIMPLE_JUMP, movePacket.getType());
     }
 
+    /**
+     * Test function that tests whether the movePacket getJumped function works
+     */
     @Test
     public void testGetJumped(){
         int row = 1, col = 1;
@@ -52,7 +63,9 @@ public class MovePacketTest {
 
         assertEquals(MovePacket.Type.SIMPLE_JUMP, movePacket.getType());
     }
-
+    /**
+     * Test function that tests whether the movePacket getJumpedPiece function works
+     */
     @Test
     public void getJumpedPieceTest(){
         int row = 1, col = 1;
@@ -66,6 +79,9 @@ public class MovePacketTest {
         assertEquals(p, movePacket.getJumpedPiece());
     }
 
+    /**
+     * Test function that tests whether the getJumpedPiecePosition works
+     */
     @Test
     public void getJumpedPiecePosition(){
         int row = 1, col = 4;

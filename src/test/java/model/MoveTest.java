@@ -30,8 +30,7 @@ public class MoveTest {
     }
 
     /**
-     * Helper function to check if the given Move is invalid (too many spaces away)
-     * @return result: whether the Move is valid or not
+     * Test function for if a move is too large
      */
     @Test
     public void test_is_move_too_large_not_valid(){
@@ -45,7 +44,9 @@ public class MoveTest {
 
 
 
-
+    /**
+     * Test function for a validity message, display text if move is too large
+     */
     @Test
     public void validity_message_test_too_large(){
         Position start = new Position(1,1);
@@ -58,8 +59,7 @@ public class MoveTest {
     }
 
     /**
-     * Test function that tests for the appropriate Too Large Message is being displayed when the validity returns that
-     * the Move IS too large
+     * Test function, diplay message if move is not large, within boundaries
      */
     @Test
     public void validity_message_test_is_not_too_large(){
@@ -73,6 +73,9 @@ public class MoveTest {
 
     }
 
+    /**
+     * Test function,for the getStart function
+     */
     @Test
     public void get_start_test(){
         Position start = new Position(1,1);
@@ -83,6 +86,9 @@ public class MoveTest {
 
     }
 
+    /**
+     * Test function for getting the end position of a move
+     */
     @Test
     public void get_end_test(){
         Position start = new Position(1,1);
@@ -92,7 +98,9 @@ public class MoveTest {
         assertEquals(end, newMove.getEnd());
     }
 
-
+    /**
+     * Test function, for getting the distance of a move
+     */
     @Test
     public void get_distance_test(){
         Position start = new Position(4,4);
@@ -101,7 +109,9 @@ public class MoveTest {
         double val = sqrt(pow((end.getCell() - start.getCell()), 2) + pow(end.getRow() - start.getRow(), 2));
         assertEquals(val, newMove.getDistance());
     }
-
+    /**
+     * Test function, for getting direction of the move
+     */
     @Test
     public void get_direction_test(){
         Position start = new Position(4,4);
