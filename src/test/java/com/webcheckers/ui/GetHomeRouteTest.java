@@ -54,7 +54,7 @@ public class GetHomeRouteTest {
      * test function to test the view model components
      */
     @Test
-     public void test_view(){
+    public void test_view(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
         Object something  = CuT.handle(request, response);

@@ -61,10 +61,19 @@ public class Move {
     }
 
     /**
+     * Returns the direction of this Move.
+     * @return direction of this Move
+     */
+    public double getDirection(){
+        double diff = this.start.getRow() - this.end.getRow();
+        return diff/abs(diff);
+    }
+
+    /**
      * Helper function that returns whether this Move is too large.
      * @return whether start Position and end Position are too far
      */
-    private boolean isMoveTooLarge(){
+    public boolean isMoveTooLarge(){
         int rowDifference = abs(start.getRow() - end.getRow());
         int cellDifference = abs(start.getCell() - end.getCell());
         boolean result = rowDifference > tooFarThreshold || cellDifference > tooFarThreshold;

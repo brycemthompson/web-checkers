@@ -83,4 +83,3 @@ public class PostGameRouteTest {
         templateEngineTester.assertViewName("home.ftl");
     }
 }
-

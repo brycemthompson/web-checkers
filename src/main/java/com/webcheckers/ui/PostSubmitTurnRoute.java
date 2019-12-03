@@ -48,6 +48,7 @@ public class PostSubmitTurnRoute implements Route {
         }
 
         currentPlayerBoard.flipActiveColor();
+        currentPlayerBoard.updateKingStatus();
         return new Gson().toJson(Message.info("Turn submitted."));
 
         /*

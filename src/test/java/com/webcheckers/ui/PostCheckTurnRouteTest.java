@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.Model.Board;
+import com.webcheckers.Model.Piece;
 import com.webcheckers.Model.Player;
 import com.webcheckers.Model.PlayerLobby;
 import com.webcheckers.util.Message;
@@ -14,7 +15,6 @@ import spark.TemplateEngine;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 /**
  * Unit Test for the PostCheckTurnRoute Class
  */
@@ -44,12 +44,11 @@ public class PostCheckTurnRouteTest {
         CuT = new PostCheckTurnRoute(templateEngine, playerLobby);
         templateEngineTester = new TemplateEngineTester();
     }
-
     /**
      * test function that tests for a message containing the color of the player whose turn it is
      */
     @Test
-    public void test_player_turn()
+    public void test_player_turn_active_color_equality()
     {
         Player currentUser = new Player("p1");
         when(session.attribute(ConstsUI.CURRENT_USER_PARAM)).thenReturn(currentUser);
@@ -57,17 +56,42 @@ public class PostCheckTurnRouteTest {
         Board currentUserBoard = new Board();
         when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentUserBoard);
 
-        Message msg = null;
+        try {
+            CuT.handle(request,response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if(currentUserBoard.getActiveColor() == currentUser.getColor())
         {
-            msg = CuT.COLOR_MATCH_MESSAGE;
-            assertEquals(msg, CuT.COLOR_MATCH_MESSAGE);
+            System.out.println(currentUser.toString());
+            System.out.println(currentUserBoard.toString());
+            Message msg = new Message("true", Message.Type.INFO);
+            assertEquals(Message.info("true").toString(), msg.toString());
         }
-        else
-        {
-            msg = CuT.FAIL_COLOR_MATCH;
-            assertEquals(msg, CuT.FAIL_COLOR_MATCH);
-        }
+
     }
+
+    @Test
+    public void test_player_turn_active_color_equality_fail()
+    {
+        Player currentUser = new Player("p1");
+        currentUser.color = Piece.Color.WHITE;
+        when(session.attribute(ConstsUI.CURRENT_USER_PARAM)).thenReturn(currentUser);
+
+        Board currentUserBoard = new Board();
+        when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentUserBoard);
+
+        currentUserBoard.setActiveColor(Piece.Color.RED);
+
+        if( currentUserBoard.getActiveColor() != currentUser.getColor())
+        {
+            System.out.println(currentUser.toString());
+            System.out.println(currentUserBoard.toString());
+            Message msg = new Message("false", Message.Type.INFO);
+            assertEquals(Message.info("false").toString(), msg.toString());
+        }
+
+    }
+
 }

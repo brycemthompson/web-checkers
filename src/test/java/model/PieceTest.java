@@ -36,6 +36,7 @@ public class PieceTest {
     /**
      * Test function that tests that the Red Piece color is held correctly when defined during instantiation
      */
+
     @Test
     public void create_piece_test_color_red(){
 

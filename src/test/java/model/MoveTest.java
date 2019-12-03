@@ -6,7 +6,8 @@ import com.webcheckers.util.Message;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static java.lang.Math.abs;
+import static java.lang.Math.*;
+import static java.lang.Math.pow;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -18,85 +19,111 @@ public class MoveTest {
     /**
      * Private fields
      */
-    private Position start;
-    private Position end;
-
-    // what is defined as "too far" for a move
-    private static int tooFarThreshold = 2;
-
-    /**
-     * Helper function to check if the given Move is invalid (too many spaces away)
-     * @return result: whether the Move is valid or not
-     */
-    public boolean isMoveTooLarge(){
-        int rowDifference = abs(start.getRow() - end.getRow());
-        int cellDifference = abs(start.getCell() - end.getCell());
-        boolean result = rowDifference > tooFarThreshold || cellDifference > tooFarThreshold;
-        return result;
-    }
-
-    /**
-     * Helper function to output a Message for the View Model depending on the validity of the proposed Move
-     * @return Message.info/Message.error: The result of the Move validity
-     */
-    public Message validityMessage(){
-        // check if distance is too large
-        if (isMoveTooLarge()){
-            return Message.error("Piece has been moved too far.");
-        }
-        return Message.info("Good move!");
-    }
-
-    /**
-     * Test function that tests that a Move provided it is a VALID Move, will return false for being too large
-     */
     @Test
     public void test_is_move_too_large_valid(){
-        this.start = new Position(1,1);
-        this.end = new Position(2,2);
+        Position start = new Position(1,1);
+        Position end = new Position(2,2);
         Move newMove = new Move(start, end);
-        boolean isTooLarge = isMoveTooLarge();
+        boolean isTooLarge = newMove.isMoveTooLarge();
         assertEquals(false, isTooLarge);
 
     }
 
     /**
-     * Test function that tests that a Move provided it is an INVALID Move, will return true for being too large
+     * Test function for if a move is too large
      */
     @Test
     public void test_is_move_too_large_not_valid(){
-        this.start = new Position(1,1);
-        this.end = new Position(4,4);
+        Position start = new Position(1,1);
+        Position end = new Position(4,4);
         Move newMove = new Move(start, end);
-        boolean isTooLarge = isMoveTooLarge();
+        boolean isTooLarge = newMove.isMoveTooLarge();
         assertEquals(true, isTooLarge);
+
     }
 
+
+
     /**
-     * Test function that tests for the appropriate Too Large Message is being displayed when the validity returns that
-     * the Move IS too large
+     * Test function for a validity message, display text if move is too large
      */
     @Test
     public void validity_message_test_too_large(){
-        start = new Position(1,1);
-        end = new Position(4,4);
+        Position start = new Position(1,1);
+        Position end = new Position(4,4);
         Move newMove = new Move(start, end);
-
+        Message msg = new Message("Piece has been moved too far.", Message.Type.ERROR);
         //The move is too large and it should be display an error message;
-        assertEquals("{Msg ERROR 'Piece has been moved too far.'}", newMove.validityMessage().toString());
+        assertEquals(msg.toString(), newMove.validityMessage().toString());
+
     }
 
     /**
-     * Test function that tests for the appropriate "Good move!" Message is being displayed when the validity returns
-     * that the Move is VALID
+     * Test function, diplay message if move is not large, within boundaries
      */
     @Test
     public void validity_message_test_is_not_too_large(){
         Position start = new Position(1,1);
         Position end = new Position(2,2);
         Move newMove = new Move(start, end);
+        Message msg = new Message("Good move!", Message.Type.INFO);
+
         //The move is too large and it should be display an valid move message;
-        assertEquals("{Msg INFO 'Good move!'}", newMove.validityMessage().toString());
+        assertEquals(msg.toString(), newMove.validityMessage().toString());
+
     }
+
+    /**
+     * Test function,for the getStart function
+     */
+    @Test
+    public void get_start_test(){
+        Position start = new Position(1,1);
+        Position end = new Position(2,2);
+        Move newMove = new Move(start, end);
+        //The move is too large and it should be display an valid move message;
+        assertEquals(start, newMove.getStart());
+
+    }
+
+    /**
+     * Test function for getting the end position of a move
+     */
+    @Test
+    public void get_end_test(){
+        Position start = new Position(1,1);
+        Position end = new Position(2,2);
+        Move newMove = new Move(start, end);
+        //The move is too large and it should be display an valid move message;
+        assertEquals(end, newMove.getEnd());
+    }
+
+    /**
+     * Test function, for getting the distance of a move
+     */
+    @Test
+    public void get_distance_test(){
+        Position start = new Position(4,4);
+        Position end = new Position(2,2);
+        Move newMove = new Move(start, end);
+        double val = sqrt(pow((end.getCell() - start.getCell()), 2) + pow(end.getRow() - start.getRow(), 2));
+        assertEquals(val, newMove.getDistance());
+    }
+    /**
+     * Test function, for getting direction of the move
+     */
+    @Test
+    public void get_direction_test(){
+        Position start = new Position(4,4);
+        Position end = new Position(2,2);
+        Move newMove = new Move(start, end);
+
+        int diff = start.getRow() - end.getRow();
+        double val = diff/abs(diff);
+        System.out.println(diff);
+        //The move is too large and it should be display an valid move message;
+        assertEquals(val, newMove.getDirection());
+    }
+
 }
 

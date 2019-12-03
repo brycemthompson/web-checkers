@@ -10,13 +10,11 @@ import spark.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 /**
  * Unit Test for the GetSignInRoute Class
  */
 @Tag("UI-Tier")
 public class GetSignInRouteTest {
-
     /**
      * Private fields
      */
@@ -27,6 +25,7 @@ public class GetSignInRouteTest {
     private GetSignInRoute CuT;
     private Response response;
     private Session session;
+
 
     /**
      * the setup function to initialize the items for the session and the signin route
@@ -44,7 +43,6 @@ public class GetSignInRouteTest {
         CuT = new GetSignInRoute(templateEngine, playerLobby);
         templateEngineTester = new TemplateEngineTester();
     }
-
     /**
      * test function to test that the session message parameter and view model is holding the correct message item
      */

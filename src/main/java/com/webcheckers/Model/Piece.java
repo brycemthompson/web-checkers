@@ -28,6 +28,8 @@ public class Piece {
      */
     private Type type;
     private Color color;
+    // the direction that is considered "forward" for this piece (either 1 or -1)
+    private int forwardDirection;
 
     /**
      * Constructor for Piece
@@ -37,7 +39,27 @@ public class Piece {
     public Piece(Type type, Color color){
         this.type = type;
         this.color = color;
+
+        if (color == Color.RED){
+            this.forwardDirection = 1;
+        } else {
+            this.forwardDirection = -1;
+        }
+
     }
+
+    /**
+     * Kings this piece.
+     */
+    public void kingMe(){
+        this.type = Type.KING;
+    }
+
+    /**
+     * Check if this Piece is a King.
+     * @return boolean for whether this Piece's Type is King
+     */
+    public boolean isKing() { return this.type == Type.KING; }
 
     /**
      * Getter for type
@@ -54,6 +76,15 @@ public class Piece {
     public Color getColor(){
         return this.color;
     }
+
+    /**
+     * Getter for forward direction.
+     * @return this.forwardDirection: the direction this Piece considers to be "forward"
+     */
+    public int getForwardDirection(){
+        return this.forwardDirection;
+    }
+
 
     /**
      * Returns the Color opposite of what was given.

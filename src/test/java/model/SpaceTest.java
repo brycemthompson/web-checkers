@@ -156,8 +156,6 @@ public class SpaceTest {
         Position pos = new Position(cellIdx,cellIdy);
         // assertNotNull(sp);
         assertEquals(false, sp.isValid()); //This should be True, because space object
-                                                    // is not null, and the cellIdx and cellIdy
-                                                    //  are not equal mods.
                                                     // This should be True
     }
 

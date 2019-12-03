@@ -68,7 +68,7 @@ public class GetGameRoute implements Route {
      * @param currentUser the current user for whom the game is being built
      * @param opponentUser the opponent to the current user
      */
-    private void startNewGame(Request request, Player currentUser, Player opponentUser){
+    public void startNewGame(Request request, Player currentUser, Player opponentUser){
         // set up players
         opponentUser.putInGame(currentUser, Piece.Color.WHITE);
         currentUser.putInGame(opponentUser, Piece.Color.RED);
