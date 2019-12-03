@@ -16,9 +16,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
 
+/**
+ * Unit Test for GetHomeRoute Class
+ */
 @Tag("UI-Tier")
 public class GetHomeRouteTest {
 
+    /**
+     * Private fields
+     */
     private TemplateEngineTester templateEngineTester = new TemplateEngineTester();
     private TemplateEngine templateEngine;
     private PlayerLobby playerLobby;
@@ -27,6 +33,9 @@ public class GetHomeRouteTest {
     private Response response;
     private Session session;
 
+    /**
+     * setup function to initialize the items for the session and game
+     */
     @BeforeEach
     public void setup(){
 
@@ -41,15 +50,20 @@ public class GetHomeRouteTest {
         templateEngineTester = new TemplateEngineTester();
     }
 
-
+    /**
+     * test function to test the view model components
+     */
     @Test
-     public void test_view(){
+    public void test_view(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
         Object something  = CuT.handle(request, response);
         templateEngineTester.assertViewModelAttribute("title", "Welcome to Home Page!");
     }
 
+    /**
+     * test function to check that the session message parameter is outputting the correct message
+     */
     @Test
     public void test_correct_message(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
@@ -63,6 +77,9 @@ public class GetHomeRouteTest {
         templateEngineTester.assertViewModelAttribute(ConstsUI.MESSAGE_PARAM, msg);
     }
 
+    /**
+     * test function that tests that the welcome message is placed appropriately in the view model
+     */
     @Test
     public void test_welcome_message(){
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
@@ -73,6 +90,10 @@ public class GetHomeRouteTest {
 
     }
 
+    /**
+     * test function that tests the the view model holds the appropriate playerLobby, current user, and username
+     * parameters
+     */
     @Test
     public void test_username_currentUser_playerList(){
         Player pl = new Player("David");
@@ -92,29 +113,37 @@ public class GetHomeRouteTest {
 
     }
 
+    /**
+     * test function to check that the current board is correctly placed in the session and that the view model holds
+     * the appropriate current user param and user board param
+     */
     @Test
     public void test_board(){
-        Player currentUser = new Player("David2");
-        playerLobby.addPlayer(currentUser);
+        Player p1 = new Player("David2");
+        Player p2 = new Player("OpponentPlayer");
+        playerLobby.addPlayer(p1);
+        playerLobby.addPlayer(p2);
         ArrayList<String> playerNames = playerLobby.getPlayerNames();
 
-        Board currentUserBoard ;
-        Player opponent = currentUser.getOpponent();
+        Board currentUserBoard;
+        p1.putInGame(p2, Piece.Color.WHITE);
+        Player opponent = p1.getOpponent();
+        currentUserBoard = playerLobby.getBoard(p1, opponent);
 
-        currentUser.color = Piece.Color.RED;
-        currentUserBoard = playerLobby.getBoard(currentUser, opponent);
-
-        when(request.session().attribute(ConstsUI.CURRENT_USER_PARAM)).thenReturn(currentUser);
-        when(request.session().attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentUserBoard);
+        when(session.attribute(ConstsUI.CURRENT_USER_BOARD_PARAM)).thenReturn(currentUserBoard);
+        session.attribute(ConstsUI.PLAYER_LIST_PARAM, playerNames);
 
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
-        CuT.handle(request, response);
 
-        templateEngineTester.assertViewModelAttribute(ConstsUI.CURRENT_USER_PARAM, currentUser);
+        CuT.handle(request, response);
+        templateEngineTester.assertViewModelAttribute(ConstsUI.CURRENT_USER_PARAM, null);
         templateEngineTester.assertViewModelAttribute(ConstsUI.CURRENT_USER_BOARD_PARAM, currentUserBoard);
 
     }
 
+    /**
+     * test function that checks for the correct size of the player lobby
+     */
     @Test
     public void test_player_lobby_size(){
 
