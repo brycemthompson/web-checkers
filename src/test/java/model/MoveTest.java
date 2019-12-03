@@ -10,10 +10,15 @@ import static java.lang.Math.*;
 import static java.lang.Math.pow;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit Test for the Move Class
+ */
 @Tag("Model-Tier")
 public class MoveTest {
 
-
+    /**
+     * Private fields
+     */
     @Test
     public void test_is_move_too_large_valid(){
         Position start = new Position(1,1);
@@ -24,6 +29,10 @@ public class MoveTest {
 
     }
 
+    /**
+     * Helper function to check if the given Move is invalid (too many spaces away)
+     * @return result: whether the Move is valid or not
+     */
     @Test
     public void test_is_move_too_large_not_valid(){
         Position start = new Position(1,1);
@@ -33,6 +42,9 @@ public class MoveTest {
         assertEquals(true, isTooLarge);
 
     }
+
+
+
 
     @Test
     public void validity_message_test_too_large(){
@@ -45,6 +57,10 @@ public class MoveTest {
 
     }
 
+    /**
+     * Test function that tests for the appropriate Too Large Message is being displayed when the validity returns that
+     * the Move IS too large
+     */
     @Test
     public void validity_message_test_is_not_too_large(){
         Position start = new Position(1,1);

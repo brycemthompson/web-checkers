@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
+/**
+ * Unit Test for the Board Class
+ */
 @Tag("Model-Tier")
 public class BoardTest {
     // all rows in the board
