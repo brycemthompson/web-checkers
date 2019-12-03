@@ -1,59 +1,24 @@
 package model;
 
+import com.webcheckers.Model.Move;
 import com.webcheckers.Model.Position;
 import com.webcheckers.util.Message;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static java.lang.Math.abs;
+import static java.lang.Math.*;
+import static java.lang.Math.pow;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("Model-Tier")
 public class MoveTest {
-
-    // private fields
-    private Position start;
-    private Position end;
-
-    // what is defined as "too far" for a move
-    private static int tooFarThreshold = 2;
-
-    public MoveTest(Position start, Position end){
-        this.start = start;
-        this.end = end;
-    }
-
-    public Position getStart(){
-        return this.start;
-    }
-
-
-    public Position getEnd(){
-        return this.end;
-    }
-
-
-    public boolean isMoveTooLarge(){
-        int rowDifference = abs(start.getRow() - end.getRow());
-        int cellDifference = abs(start.getCell() - end.getCell());
-        boolean result = rowDifference > tooFarThreshold || cellDifference > tooFarThreshold;
-        return result;
-    }
-
-    public Message validityMessage(){
-        // check if distance is too large
-        if (isMoveTooLarge()){
-            return Message.error("Piece has been moved too far.");
-        }
-        return Message.info("Good move!");
-    }
 
 
     @Test
     public void test_is_move_too_large_valid(){
         Position start = new Position(1,1);
         Position end = new Position(2,2);
-        MoveTest newMove = new MoveTest(start, end);
+        Move newMove = new Move(start, end);
         boolean isTooLarge = newMove.isMoveTooLarge();
         assertEquals(false, isTooLarge);
 
@@ -63,7 +28,7 @@ public class MoveTest {
     public void test_is_move_too_large_not_valid(){
         Position start = new Position(1,1);
         Position end = new Position(4,4);
-        MoveTest newMove = new MoveTest(start, end);
+        Move newMove = new Move(start, end);
         boolean isTooLarge = newMove.isMoveTooLarge();
         assertEquals(true, isTooLarge);
 
@@ -73,10 +38,10 @@ public class MoveTest {
     public void validity_message_test_too_large(){
         Position start = new Position(1,1);
         Position end = new Position(4,4);
-        MoveTest newMove = new MoveTest(start, end);
-
+        Move newMove = new Move(start, end);
+        Message msg = new Message("Piece has been moved too far.", Message.Type.ERROR);
         //The move is too large and it should be display an error message;
-        assertEquals("Piece has been moved too far.", newMove.validityMessage());
+        assertEquals(msg.toString(), newMove.validityMessage().toString());
 
     }
 
@@ -84,12 +49,55 @@ public class MoveTest {
     public void validity_message_test_is_not_too_large(){
         Position start = new Position(1,1);
         Position end = new Position(2,2);
-        MoveTest newMove = new MoveTest(start, end);
+        Move newMove = new Move(start, end);
+        Message msg = new Message("Good move!", Message.Type.INFO);
+
         //The move is too large and it should be display an valid move message;
-        assertEquals("Good move!", newMove.validityMessage());
+        assertEquals(msg.toString(), newMove.validityMessage().toString());
 
     }
 
+    @Test
+    public void get_start_test(){
+        Position start = new Position(1,1);
+        Position end = new Position(2,2);
+        Move newMove = new Move(start, end);
+        //The move is too large and it should be display an valid move message;
+        assertEquals(start, newMove.getStart());
+
+    }
+
+    @Test
+    public void get_end_test(){
+        Position start = new Position(1,1);
+        Position end = new Position(2,2);
+        Move newMove = new Move(start, end);
+        //The move is too large and it should be display an valid move message;
+        assertEquals(end, newMove.getEnd());
+    }
+
+
+    @Test
+    public void get_distance_test(){
+        Position start = new Position(4,4);
+        Position end = new Position(2,2);
+        Move newMove = new Move(start, end);
+        double val = sqrt(pow((end.getCell() - start.getCell()), 2) + pow(end.getRow() - start.getRow(), 2));
+        assertEquals(val, newMove.getDistance());
+    }
+
+    @Test
+    public void get_direction_test(){
+        Position start = new Position(4,4);
+        Position end = new Position(2,2);
+        Move newMove = new Move(start, end);
+
+        int diff = start.getRow() - end.getRow();
+        double val = diff/abs(diff);
+        System.out.println(diff);
+        //The move is too large and it should be display an valid move message;
+        assertEquals(val, newMove.getDirection());
+    }
 
 }
 
