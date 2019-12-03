@@ -1,5 +1,6 @@
-package com.webcheckers.Model;
+package model;
 
+import com.webcheckers.Model.*;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
