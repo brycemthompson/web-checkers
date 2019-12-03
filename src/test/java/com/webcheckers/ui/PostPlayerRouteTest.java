@@ -72,7 +72,6 @@ public class PostPlayerRouteTest {
         when(session.attribute(ConstsUI.CURRENT_USER_PARAM)).thenReturn(currentUser);
 
         Player opponent = null;
-
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
         CuT.handle(request, response);
 
@@ -81,10 +80,14 @@ public class PostPlayerRouteTest {
         opponent = playerLobby.getPlayer(request.queryParams("opponentUsername"));
         when(session.attribute(ConstsUI.OPPONENT_PARAM)).thenReturn(opponent);
 
-        Object o  = CuT.handle(request, response);
+        CuT.handle(request, response);
+////        Message msg = new Message("Welcome to the world of online Checkers.", Message.Type.INFO);
+//        Message WELCOME_MSG = Message.info("Welcome to the world of online Checkers.");
+//        String msg = request.queryParams(WELCOME_MSG.toString());
+
         templateEngineTester.assertViewModelAttribute(ConstsUI.CURRENT_USER_PARAM, currentUser);
         templateEngineTester.assertViewModelAttribute(ConstsUI.VIEW_MODE_PARAM, "PLAY");
-        templateEngineTester.assertViewModelAttribute(ConstsUI.MESSAGE_PARAM, ConstsUI.WELCOME_MSG);
+//        templateEngineTester.assertViewModelAttribute("message", msg);
         templateEngineTester.assertViewModelAttribute("redPlayer", currentUser);
         templateEngineTester.assertViewModelAttribute("whitePlayer", opponent);
         templateEngineTester.assertViewModelAttribute("activeColor", "red");

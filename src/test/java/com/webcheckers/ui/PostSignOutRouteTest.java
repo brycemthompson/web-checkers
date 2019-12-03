@@ -50,9 +50,6 @@ public class PostSignOutRouteTest {
 
         Message msg = new Message("Sign In to Play!", Message.Type.INFO);
         when(session.attribute(ConstsUI.MESSAGE_PARAM)).thenReturn(msg);
-
-        //session.attribute(ConstsUI.MESSAGE_PARAM, msg );
-
         CuT.handle(request, response);
         templateEngineTester.assertViewModelAttribute(ConstsUI.MESSAGE_PARAM, msg);
     }
@@ -68,7 +65,6 @@ public class PostSignOutRouteTest {
         String PLAYERSPLAYING_PARAM = "amountOfPlayersPlaying";
 
         int amountOfPlayersPlaying = playerLobby.size();
-        System.out.println(amountOfPlayersPlaying);
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(templateEngineTester.makeAnswer());
 
         CuT.handle(request, response);

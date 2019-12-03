@@ -36,7 +36,7 @@ public class MovePacketTest {
         PieceWithPosition p = new PieceWithPosition(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), new Position(row, col));
         MovePacket movePacket = new MovePacket(move, p);
 
-        assertEquals(MovePacket.Type.SIMPLE, movePacket.getType());
+        assertEquals(MovePacket.Type.SIMPLE_JUMP, movePacket.getType());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class MovePacketTest {
 
         MovePacket movePacket = new MovePacket(move, p);
 
-        assertEquals(MovePacket.Type.SIMPLE, movePacket.getType());
+        assertEquals(MovePacket.Type.SIMPLE_JUMP, movePacket.getType());
     }
 
     @Test
@@ -59,12 +59,11 @@ public class MovePacketTest {
         Position start = new Position(row, col);
         Position end = new Position(row, col);
         Move move = new Move(start, end);
-        Piece piece = new Piece(Piece.Type.SINGLE, Piece.Color.RED);
         PieceWithPosition p = new PieceWithPosition(new Piece(Piece.Type.SINGLE, Piece.Color.WHITE), new Position(row, col));
 
         MovePacket movePacket = new MovePacket(move, p);
 
-        assertEquals(piece, movePacket.getJumpedPiece());
+        assertEquals(p, movePacket.getJumpedPiece());
     }
 
     @Test
